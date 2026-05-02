@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0d1b2a">
+<title>วราริน Family 🏠</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1b2a;--s1:#132236;--s2:#1a2f47;--s3:#213858;
+  --acc:#00c896;--acc2:#38b6ff;--warn:#f5a623;--danger:#ff5e5e;--pink:#ff7eb3;--purple:#a78bfa;
+  --txt:#e8f4ff;--txt2:#7fa8c9;--txt3:#3d6080;
+  --r:16px;--rs:10px;--font:'Noto Sans Thai',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--font);overflow:hidden}
+body{display:flex;flex-direction:column}
+
+/* HEADER */
+.hdr{padding:env(safe-area-inset-top,14px) 16px 10px;background:rgba(13,27,42,.98);
+  backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.05);
+  position:sticky;top:0;z-index:50;flex-shrink:0}
+.hdr-row{display:flex;justify-content:space-between;align-items:center}
+.hdr-title{font-size:17px;font-weight:700;letter-spacing:-.3px}
+.hdr-sub{font-size:10px;color:var(--txt3);margin-top:1px}
+.hdr-right{text-align:right}
+.hdr-date{font-size:12px;color:var(--acc);font-family:var(--mono)}
+.hdr-week{font-size:10px;color:var(--pink);margin-top:1px}
+
+/* SCROLL */
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:84px}
+.page{display:none;animation:fadeUp .2s ease}
+.page.on{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* NAV */
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(13,27,42,.97);
+  backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.07);
+  display:flex;padding:4px 0 max(8px,env(safe-area-inset-bottom));z-index:100;
+  overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nb{flex:0 0 auto;min-width:60px;display:flex;flex-direction:column;align-items:center;
+  gap:2px;padding:5px 4px;background:none;border:none;cursor:pointer;
+  color:var(--txt3);font-family:var(--font);font-size:9px;transition:color .18s;white-space:nowrap}
+.nb.on{color:var(--acc)}
+.nb svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;flex-shrink:0}
+
+/* LAYOUT */
+.pad{padding:0 14px}
+.section{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.09em;
+  font-weight:600;padding:14px 14px 7px}
+
+/* CARD */
+.card{background:var(--s1);border:1px solid rgba(255,255,255,.06);border-radius:var(--r);
+  padding:15px;margin:0 14px 12px}
+.card-title{font-size:11px;color:var(--txt2);text-transform:uppercase;letter-spacing:.07em;
+  font-weight:600;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+
+/* GRID */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 14px 12px}
+.sbox{background:var(--s2);border-radius:var(--rs);padding:11px;border:1px solid rgba(255,255,255,.05)}
+.sbox-lbl{font-size:10px;color:var(--txt3);margin-bottom:4px}
+.sbox-val{font-size:17px;font-weight:600;font-family:var(--mono);line-height:1.2}
+.sbox-sub{font-size:10px;color:var(--txt3);margin-top:2px}
+
+/* ROW */
+.row-item{display:flex;justify-content:space-between;align-items:center;
+  padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.row-item:last-child{border-bottom:none}
+.rl{font-size:13px;color:var(--txt2)}
+.rl small{display:block;font-size:11px;color:var(--txt3);margin-top:1px}
+.rv{font-family:var(--mono);font-size:13px;font-weight:500;text-align:right}
+.rv.g{color:#4ade80}.rv.r{color:var(--danger)}.rv.a{color:var(--warn)}.rv.b{color:var(--acc2)}.rv.p{color:var(--pink)}
+
+/* PROGRESS */
+.prog{height:6px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden;margin:5px 0}
+.prog-fill{height:100%;border-radius:3px;transition:width .7s cubic-bezier(.4,0,.2,1)}
+
+/* BUTTONS */
+.btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;
+  padding:12px;border-radius:var(--rs);border:none;cursor:pointer;
+  font-family:var(--font);font-size:14px;font-weight:600;transition:all .15s}
+.btn-acc{background:var(--acc);color:#0d1b2a}.btn-acc:active{transform:scale(.97)}
+.btn-ghost{background:rgba(255,255,255,.06);color:var(--txt);border:1px solid rgba(255,255,255,.1)}
+.btn-sm{padding:7px 14px;font-size:12px;border-radius:8px;width:auto}
+.btn-danger{background:rgba(255,94,94,.15);color:var(--danger);border:1px solid rgba(255,94,94,.2)}
+
+/* INPUT */
+.inp-group{margin-bottom:11px}
+.inp-label{font-size:12px;color:var(--txt2);margin-bottom:5px;display:block}
+.inp{width:100%;background:var(--s2);border:1px solid rgba(255,255,255,.1);border-radius:var(--rs);
+  padding:11px 13px;color:var(--txt);font-family:var(--font);font-size:14px;outline:none;
+  transition:border .15s;-webkit-appearance:none}
+.inp:focus{border-color:var(--acc)}
+.inp::placeholder{color:var(--txt3)}
+select.inp option{background:#1a2f47}
+
+/* BADGE */
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.bg{background:rgba(0,200,150,.12);color:var(--acc);border:1px solid rgba(0,200,150,.2)}
+.br{background:rgba(255,94,94,.12);color:var(--danger);border:1px solid rgba(255,94,94,.2)}
+.ba{background:rgba(245,166,35,.12);color:var(--warn);border:1px solid rgba(245,166,35,.2)}
+.bb{background:rgba(56,182,255,.12);color:var(--acc2);border:1px solid rgba(56,182,255,.2)}
+.bp{background:rgba(255,126,179,.12);color:var(--pink);border:1px solid rgba(255,126,179,.2)}
+.bpu{background:rgba(167,139,250,.12);color:var(--purple);border:1px solid rgba(167,139,250,.2)}
+
+/* TIP */
+.tip{background:rgba(245,166,35,.07);border-left:3px solid var(--warn);
+  border-radius:0 var(--rs) var(--rs) 0;padding:10px 13px;font-size:13px;
+  color:var(--txt2);line-height:1.6;margin:0 14px 12px}
+.tip strong{color:var(--warn)}
+.tip-g{border-left-color:var(--acc);background:rgba(0,200,150,.07)}
+.tip-g strong{color:var(--acc)}
+
+/* EXPENSE */
+.exp-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.exp-item:last-child{border-bottom:none}
+.exp-cat{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.exp-info{flex:1;min-width:0}
+.exp-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.exp-meta{font-size:10px;color:var(--txt3);margin-top:2px}
+.exp-amt{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--danger);flex-shrink:0}
+
+/* PHOTO */
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.photo-grid img{width:100%;aspect-ratio:1;border-radius:8px;object-fit:cover;cursor:pointer;border:1px solid rgba(255,255,255,.08)}
+.photo-add{width:100%;aspect-ratio:1;border-radius:8px;background:var(--s2);
+  border:2px dashed rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:4px;cursor:pointer;font-size:11px;color:var(--txt3)}
+.photo-preview{width:100%;border-radius:var(--rs);max-height:180px;object-fit:cover;display:block;margin-bottom:10px}
+
+/* CHECKLIST */
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;
+  border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer}
+.check-item:last-child{border-bottom:none}
+.check-box{width:21px;height:21px;border-radius:6px;border:2px solid rgba(255,255,255,.2);
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s}
+.check-box.ck{background:var(--acc);border-color:var(--acc)}
+.check-box.ck svg{display:block}
+.check-box svg{display:none;width:13px;height:13px;stroke:#0d1b2a;stroke-width:2.5;fill:none}
+.check-name{font-size:13px;color:var(--txt);transition:color .15s;line-height:1.4}
+.check-name.done{color:var(--txt3);text-decoration:line-through}
+.check-sub{font-size:11px;color:var(--txt3);margin-top:1px}
+
+/* PREGNANCY */
+.preg-hero{background:linear-gradient(135deg,rgba(255,126,179,.1),rgba(167,139,250,.08));
+  border:1px solid rgba(255,126,179,.15);border-radius:var(--r);padding:18px;
+  margin:8px 14px 12px;text-align:center}
+.preg-week-big{font-size:56px;font-weight:700;font-family:var(--mono);color:var(--pink);line-height:1}
+.preg-bar{height:5px;background:rgba(255,255,255,.06);border-radius:3px;margin:10px 0 3px;overflow:hidden}
+.preg-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--warn));border-radius:3px;transition:width .8s}
+.preg-dates{display:flex;justify-content:space-between;font-size:10px;color:var(--txt3)}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:200;
+  display:flex;align-items:flex-end;animation:fi .18s}
+.modal-bg.hidden{display:none}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.modal{background:var(--s1);border-radius:var(--r) var(--r) 0 0;
+  padding:18px 16px max(20px,env(safe-area-inset-bottom));width:100%;
+  animation:su .22s ease;max-height:92vh;overflow-y:auto}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:34px;height:4px;background:rgba(255,255,255,.12);border-radius:2px;margin:0 auto 14px}
+.modal-title{font-size:15px;font-weight:700;margin-bottom:14px;text-align:center}
+
+/* CAT GRID */
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:12px}
+.cat-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 4px;
+  border-radius:var(--rs);background:var(--s2);border:2px solid transparent;
+  cursor:pointer;font-size:10px;color:var(--txt2);transition:all .15s}
+.cat-btn.sel{border-color:var(--acc);color:var(--acc);background:rgba(0,200,150,.1)}
+.cat-btn .em{font-size:18px}
+
+/* SLIDER */
+.slider-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.slider-label{font-size:13px;color:var(--txt2)}
+.slider-val{font-family:var(--mono);font-size:14px;color:var(--acc);font-weight:500}
+input[type=range]{width:100%;height:5px;border-radius:3px;cursor:pointer;
+  background:var(--s2);-webkit-appearance:none;appearance:none;margin-bottom:10px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;
+  background:var(--acc);box-shadow:0 2px 8px rgba(0,200,150,.35);cursor:pointer}
+
+/* RESULT BOX */
+.result-box{display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  background:rgba(0,200,150,.06);border:1px solid rgba(0,200,150,.15);
+  border-radius:var(--r);padding:14px;margin:12px 0}
+.res-lbl{font-size:11px;color:var(--txt3);margin-bottom:3px}
+.res-val{font-family:var(--mono);font-size:15px;font-weight:500}
+
+/* TIMELINE */
+.tl-wrap{position:relative;padding-left:26px}
+.tl-wrap::before{content:'';position:absolute;left:10px;top:4px;bottom:4px;
+  width:2px;background:rgba(255,255,255,.07)}
+.tl-item{position:relative;padding-bottom:18px}
+.tl-dot{position:absolute;left:-20px;width:12px;height:12px;border-radius:50%;
+  border:2px solid;top:3px}
+.tl-dot.now{box-shadow:0 0 0 3px rgba(0,200,150,.15)}
+.tl-month{font-size:11px;color:var(--txt3)}
+.tl-title{font-size:14px;font-weight:600;margin:2px 0 4px}
+.tl-detail{font-size:12px;color:var(--txt2);line-height:1.5}
+.tl-amount{font-family:var(--mono);font-size:13px;font-weight:500;margin-top:4px;display:inline-block}
+
+/* FULLSCREEN */
+.fs-img{position:fixed;inset:0;background:#000;z-index:300;display:flex;align-items:center;justify-content:center}
+.fs-img.hidden{display:none}
+.fs-img img{max-width:100%;max-height:100%;object-fit:contain}
+.fs-close{position:absolute;top:max(16px,env(safe-area-inset-top));right:16px;
+  width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.6);
+  border:none;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+/* TOAST */
+.toast{position:fixed;top:max(16px,env(safe-area-inset-top));left:50%;
+  transform:translateX(-50%) translateY(-70px);background:var(--acc);color:#0d1b2a;
+  padding:9px 18px;border-radius:20px;font-size:13px;font-weight:600;
+  z-index:500;transition:transform .28s;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* MISC */
+.empty{text-align:center;padding:28px 20px;color:var(--txt3);font-size:13px;line-height:1.8}
+.divider{height:1px;background:rgba(255,255,255,.05);margin:4px 0 10px}
+
+/* TABS */
+.tabs{display:flex;gap:6px;padding:0 14px 10px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;
+  border:0.5px solid rgba(255,255,255,.12);background:var(--s2);color:var(--txt2);
+  transition:all .18s;white-space:nowrap;flex-shrink:0}
+.tab.on{background:rgba(0,200,150,.15);color:var(--acc);border-color:rgba(0,200,150,.3)}
+.sub-panel{display:none}.sub-panel.on{display:block}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-row">
+    <div>
+      <div class="hdr-title">🏠 วราริน Family</div>
+      <div class="hdr-sub">อิ๊ด & นุ๊ก · แผนการเงินครอบครัว</div>
+    </div>
+    <div class="hdr-right">
+      <div class="hdr-date" id="hdr-date"></div>
+      <div class="hdr-week" id="hdr-week"></div>
+    </div>
+  </div>
+</div>
+
+<div class="scroll" id="scroll">
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE 1: HOME
+══════════════════════════════════════════════════════ -->
+<div id="pg-home" class="page on">
+
+  <div class="grid2" style="margin-top:10px">
+    <div class="sbox">
+      <div class="sbox-lbl">💳 ใช้วันนี้</div>
+      <div class="sbox-val rv r" id="h-today">฿0</div>
+      <div class="sbox-sub" id="h-today-n">0 รายการ</div>
+    </div>
+    <div class="sbox">
+      <div class="sbox-lbl">📅 งบวันนี้เหลือ</div>
+      <div class="sbox-val" id="h-daily" style="color:var(--acc)">฿0</div>
+      <div class="sbox-sub" id="h-days"></div>
+    </div>
+    <div class="sbox">
+      <div class="sbox-lbl">📊 ใช้เดือนนี้</div>
+      <div class="sbox-val rv r" id="h-month">฿0</div>
+      <div class="sbox-sub" id="h-month-pct"></div>
+    </div>
+    <div class="sbox">
+      <div class="sbox-lbl">🤰 ท้องสัปดาห์</div>
+      <div class="sbox-val" id="h-preg-wk" style="color:var(--pink)">–</div>
+      <div class="sbox-sub" id="h-preg-tri"></div>
+    </div>
+    <div class="sbox">
+      <div class="sbox-lbl">🏠 ยอดหนี้บ้าน</div>
+      <div class="sbox-val rv a">3.22M</div>
+      <div class="sbox-sub">1.69%/ปี</div>
+    </div>
+    <div class="sbox">
+      <div class="sbox-lbl">💰 รายได้ทีม</div>
+      <div class="sbox-val" style="color:var(--acc2)">65,502</div>
+      <div class="sbox-sub">บาท/เดือน</div>
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>⚠️ ด่วน!</strong> ท้อง 6 สัปดาห์ → ยื่นเบิกค่าฝากครรภ์ประกันสังคม ครั้งที่ 1 (500 บาท) ก่อนอายุครรภ์ครบ 12 สัปดาห์!
+  </div>
+
+  <div class="section">รายจ่ายล่าสุด</div>
+  <div class="card">
+    <div id="h-recent-exp">
+      <div class="empty">ยังไม่มีรายจ่าย<br><small>ไปที่หน้า 💳 เพื่อเพิ่ม</small></div>
+    </div>
+    <div style="margin-top:10px">
+      <button class="btn btn-acc" onclick="goPage('expense',document.getElementById('nb-expense'))">+ บันทึกรายจ่าย</button>
+    </div>
+  </div>
+
+  <div class="section">ความคืบหน้าบ้าน</div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--txt3);margin-bottom:4px">
+      <span>เริ่มต้น 4,329,000 บาท</span><span style="color:var(--acc)">ผ่อนไปแล้ว 25.6%</span>
+    </div>
+    <div class="prog"><div class="prog-fill" style="width:25.6%;background:linear-gradient(90deg,var(--acc),var(--acc2))"></div></div>
+    <div class="row-item"><div class="rl">คงเหลือ</div><div class="rv a">3,218,166 บาท</div></div>
+    <div class="row-item"><div class="rl">ดอกเบี้ยเดือนนี้</div><div class="rv">~4,532 บาท</div></div>
+    <div class="row-item"><div class="rl">บ้านหมดตามแผน</div><div class="rv g">~5 ปี</div></div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE 2: EXPENSE
+══════════════════════════════════════════════════════ -->
+<div id="pg-expense" class="page">
+
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px 0">
+    <div>
+      <div style="font-size:11px;color:var(--txt3)" id="exp-m-lbl"></div>
+      <div style="font-family:var(--mono);font-size:26px;font-weight:600;color:var(--danger)" id="exp-m-total">฿0</div>
+    </div>
+    <button class="btn btn-acc btn-sm" onclick="openAddExp()">+ เพิ่ม</button>
+  </div>
+
+  <div class="card" style="margin-top:10px">
+    <div class="card-title">งบรายหมวด vs ใช้จริง</div>
+    <div id="budget-bars"></div>
+  </div>
+
+  <div class="section">รายการทั้งหมด</div>
+  <div class="card" id="all-exp-list">
+    <div class="empty">กด "เพิ่ม" เพื่อบันทึกรายจ่าย</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE 3: MORTGAGE SIMULATOR
+══════════════════════════════════════════════════════ -->
+<div id="pg-mortgage" class="page">
+
+  <div class="tip tip-g" style="margin-top:10px">
+    <strong>💡 ดอกเบี้ยต่ำมาก</strong> 1.69%/ปี ดอกเดือนนี้แค่ 4,532 บาท — ทุกบาทที่โปะเพิ่มตัดเงินต้นเกือบ 100%
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚙️ ปรับแผนโปะ <span style="color:var(--acc);font-size:10px">ลาก Slider</span></div>
+
+    <div style="margin-bottom:14px">
+      <div class="slider-row"><span class="slider-label">โปะเพิ่ม/เดือน</span><span class="slider-val" id="sv-extra">8,000 ฿</span></div>
+      <input type="range" id="sl-extra" min="0" max="20000" step="1000" value="8000" oninput="updateSim()">
+    </div>
+    <div style="margin-bottom:14px">
+      <div class="slider-row"><span class="slider-label">โบนัส ก.ค. ทุกปี</span><span class="slider-val" id="sv-jul">150,000 ฿</span></div>
+      <input type="range" id="sl-jul" min="0" max="200000" step="10000" value="150000" oninput="updateSim()">
+    </div>
+    <div>
+      <div class="slider-row"><span class="slider-label">โบนัส ธ.ค. ทุกปี</span><span class="slider-val" id="sv-dec">40,000 ฿</span></div>
+      <input type="range" id="sl-dec" min="0" max="100000" step="5000" value="40000" oninput="updateSim()">
+    </div>
+  </div>
+
+  <div class="result-box" style="margin:0 14px 12px">
+    <div><div class="res-lbl">ผ่อนหมดใน</div><div class="res-val" id="res-m" style="color:var(--acc)">– เดือน</div></div>
+    <div><div class="res-lbl">คิดเป็น</div><div class="res-val" id="res-y" style="color:var(--acc)">– ปี</div></div>
+    <div><div class="res-lbl">ดอกเบี้ยรวม</div><div class="res-val" id="res-i" style="color:var(--danger)">–</div></div>
+    <div><div class="res-lbl">ประหยัดดอก</div><div class="res-val" id="res-s" style="color:#4ade80">–</div></div>
+  </div>
+
+  <div class="section">เปรียบเทียบ 6 แผน</div>
+  <div class="card" id="sim-compare"></div>
+
+  <div class="section">แผนโบนัส (จากไฟล์จริง)</div>
+  <div class="card">
+    <div class="row-item"><div class="rl">ก.ค. 2569 <span class="badge ba" style="font-size:9px">เร็วๆนี้</span></div><div class="rv a">150,000 ฿</div></div>
+    <div class="row-item"><div class="rl">ธ.ค. 2569 <span class="badge bp" style="font-size:9px">คลอด</span></div><div class="rv a">40,000 ฿</div></div>
+    <div class="row-item"><div class="rl">ก.ค. 2570</div><div class="rv">150,000 ฿</div></div>
+    <div class="row-item"><div class="rl">ธ.ค. 2570</div><div class="rv">40,000 ฿</div></div>
+    <div class="row-item"><div class="rl">ก.ค. 2571</div><div class="rv">150,000 ฿</div></div>
+    <div class="row-item"><div class="rl">รวมโบนัส 3 ปี</div><div class="rv g">1,090,000 ฿</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE 4: INCOME
+══════════════════════════════════════════════════════ -->
+<div id="pg-income" class="page">
+
+  <div class="card" style="margin-top:10px">
+    <div class="card-title">📥 รายได้ก่อนหัก</div>
+    <div class="row-item"><div class="rl">เงินเดือน (Salary)<small>ขึ้น ~2,000/ปี</small></div><div class="rv b">40,503</div></div>
+    <div class="row-item"><div class="rl">ค่าตำแหน่ง (Position)</div><div class="rv b">12,000</div></div>
+    <div class="row-item"><div class="rl">ค่าขยัน / อื่นๆ</div><div class="rv">0</div></div>
+    <div class="row-item"><div class="rl" style="font-weight:600">รวมก่อนหัก</div><div class="rv b" style="font-size:16px">52,503</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📤 รายการหัก</div>
+    <div class="row-item"><div class="rl">กองทุนสำรองฯ 5%<small>ลดหย่อนภาษีได้</small></div><div class="rv r">2,625</div></div>
+    <div class="row-item"><div class="rl">ภาษีเงินได้<small>ตรวจสอบปลายปี</small></div><div class="rv r">2,500</div></div>
+    <div class="row-item"><div class="rl">ประกันสังคม<small>ปี 2569: 875 (+125 จากปีก่อน)</small></div><div class="rv r">875</div></div>
+    <div class="row-item"><div class="rl" style="font-weight:600">รวมหัก</div><div class="rv r" style="font-size:16px">6,000</div></div>
+  </div>
+
+  <div class="card" style="background:rgba(0,200,150,.07);border-color:rgba(0,200,150,.2)">
+    <div class="card-title">🟢 Net Income</div>
+    <div style="font-family:var(--mono);font-size:32px;font-weight:600;color:var(--acc)">46,503 <span style="font-size:14px">บาท</span></div>
+    <div style="font-size:11px;color:var(--txt3);margin-top:4px">ตรงกับไฟล์ต้นฉบับ 46,502.85 ✓</div>
+  </div>
+
+  <div class="section">รายได้ทีมรวม</div>
+  <div class="card">
+    <div class="row-item"><div class="rl">อิ๊ด (Net)</div><div class="rv b">46,503</div></div>
+    <div class="row-item"><div class="rl">นุ๊ก (Snack box)<small>หลังหักต้นทุน ~6,000</small></div><div class="rv b">18,000</div></div>
+    <div class="row-item"><div class="rl">เงินสงเคราะห์บุตร<small>หลังคลอด ประกันสังคม</small></div><div class="rv b">1,000</div></div>
+    <div class="row-item"><div class="rl" style="font-weight:600">รวมทีม (หลังรถหมด)</div><div class="rv b" style="font-size:16px">65,503</div></div>
+  </div>
+
+  <div class="section">แนวโน้มเงินเดือน (+2,000/ปี)</div>
+  <div class="card" id="salary-trend"></div>
+
+  <div class="section">🏦 สิทธิ์ประกันสังคมที่เบิกได้</div>
+  <div class="card">
+    <div class="row-item"><div class="rl">ค่าฝากครรภ์ 5 ครั้ง<small>เบิกคืน</small></div><div class="rv g">1,500 ฿</div></div>
+    <div class="row-item"><div class="rl">เงินสงเคราะห์คลอดบุตร</div><div class="rv g">26,250 ฿</div></div>
+    <div class="row-item"><div class="rl">เงินสงเคราะห์บุตร<small>1,000/เดือน × 6 ปี</small></div><div class="rv g">72,000 ฿</div></div>
+    <div class="row-item"><div class="rl" style="font-weight:600">รวมสิทธิ์ทั้งหมด</div><div class="rv g" style="font-size:15px">~99,750 ฿</div></div>
+  </div>
+
+  <div class="section">💡 ลดหย่อนภาษีปลายปี</div>
+  <div class="card">
+    <div class="row-item"><div class="rl">ค่าฝากครรภ์+คลอด<small>ลดหย่อนตามจริง</small></div><div class="rv g">✓ ใช้ได้</div></div>
+    <div class="row-item"><div class="rl">กองทุนสำรองเลี้ยงชีพ</div><div class="rv g">✓ หักแล้ว</div></div>
+    <div class="row-item"><div class="rl">เบี้ยประกันชีวิต</div><div class="rv g">✓ ถ้ามี</div></div>
+    <div class="row-item"><div class="rl">SSF / RMF<small>พิจารณาเพิ่ม</small></div><div class="rv a">พิจารณา</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE 5: CHILD COSTS
+══════════════════════════════════════════════════════ -->
+<div id="pg-child" class="page">
+
+  <div class="grid2" style="margin-top:10px">
+    <div class="sbox"><div class="sbox-lbl">ค่าลูกรวม 6 ปี</div><div class="sbox-val" style="color:var(--warn)">~755K</div><div class="sbox-sub">บาท</div></div>
+    <div class="sbox"><div class="sbox-lbl">เฉลี่ย/เดือน</div><div class="sbox-val" style="color:var(--warn)">10,500</div><div class="sbox-sub">บาท</div></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab on" onclick="switchTab(this,'ct-phase','ct')">รายช่วง</div>
+    <div class="tab" onclick="switchTab(this,'ct-detail','ct')">รายหมวด</div>
+    <div class="tab" onclick="switchTab(this,'ct-vaccine','ct')">วัคซีน</div>
+    <div class="tab" onclick="switchTab(this,'ct-ssf','ct')">ประกันสังคม</div>
+  </div>
+
+  <div id="ct-phase" class="sub-panel on">
+    <div class="card">
+      <div class="row-item"><div class="rl">แรกเกิด–6 เดือน<small>ธ.ค. 69–พ.ค. 70</small></div><div><div class="rv a">8,500/เดือน</div><span class="badge br" style="font-size:9px">ช่วงวิกฤต</span></div></div>
+      <div class="row-item"><div class="rl">6 เดือน–1 ปี<small>มิ.ย. 70–พ.ย. 70</small></div><div class="rv">7,500/เดือน</div></div>
+      <div class="row-item"><div class="rl">1–2 ปี<small>เริ่มฝากเลี้ยง</small></div><div class="rv a">9,500/เดือน</div></div>
+      <div class="row-item"><div class="rl">3–4 ปี<small>อนุบาล รร.รัฐ</small></div><div class="rv a">11,500/เดือน</div></div>
+      <div class="row-item"><div class="rl">5–6 ปี<small>ก่อนเข้า ป.1</small></div><div class="rv r">14,000/เดือน</div></div>
+    </div>
+    <div class="tip">
+      <strong>💡 นมแม่ 6 เดือนแรก</strong> ประหยัดได้ ~2,500–3,000 บาท/เดือน และดีต่อสุขภาพลูกด้วย
+    </div>
+  </div>
+
+  <div id="ct-detail" class="sub-panel">
+    <div class="card">
+      <div style="overflow-x:auto">
+        <table style="width:100%;font-size:11px;border-collapse:collapse">
+          <tr style="color:var(--txt3)">
+            <td style="padding:5px 4px">หมวด</td>
+            <td style="padding:5px 4px;text-align:right">0–6m</td>
+            <td style="padding:5px 4px;text-align:right">6m–1ปี</td>
+            <td style="padding:5px 4px;text-align:right">1–2ปี</td>
+            <td style="padding:5px 4px;text-align:right">3–4ปี</td>
+            <td style="padding:5px 4px;text-align:right">5–6ปี</td>
+          </tr>
+          <tr style="border-top:1px solid rgba(255,255,255,.05)"><td style="padding:5px 4px;color:var(--txt2)">🍼 นม/อาหาร</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--acc2)">3,500</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--acc2)">3,000</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--acc2)">3,500</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--acc2)">3,000</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--acc2)">3,000</td></tr>
+          <tr style="border-top:1px solid rgba(255,255,255,.05)"><td style="padding:5px 4px;color:var(--txt2)">🩲 ผ้าอ้อม</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--acc2)">2,000</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--acc2)">1,500</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--acc2)">1,500</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--acc2)">1,000</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--acc2)">500</td></tr>
+          <tr style="border-top:1px solid rgba(255,255,255,.05)"><td style="padding:5px 4px;color:var(--txt2)">💊 หมอ/วัคซีน</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--acc2)">2,000</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--acc2)">1,500</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--acc2)">1,000</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--acc2)">500</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--acc2)">500</td></tr>
+          <tr style="border-top:1px solid rgba(255,255,255,.05)"><td style="padding:5px 4px;color:var(--txt2)">🏫 เลี้ยง/เรียน</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--warn)">1,000</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--warn)">1,500</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--warn)">3,500</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--warn)">7,000</td><td style="padding:5px 4px;text-align:right;font-family:var(--mono);color:var(--warn)">10,000</td></tr>
+          <tr style="border-top:1px solid rgba(255,255,255,.08);font-weight:600"><td style="padding:6px 4px;color:var(--txt)">รวม</td><td style="padding:6px 4px;text-align:right;font-family:var(--mono);color:var(--danger)">8,500</td><td style="padding:6px 4px;text-align:right;font-family:var(--mono);color:var(--danger)">7,500</td><td style="padding:6px 4px;text-align:right;font-family:var(--mono);color:var(--danger)">9,500</td><td style="padding:6px 4px;text-align:right;font-family:var(--mono);color:var(--danger)">11,500</td><td style="padding:6px 4px;text-align:right;font-family:var(--mono);color:var(--danger)">14,000</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="ct-vaccine" class="sub-panel">
+    <div class="tip"><strong>💉 เตรียมกองทุนวัคซีน 10,000 บาท</strong> ก่อนคลอด → เก็บ 2,000/เดือน × 5 เดือน (ก.ค.–พ.ย. 69)</div>
+    <div class="card">
+      <div class="row-item"><div class="rl">ไอพีดี IPD (2 เข็ม)<small>อายุ 2 เดือน</small></div><div class="rv a">~4,000 ฿</div></div>
+      <div class="row-item"><div class="rl">Rota ไวรัสท้องเสีย (3 เข็ม)<small>อายุ 2–6 เดือน</small></div><div class="rv a">~2,000 ฿</div></div>
+      <div class="row-item"><div class="rl">ไข้หวัดใหญ่ (ปีละ 1 เข็ม)</div><div class="rv">~350 ฿/เข็ม</div></div>
+      <div class="row-item"><div class="rl">สุกใส (1 เข็ม)<small>อายุ 12 เดือน</small></div><div class="rv">~800 ฿</div></div>
+      <div class="row-item"><div class="rl">ตับอักเสบ A (2 เข็ม)<small>อายุ 1 ปี+</small></div><div class="rv">~1,500 ฿</div></div>
+      <div class="row-item"><div class="rl" style="font-weight:600">รวมวัคซีนชุดแรก</div><div class="rv a" style="font-size:15px">~10,000 ฿</div></div>
+    </div>
+  </div>
+
+  <div id="ct-ssf" class="sub-panel">
+    <div class="card">
+      <div class="row-item"><div class="rl">ฝากครรภ์ 5 ครั้ง<small>เบิกคืนได้ทุกครั้ง</small></div><div class="rv g">1,500 ฿</div></div>
+      <div class="row-item"><div class="rl">คลอดบุตร เหมาจ่าย</div><div class="rv g">26,250 ฿</div></div>
+      <div class="row-item"><div class="rl">เงินสงเคราะห์บุตร<small>1,000/เดือน × 72 เดือน</small></div><div class="rv g">72,000 ฿</div></div>
+      <div class="row-item"><div class="rl" style="font-weight:600">รวมสิทธิ์</div><div class="rv g" style="font-size:15px">~99,750 ฿</div></div>
+    </div>
+    <div class="tip tip-g"><strong>✅ เบิกได้เลย:</strong> ท้อง 6 สัปดาห์ → ยื่นฝากครรภ์ครั้งที่ 1 ก่อนอายุครรภ์ 12 สัปดาห์</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE 6: PREGNANCY
+══════════════════════════════════════════════════════ -->
+<div id="pg-preg" class="page">
+
+  <div class="preg-hero">
+    <div class="preg-week-big" id="preg-wk">6</div>
+    <div style="font-size:13px;color:var(--txt2);margin-top:4px">สัปดาห์แห่งการตั้งครรภ์ 🌱</div>
+    <div style="margin-top:6px" id="preg-trim-badge"></div>
+    <div class="preg-bar"><div class="preg-fill" id="preg-prog"></div></div>
+    <div class="preg-dates">
+      <span>เริ่ม: <span id="preg-s"></span></span>
+      <span>คลอด: <span id="preg-due"></span></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📌 สัปดาห์นี้</div>
+    <div id="preg-weekly"></div>
+  </div>
+
+  <div class="section">✅ Checklist ฝากครรภ์</div>
+  <div class="card" id="ante-list"></div>
+
+  <div class="section">📸 รูปอัลตราซาวด์</div>
+  <div class="card">
+    <div class="photo-grid" id="us-grid"></div>
+    <label style="display:flex;align-items:center;justify-content:center;gap:8px;
+      margin-top:8px;padding:12px;background:var(--s2);border-radius:var(--rs);
+      border:1px dashed rgba(255,255,255,.1);cursor:pointer;font-size:13px;color:var(--txt2)">
+      📷 ถ่าย / เลือกรูปอัลตราซาวด์
+      <input type="file" accept="image/*" style="display:none" onchange="addUltrasound(this)">
+    </label>
+  </div>
+
+  <div class="section">🏥 นัดหมอ</div>
+  <div class="card">
+    <div class="inp-group">
+      <label class="inp-label">วันนัดครั้งถัดไป</label>
+      <input type="date" class="inp" id="appt-date" onchange="saveAppt()">
+    </div>
+    <div class="inp-group" style="margin-bottom:0">
+      <label class="inp-label">หมายเหตุ</label>
+      <input type="text" class="inp" id="appt-note" placeholder="เช่น ตรวจอัลตราซาวด์ 3D" onchange="saveAppt()">
+    </div>
+  </div>
+
+  <div class="section">⚙️ ตั้งวันตั้งครรภ์</div>
+  <div class="card">
+    <div class="inp-group" style="margin-bottom:4px">
+      <label class="inp-label">วันแรกของประจำเดือนครั้งสุดท้าย (LMP)</label>
+      <input type="date" class="inp" id="lmp-inp" onchange="updateLMP()">
+    </div>
+    <div style="font-size:11px;color:var(--txt3)">* คำนวณอายุครรภ์และวันคลอดอัตโนมัติ</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE 7: CHECKLIST
+══════════════════════════════════════════════════════ -->
+<div id="pg-check" class="page">
+
+  <div class="card" style="margin-top:10px">
+    <div class="card-title">
+      <span id="ck-title">Checklist เดือนนี้</span>
+      <span class="badge bg" id="ck-prog-badge">0/0</span>
+    </div>
+    <div class="prog"><div class="prog-fill" id="ck-prog" style="width:0%;background:var(--acc)"></div></div>
+    <div style="height:6px"></div>
+    <div id="ck-items"></div>
+  </div>
+
+  <div class="section">⚡ Event พิเศษเดือนนี้</div>
+  <div class="card" id="ck-special"></div>
+
+  <div class="section">📋 ต้องทำทุกเดือน</div>
+  <div class="card">
+    <div class="row-item"><div class="rl">💳 จ่ายค่างวดบ้าน<small>ต้นเดือน 1–5</small></div><div class="rv">20,700 ฿</div></div>
+    <div class="row-item"><div class="rl">📊 บันทึกรายได้ทั้งคู่</div><div class="rv b">ต้นเดือน</div></div>
+    <div class="row-item"><div class="rl">🏠 โปะบ้านตามแผน</div><div class="rv g">8,000 ฿+</div></div>
+    <div class="row-item"><div class="rl">💰 โอนกองทุนฉุกเฉิน</div><div class="rv g">3,000 ฿+</div></div>
+    <div class="row-item"><div class="rl">📈 เช็ค P&L Snack box<small>กลางเดือน</small></div><div class="rv">ทุกเดือน</div></div>
+    <div class="row-item"><div class="rl">📊 สรุปเดือน แผน vs จริง<small>ปลายเดือน</small></div><div class="rv">ปลายเดือน</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE 8: PHOTOS
+══════════════════════════════════════════════════════ -->
+<div id="pg-photos" class="page">
+  <div class="tabs" style="margin-top:10px">
+    <div class="tab on" onclick="filterPhotos('all',this)">ทั้งหมด</div>
+    <div class="tab" onclick="filterPhotos('ultrasound',this)">อัลตราซาวด์</div>
+    <div class="tab" onclick="filterPhotos('receipt',this)">ใบเสร็จ</div>
+    <div class="tab" onclick="filterPhotos('family',this)">ครอบครัว</div>
+  </div>
+
+  <div class="pad">
+    <div class="photo-grid" id="photo-grid-all"></div>
+    <div style="height:10px"></div>
+    <label class="btn btn-ghost" style="cursor:pointer">
+      <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      เพิ่มรูปภาพ
+      <input type="file" accept="image/*" multiple style="display:none" onchange="addPhotos(this,'family')">
+    </label>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE 9: TIMELINE
+══════════════════════════════════════════════════════ -->
+<div id="pg-timeline" class="page">
+  <div class="section" style="padding-top:10px">📅 เส้นทางการเงิน พ.ค. 2569 → บ้านหมด</div>
+  <div class="pad">
+    <div class="tl-wrap" id="tl-list"></div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE 10: เช็ครถ
+══════════════════════════════════════════════════════ -->
+<div id="pg-car" class="page">
+
+  <!-- Tabs: อิ๊ด / นุ๊ก / Log / แจ้งเตือน -->
+  <div class="tabs" style="margin-top:10px">
+    <div class="tab on" onclick="switchTab(this,'car-ik','car')">🚙 รถอิ๊ด</div>
+    <div class="tab" onclick="switchTab(this,'car-nuk','car')">🚗 รถนุ๊ก</div>
+    <div class="tab" onclick="switchTab(this,'car-log','car')">📋 Log ซ่อม</div>
+    <div class="tab" onclick="switchTab(this,'car-alert','car')">⏰ แจ้งเตือน</div>
+  </div>
+
+  <!-- รถอิ๊ด -->
+  <div id="car-ik" class="sub-panel on">
+    <div class="tip tip-g" style="margin-bottom:10px">
+      <strong>🚙 รถอิ๊ด</strong> — กรอกวันที่และเลขไมล์ทุกครั้งที่เช็ค กดเพื่อเปลี่ยนสถานะ ✓/⚠️/❌
+    </div>
+    <div class="card" id="car-ik-list"></div>
+    <div class="section">เลขไมล์ปัจจุบัน</div>
+    <div class="card">
+      <div class="inp-group">
+        <label class="inp-label">เลขไมล์ล่าสุด (กม.)</label>
+        <input type="number" class="inp" id="ik-mileage" placeholder="เช่น 45000" inputmode="numeric"
+          style="font-size:20px;font-family:var(--mono);text-align:center" onchange="saveMileage('ik')">
+      </div>
+      <div class="inp-group" style="margin-bottom:0">
+        <label class="inp-label">วันที่อัปเดต</label>
+        <input type="date" class="inp" id="ik-mileage-date" onchange="saveMileage('ik')">
+      </div>
+    </div>
+  </div>
+
+  <!-- รถนุ๊ก -->
+  <div id="car-nuk" class="sub-panel">
+    <div class="tip" style="margin-bottom:10px">
+      <strong>🚗 รถนุ๊ก</strong> — ผ่อนหมด พ.ย. 2569 แต่ยังต้องดูแลรักษา
+    </div>
+    <div class="card" id="car-nuk-list"></div>
+    <div class="section">เลขไมล์ปัจจุบัน</div>
+    <div class="card">
+      <div class="inp-group">
+        <label class="inp-label">เลขไมล์ล่าสุด (กม.)</label>
+        <input type="number" class="inp" id="nuk-mileage" placeholder="เช่น 85000" inputmode="numeric"
+          style="font-size:20px;font-family:var(--mono);text-align:center" onchange="saveMileage('nuk')">
+      </div>
+      <div class="inp-group" style="margin-bottom:0">
+        <label class="inp-label">วันที่อัปเดต</label>
+        <input type="date" class="inp" id="nuk-mileage-date" onchange="saveMileage('nuk')">
+      </div>
+    </div>
+  </div>
+
+  <!-- Log ซ่อม -->
+  <div id="car-log" class="sub-panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:0 14px 8px">
+      <div style="font-size:13px;color:var(--txt2)">บันทึกการซ่อมทั้งหมด</div>
+      <button class="btn btn-acc btn-sm" onclick="openAddLog()">+ บันทึก</button>
+    </div>
+    <div class="card" id="car-log-list">
+      <div class="empty">ยังไม่มีบันทึก<br><small>กด "+ บันทึก" เพื่อเพิ่ม</small></div>
+    </div>
+  </div>
+
+  <!-- แจ้งเตือน -->
+  <div id="car-alert" class="sub-panel">
+    <div class="tip"><strong>⏰ กำหนดการดูแลรถ</strong> — ตามระยะเวลาและเลขไมล์</div>
+    <div class="card" id="car-alert-list"></div>
+  </div>
+
+</div>
+
+<!-- MODAL: บันทึกการซ่อม -->
+<div class="modal-bg hidden" id="log-modal" onclick="if(event.target===this)closeLogModal()">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🔧 บันทึกการซ่อม</div>
+    <div class="inp-group">
+      <label class="inp-label">รถ</label>
+      <select class="inp" id="log-car">
+        <option value="ik">🚙 รถอิ๊ด</option>
+        <option value="nuk">🚗 รถนุ๊ก</option>
+      </select>
+    </div>
+    <div class="inp-group">
+      <label class="inp-label">วันที่ซ่อม</label>
+      <input type="date" class="inp" id="log-date">
+    </div>
+    <div class="inp-group">
+      <label class="inp-label">รายการซ่อม/เปลี่ยน</label>
+      <input type="text" class="inp" id="log-item" placeholder="เช่น เปลี่ยนน้ำมันเครื่อง, เปลี่ยนยาง">
+    </div>
+    <div class="inp-group">
+      <label class="inp-label">อู่ / ศูนย์บริการ</label>
+      <input type="text" class="inp" id="log-shop" placeholder="เช่น ศูนย์ Toyota รังสิต">
+    </div>
+    <div class="inp-group">
+      <label class="inp-label">เลขไมล์ขณะซ่อม</label>
+      <input type="number" class="inp" id="log-km" placeholder="เช่น 45000" inputmode="numeric">
+    </div>
+    <div class="inp-group">
+      <label class="inp-label">ค่าใช้จ่ายรวม (บาท)</label>
+      <input type="number" class="inp" id="log-cost" placeholder="0" inputmode="decimal"
+        style="font-size:20px;font-family:var(--mono);text-align:center">
+    </div>
+    <div class="inp-group">
+      <label class="inp-label">หมายเหตุ / ครั้งหน้าต้องทำอะไร</label>
+      <input type="text" class="inp" id="log-note" placeholder="เช่น เปลี่ยนน้ำมันครั้งหน้าที่ 50,000 กม.">
+    </div>
+    <div class="inp-group" style="margin-bottom:12px">
+      <label class="inp-label">📷 รูปใบเสร็จ (ไม่จำเป็น)</label>
+      <div id="log-img-prev" style="display:none;margin-bottom:8px">
+        <img id="log-img-src" style="width:100%;border-radius:10px;max-height:160px;object-fit:cover">
+      </div>
+      <label class="btn btn-ghost" style="cursor:pointer">
+        <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        ถ่าย / เลือกรูปใบเสร็จ
+        <input type="file" accept="image/*" capture="environment" style="display:none" id="log-img-inp" onchange="previewLogImg(this)">
+      </label>
+    </div>
+    <button class="btn btn-acc" onclick="saveLog()">💾 บันทึก</button>
+    <button class="btn btn-ghost" onclick="closeLogModal()" style="margin-top:7px">ยกเลิก</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════
+     PAGE 11: ตารางผ่อนบ้าน (Supabase)
+══════════════════════════════════════════════════════ -->
+<div id="pg-mort-tbl" class="page">
+
+  <!-- header row -->
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 14px 0">
+    <div>
+      <div style="font-size:10px;color:var(--txt3)">ตารางผ่อนบ้านวราริน</div>
+      <div style="font-size:11px;color:var(--txt2)" id="mt-hdr-sub">กำลังโหลด...</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:5px;font-size:11px;padding:4px 10px;border-radius:12px;font-family:var(--mono)" id="mt-sync-badge" class="badge bb">
+      <span style="width:6px;height:6px;border-radius:50%;background:var(--acc2);display:inline-block;animation:pulse 1s infinite" id="mt-dot"></span>
+      <span id="mt-sync-txt">กำลังเชื่อม</span>
+    </div>
+  </div>
+
+  <!-- summary 3 boxes -->
+  <div class="grid2" style="margin-top:8px;grid-template-columns:repeat(3,1fr)">
+    <div class="sbox">
+      <div class="sbox-lbl">💳 ยอดหนี้ตอนนี้</div>
+      <div class="sbox-val" style="color:var(--warn);font-size:14px" id="mt-remain">–</div>
+      <div style="font-size:9px;color:var(--txt3);margin-top:2px" id="mt-cur-month">–</div>
+    </div>
+    <div class="sbox">
+      <div class="sbox-lbl">⏳ ผ่อนอีก</div>
+      <div class="sbox-val" style="color:var(--acc);font-size:14px" id="mt-years">–</div>
+      <div style="font-size:9px;color:var(--txt3);margin-top:2px" id="mt-end-info">–</div>
+    </div>
+    <div class="sbox">
+      <div class="sbox-lbl">💰 ดอกเบี้ยรวม</div>
+      <div class="sbox-val" style="color:var(--danger);font-size:14px" id="mt-interest">–</div>
+      <div style="font-size:9px;color:var(--txt3);margin-top:2px">บาท (ทั้งสัญญา)</div>
+    </div>
+  </div>
+
+  <!-- progress -->
+  <div style="padding:4px 14px 6px">
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--txt3);margin-bottom:4px">
+      <span>มี.ค. 2566 (งวด 1)</span><span id="mt-pct">ผ่อนไปแล้ว 0%</span>
+    </div>
+    <div class="prog"><div class="prog-fill" id="mt-prog" style="width:0%;background:linear-gradient(90deg,var(--acc),var(--acc2))"></div></div>
+  </div>
+
+  <!-- filter -->
+  <div style="display:flex;gap:6px;padding:0 14px 6px;overflow-x:auto;scrollbar-width:none">
+    <button class="tab on" onclick="mtFilter('all',this)">ทั้งหมด</button>
+    <button class="tab" onclick="mtFilter('cur',this)">📍 งวดนี้</button>
+    <button class="tab" onclick="mtFilter('bonus',this)">⭐ โบนัส</button>
+    <button class="tab" onclick="mtFilter('future',this)">🔮 ที่เหลือ</button>
+    <button class="tab" onclick="mtFilter('yr1',this)">ปีที่ 1</button>
+    <button class="tab" onclick="mtFilter('yr2',this)">ปีที่ 2</button>
+    <button class="tab" onclick="mtFilter('yr3',this)">ปีที่ 3</button>
+    <button class="tab" onclick="mtFilter('yr4',this)">ปีที่ 4</button>
+    <button class="tab" onclick="mtFilter('yr5',this)">ปีที่ 5+</button>
+  </div>
+
+  <!-- search -->
+  <div style="padding:0 14px 6px">
+    <input class="inp" id="mt-search" placeholder="🔍 ค้นหา งวดที่ / เดือน" oninput="mtRender()" style="font-size:12px;padding:8px 12px">
+  </div>
+
+  <!-- legend + last sync -->
+  <div style="display:flex;gap:10px;padding:0 14px 4px;font-size:9px;color:var(--txt3)">
+    <span style="display:flex;align-items:center;gap:3px"><span style="width:7px;height:7px;border-radius:2px;background:rgba(0,200,150,.5);flex-shrink:0"></span>งวดปัจจุบัน</span>
+    <span style="display:flex;align-items:center;gap:3px"><span style="width:7px;height:7px;border-radius:2px;background:rgba(245,166,35,.5);flex-shrink:0"></span>มีโบนัส</span>
+    <span style="display:flex;align-items:center;gap:3px"><span style="width:7px;height:7px;border-radius:2px;background:rgba(255,255,255,.1);flex-shrink:0"></span>จ่ายแล้ว</span>
+    <span style="margin-left:auto;color:var(--acc)" id="mt-last-sync"></span>
+  </div>
+
+  <!-- table -->
+  <div style="flex:1;overflow:auto;padding:0 14px 14px">
+    <div style="min-width:820px">
+      <table id="mt-tbl" style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr>
+            <th onclick="mtSort(0)" style="position:sticky;top:0;background:var(--s1);border-bottom:2px solid rgba(0,200,150,.2);padding:7px 5px;font-size:10px;color:var(--txt2);cursor:pointer;white-space:nowrap;text-align:left;font-weight:600">เดือน/ปี</th>
+            <th onclick="mtSort(1)" style="position:sticky;top:0;background:var(--s1);border-bottom:2px solid rgba(0,200,150,.2);padding:7px 5px;font-size:10px;color:var(--txt2);cursor:pointer;text-align:center;font-weight:600">ปีที่</th>
+            <th onclick="mtSort(2)" style="position:sticky;top:0;background:var(--s1);border-bottom:2px solid rgba(0,200,150,.2);padding:7px 5px;font-size:10px;color:var(--txt2);cursor:pointer;text-align:center;font-weight:600">งวดที่</th>
+            <th onclick="mtSort(3)" style="position:sticky;top:0;background:var(--s1);border-bottom:2px solid rgba(0,200,150,.2);padding:7px 5px;font-size:10px;color:var(--txt2);cursor:pointer;text-align:right;font-weight:600">ยอดหนี้<br>ต้นงวด</th>
+            <th onclick="mtSort(4)" style="position:sticky;top:0;background:var(--s1);border-bottom:2px solid rgba(0,200,150,.2);padding:7px 5px;font-size:10px;color:var(--acc2);cursor:pointer;text-align:right;font-weight:600">อิ๊ด<br>จ่าย</th>
+            <th onclick="mtSort(5)" style="position:sticky;top:0;background:var(--s1);border-bottom:2px solid rgba(0,200,150,.2);padding:7px 5px;font-size:10px;color:var(--warn);cursor:pointer;text-align:right;font-weight:600">Bonus<br>อิ๊ด</th>
+            <th onclick="mtSort(6)" style="position:sticky;top:0;background:var(--s1);border-bottom:2px solid rgba(0,200,150,.2);padding:7px 5px;font-size:10px;color:#4ade80;cursor:pointer;text-align:right;font-weight:600">นุ๊ก<br>จ่าย</th>
+            <th onclick="mtSort(7)" style="position:sticky;top:0;background:var(--s1);border-bottom:2px solid rgba(0,200,150,.2);padding:7px 5px;font-size:10px;color:#86efac;cursor:pointer;text-align:right;font-weight:600">Snack<br>นุ๊ก</th>
+            <th onclick="mtSort(8)" style="position:sticky;top:0;background:var(--s1);border-bottom:2px solid rgba(0,200,150,.2);padding:7px 5px;font-size:10px;color:var(--txt2);cursor:pointer;text-align:right;font-weight:600">รวม/<br>เดือน</th>
+            <th onclick="mtSort(9)" style="position:sticky;top:0;background:var(--s1);border-bottom:2px solid rgba(0,200,150,.2);padding:7px 5px;font-size:10px;color:var(--txt3);cursor:pointer;text-align:right;font-weight:600">ประกัน</th>
+            <th onclick="mtSort(10)" style="position:sticky;top:0;background:var(--s1);border-bottom:2px solid rgba(0,200,150,.2);padding:7px 5px;font-size:10px;color:var(--txt3);cursor:pointer;text-align:center;font-weight:600">ดอก%</th>
+            <th onclick="mtSort(11)" style="position:sticky;top:0;background:var(--s1);border-bottom:2px solid rgba(0,200,150,.2);padding:7px 5px;font-size:10px;color:var(--danger);cursor:pointer;text-align:right;font-weight:600">ดอกเบี้ย<br>จ่าย</th>
+            <th onclick="mtSort(12)" style="position:sticky;top:0;background:var(--s1);border-bottom:2px solid rgba(0,200,150,.2);padding:7px 5px;font-size:10px;color:#4ade80;cursor:pointer;text-align:right;font-weight:600">ตัด<br>เงินต้น</th>
+            <th onclick="mtSort(13)" style="position:sticky;top:0;background:var(--s1);border-bottom:2px solid rgba(0,200,150,.2);padding:7px 5px;font-size:10px;color:var(--warn);cursor:pointer;text-align:right;font-weight:600">ยอดหนี้<br>คงเหลือ</th>
+          </tr>
+        </thead>
+        <tbody id="mt-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- EDIT PANEL: ตารางผ่อนบ้าน -->
+<div class="modal-bg hidden" id="mt-edit-modal" onclick="if(event.target===this)mtCloseEdit()">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="mt-edit-title" style="color:var(--acc)">แก้ไขงวดที่ –</div>
+    <div style="font-size:11px;color:var(--txt3);text-align:center;margin-bottom:12px">แก้ข้อมูล → บันทึก → นุ๊กเห็นทันที ☁️</div>
+
+    <div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;padding:8px;border-radius:8px;margin-bottom:12px" id="mt-ep-sync" class="badge bb">
+      <span>☁️</span><span id="mt-ep-sync-txt">พร้อมบันทึก</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px">
+      <div class="inp-group" style="margin-bottom:0">
+        <label class="inp-label">🔵 อิ๊ดจ่าย (บาท)<span style="display:block;font-size:9px;color:var(--txt3)">จำนวนที่อิ๊ดจ่ายประจำ</span></label>
+        <input type="number" class="inp" id="mt-e-ik" inputmode="numeric" oninput="mtCalcEdit()">
+      </div>
+      <div class="inp-group" style="margin-bottom:0">
+        <label class="inp-label">🟡 Bonus อิ๊ด (บาท)<span style="display:block;font-size:9px;color:var(--txt3)">โบนัสโปะพิเศษ — ไม่มีใส่ 0</span></label>
+        <input type="number" class="inp" id="mt-e-ikb" inputmode="numeric" oninput="mtCalcEdit()">
+      </div>
+      <div class="inp-group" style="margin-bottom:0">
+        <label class="inp-label">🟢 นุ๊กจ่าย (บาท)<span style="display:block;font-size:9px;color:var(--txt3)">จำนวนที่นุ๊กจ่ายประจำ</span></label>
+        <input type="number" class="inp" id="mt-e-nuk" inputmode="numeric" oninput="mtCalcEdit()">
+      </div>
+      <div class="inp-group" style="margin-bottom:0">
+        <label class="inp-label">🟢 Snack box (บาท)<span style="display:block;font-size:9px;color:var(--txt3)">รายได้พิเศษ — ไม่มีใส่ 0</span></label>
+        <input type="number" class="inp" id="mt-e-nuks" inputmode="numeric" oninput="mtCalcEdit()">
+      </div>
+      <div class="inp-group" style="margin-bottom:0">
+        <label class="inp-label">ค่าประกัน (บาท)<span style="display:block;font-size:9px;color:var(--txt3)">ปีที่ 1–3: 300 / ปีที่ 4+: 1,200</span></label>
+        <input type="number" class="inp" id="mt-e-ins" inputmode="numeric" oninput="mtCalcEdit()">
+      </div>
+      <div class="inp-group" style="margin-bottom:0">
+        <label class="inp-label">🔵 ดอกเบี้ย (%/ปี)<span style="display:block;font-size:9px;color:var(--txt3)">เช่น 1.69 หรือ 3.82</span></label>
+        <input type="number" class="inp" id="mt-e-rate" step="0.001" inputmode="decimal" oninput="mtCalcEdit()">
+      </div>
+    </div>
+
+    <!-- auto-calc results -->
+    <div style="background:rgba(255,255,255,.03);border-radius:10px;padding:10px;margin-bottom:12px">
+      <div style="font-size:10px;color:var(--txt3);margin-bottom:8px;font-weight:600">⚙️ ผลคำนวณอัตโนมัติ</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px">
+        <div><div style="font-size:9px;color:var(--txt3);margin-bottom:3px">รวมจ่าย</div><input class="inp" id="mt-e-total" readonly style="color:var(--txt2);background:rgba(255,255,255,.03);font-size:12px;padding:7px 8px"></div>
+        <div><div style="font-size:9px;color:var(--txt3);margin-bottom:3px">ดอกเบี้ย</div><input class="inp" id="mt-e-int" readonly style="color:var(--danger);background:rgba(255,94,94,.06);font-size:12px;padding:7px 8px"></div>
+        <div><div style="font-size:9px;color:var(--txt3);margin-bottom:3px">ตัดเงินต้น</div><input class="inp" id="mt-e-prin" readonly style="color:var(--acc);background:rgba(0,200,150,.06);font-size:12px;padding:7px 8px"></div>
+        <div><div style="font-size:9px;color:var(--txt3);margin-bottom:3px">คงเหลือ</div><input class="inp" id="mt-e-remain" readonly style="color:var(--warn);font-size:12px;padding:7px 8px"></div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-acc" id="mt-save-btn" onclick="mtSaveEdit()">💾 บันทึก + Sync</button>
+      <button class="btn btn-ghost" onclick="mtCloseEdit()">ยกเลิก</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- end scroll -->
+
+<!-- NAV BAR -->
+<nav class="nav">
+  <button class="nb on" onclick="goPage('home',this)" id="nb-home">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>หน้าหลัก
+  </button>
+  <button class="nb" onclick="goPage('expense',this)" id="nb-expense">
+    <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>รายจ่าย
+  </button>
+  <button class="nb" onclick="goPage('mortgage',this)" id="nb-mortgage">
+    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>โปะบ้าน
+  </button>
+  <button class="nb" onclick="goPage('income',this)" id="nb-income">
+    <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>รายได้
+  </button>
+  <button class="nb" onclick="goPage('child',this)" id="nb-child">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0112 0v2"/></svg>ค่าลูก
+  </button>
+  <button class="nb" onclick="goPage('preg',this)" id="nb-preg">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>ท้อง
+  </button>
+  <button class="nb" onclick="goPage('check',this)" id="nb-check">
+    <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Checklist
+  </button>
+  <button class="nb" onclick="goPage('photos',this)" id="nb-photos">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>รูปภาพ
+  </button>
+  <button class="nb" onclick="goPage('timeline',this)" id="nb-timeline">
+    <svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Timeline
+  </button>
+  <button class="nb" onclick="goPage('car',this)" id="nb-car">
+    <svg viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v9a2 2 0 01-2 2h-2"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>เช็ครถ
+  </button>
+  <button class="nb" onclick="goPage('mort-tbl',this)" id="nb-mort-tbl">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>ตารางผ่อน
+  </button>
+</nav>
+
+<!-- MODAL: เพิ่มรายจ่าย -->
+<div class="modal-bg hidden" id="add-modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">💳 บันทึกรายจ่าย</div>
+    <div style="font-size:12px;color:var(--txt2);margin-bottom:7px">หมวดหมู่</div>
+    <div class="cat-grid">
+      <div class="cat-btn sel" data-cat="food" onclick="selCat(this)"><span class="em">🍚</span>อาหาร</div>
+      <div class="cat-btn" data-cat="gas" onclick="selCat(this)"><span class="em">⛽</span>น้ำมัน</div>
+      <div class="cat-btn" data-cat="baby" onclick="selCat(this)"><span class="em">👶</span>ลูก</div>
+      <div class="cat-btn" data-cat="home" onclick="selCat(this)"><span class="em">🏠</span>บ้าน</div>
+      <div class="cat-btn" data-cat="health" onclick="selCat(this)"><span class="em">💊</span>สุขภาพ</div>
+      <div class="cat-btn" data-cat="shop" onclick="selCat(this)"><span class="em">🛒</span>ซื้อของ</div>
+      <div class="cat-btn" data-cat="drink" onclick="selCat(this)"><span class="em">🧋</span>เครื่องดื่ม</div>
+      <div class="cat-btn" data-cat="other" onclick="selCat(this)"><span class="em">📦</span>อื่นๆ</div>
+    </div>
+    <div class="inp-group">
+      <label class="inp-label">จำนวนเงิน (บาท)</label>
+      <input type="number" class="inp" id="e-amt" placeholder="0" inputmode="decimal" style="font-size:22px;font-family:var(--mono);text-align:center">
+    </div>
+    <div class="inp-group">
+      <label class="inp-label">รายละเอียด</label>
+      <input type="text" class="inp" id="e-note" placeholder="เช่น ข้าวมันไก่ 2 ที่">
+    </div>
+    <div class="inp-group">
+      <label class="inp-label">ใครจ่าย</label>
+      <select class="inp" id="e-who">
+        <option value="ik">อิ๊ด</option>
+        <option value="nuk">นุ๊ก</option>
+        <option value="both">ทั้งคู่</option>
+      </select>
+    </div>
+    <div style="font-size:12px;color:var(--txt2);margin-bottom:7px">📷 รูปใบเสร็จ</div>
+    <div id="r-prev-wrap" style="display:none;margin-bottom:10px">
+      <img id="r-prev" class="photo-preview">
+      <button class="btn btn-danger btn-sm" onclick="clearReceipt()">ลบรูป</button>
+    </div>
+    <label class="btn btn-ghost" style="cursor:pointer;margin-bottom:12px">
+      <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      ถ่าย / เลือกรูป
+      <input type="file" accept="image/*" capture="environment" style="display:none" id="r-inp" onchange="previewReceipt(this)">
+    </label>
+    <button class="btn btn-acc" onclick="saveExpense()">💾 บันทึก</button>
+    <button class="btn btn-ghost" onclick="closeModal()" style="margin-top:7px">ยกเลิก</button>
+  </div>
+</div>
+
+<!-- FULLSCREEN IMG -->
+<div class="fs-img hidden" id="fs-img" onclick="this.classList.add('hidden')">
+  <img id="fs-src"><button class="fs-close">✕</button>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── STORAGE ───────────────────────────────────────────────
+const S={get:k=>{try{return JSON.parse(localStorage.getItem(k))}catch{return null}},set:(k,v)=>localStorage.setItem(k,JSON.stringify(v))}
+const fmt=n=>'฿'+Math.round(n).toLocaleString('th-TH')
+const fmtN=n=>Math.round(n).toLocaleString('th-TH')
+const now=new Date()
+const thDate=d=>new Intl.DateTimeFormat('th-TH',{day:'numeric',month:'short',year:'2-digit'}).format(d)
+
+// ─── NAV (defined below after all page functions) ───────────
+function switchTab(btn,panelId,prefix){
+  document.querySelectorAll('[id^="'+prefix+'-"]').forEach(p=>p.classList.remove('on'))
+  btn.parentElement.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'))
+  document.getElementById(panelId).classList.add('on')
+  btn.classList.add('on')
+}
+
+// ─── HEADER ────────────────────────────────────────────────
+function initHeader(){
+  document.getElementById('hdr-date').textContent=thDate(now)
+  const lmp=getLMP(),wk=getWeeks(lmp)
+  document.getElementById('hdr-week').textContent='ท้อง '+wk+' สัปดาห์'
+}
+
+// ─── EXPENSES ──────────────────────────────────────────────
+const BUDGETS={food:5000,gas:3000,baby:8500,home:2200,health:2000,shop:2000,drink:500,other:1000}
+const CAT={food:{n:'อาหาร',e:'🍚',c:'#f5a623'},gas:{n:'น้ำมัน',e:'⛽',c:'#38b6ff'},baby:{n:'ลูก',e:'👶',c:'#ff7eb3'},home:{n:'บ้าน',e:'🏠',c:'#00c896'},health:{n:'สุขภาพ',e:'💊',c:'#a78bfa'},shop:{n:'ซื้อของ',e:'🛒',c:'#fb923c'},drink:{n:'เครื่องดื่ม',e:'🧋',c:'#34d399'},other:{n:'อื่นๆ',e:'📦',c:'#94a3b8'}}
+let expenses=S.get('expenses')||[]
+let selCatId='food',receiptData=null
+
+function openAddExp(){document.getElementById('add-modal').classList.remove('hidden');document.getElementById('e-amt').value='';document.getElementById('e-note').value='';receiptData=null;document.getElementById('r-prev-wrap').style.display='none';document.getElementById('e-amt').focus()}
+function closeModal(){document.getElementById('add-modal').classList.add('hidden')}
+function selCat(el){document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');selCatId=el.dataset.cat}
+
+function compress(file,maxW,cb){
+  const r=new FileReader();r.onload=e=>{const img=new Image();img.onload=()=>{const c=document.createElement('canvas'),ratio=Math.min(maxW/img.width,maxW/img.height,1);c.width=img.width*ratio;c.height=img.height*ratio;c.getContext('2d').drawImage(img,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.72))};img.src=e.target.result};r.readAsDataURL(file)
+}
+function previewReceipt(inp){const f=inp.files[0];if(!f)return;compress(f,500,d=>{receiptData=d;document.getElementById('r-prev').src=d;document.getElementById('r-prev-wrap').style.display='block'})}
+function clearReceipt(){receiptData=null;document.getElementById('r-prev-wrap').style.display='none';document.getElementById('r-inp').value=''}
+
+function saveExpense(){
+  const amt=parseFloat(document.getElementById('e-amt').value)
+  if(!amt||amt<=0){showToast('ใส่จำนวนเงินก่อน');return}
+  expenses.unshift({id:Date.now(),cat:selCatId,amount:amt,note:document.getElementById('e-note').value,who:document.getElementById('e-who').value,date:now.toISOString().slice(0,10),receipt:receiptData})
+  S.set('expenses',expenses);closeModal();showToast('บันทึกแล้ว ✓');updateHome();renderExpenses()
+}
+function delExp(id){expenses=expenses.filter(e=>e.id!=id);S.set('expenses',expenses);updateHome();renderExpenses();showToast('ลบแล้ว')}
+
+function getMonthExp(y,m){return expenses.filter(e=>{const d=new Date(e.date);return d.getFullYear()===y&&d.getMonth()===m})}
+function getTodayExp(){const t=now.toISOString().slice(0,10);return expenses.filter(e=>e.date===t)}
+
+function renderExpenses(){
+  const y=now.getFullYear(),m=now.getMonth()
+  const me=getMonthExp(y,m),total=me.reduce((s,e)=>s+e.amount,0)
+  const MONTHS=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']
+  document.getElementById('exp-m-lbl').textContent=MONTHS[m]+' '+(y+543)
+  document.getElementById('exp-m-total').textContent=fmt(total)
+  const ct={};me.forEach(e=>{ct[e.cat]=(ct[e.cat]||0)+e.amount})
+  document.getElementById('budget-bars').innerHTML=Object.entries(CAT).map(([k,v])=>{const u=ct[k]||0,b=BUDGETS[k],p=Math.min(u/b*100,100),ov=u>b;return`<div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="color:var(--txt2)">${v.e} ${v.n}</span><span style="font-family:var(--mono);color:${ov?'var(--danger)':'var(--txt2)'}">${fmt(u)} / ${fmt(b)}</span></div><div class="prog"><div class="prog-fill" style="width:${p}%;background:${ov?'var(--danger)':v.c}"></div></div></div>`}).join('')
+  const el=document.getElementById('all-exp-list')
+  if(!me.length){el.innerHTML='<div class="empty">ยังไม่มีรายจ่ายเดือนนี้</div>';return}
+  el.innerHTML=me.map(e=>{const v=CAT[e.cat]||CAT.other;return`<div class="exp-item"><div class="exp-cat" style="background:${v.c}20">${v.e}</div><div class="exp-info"><div class="exp-name">${e.note||v.n}</div><div class="exp-meta">${e.who==='ik'?'อิ๊ด':e.who==='nuk'?'นุ๊ก':'ทั้งคู่'} · ${e.date.slice(5).replace('-','/')}${e.receipt?' 📷':''}</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px"><div class="exp-amt">${fmt(e.amount)}</div>${e.receipt?`<img src="${e.receipt}" onclick="openFs('exp-${e.id}')" style="width:34px;height:34px;border-radius:6px;object-fit:cover;cursor:pointer">`:''}<button onclick="delExp(${e.id})" style="background:none;border:none;color:var(--txt3);font-size:10px;cursor:pointer">ลบ</button></div></div>`}).join('')
+}
+
+// ─── HOME ──────────────────────────────────────────────────
+function updateHome(){
+  const te=getTodayExp(),tt=te.reduce((s,e)=>s+e.amount,0)
+  document.getElementById('h-today').textContent=fmt(tt)
+  document.getElementById('h-today-n').textContent=te.length+' รายการ'
+  const dim=new Date(now.getFullYear(),now.getMonth()+1,0).getDate(),dl=dim-now.getDate()+1
+  const me=getMonthExp(now.getFullYear(),now.getMonth()),mu=me.reduce((s,e)=>s+e.amount,0)
+  const tb=Object.values(BUDGETS).reduce((a,b)=>a+b,0)
+  document.getElementById('h-daily').textContent=fmt(Math.max(0,(tb-mu)/dl))
+  document.getElementById('h-days').textContent='เหลือ '+dl+' วัน'
+  document.getElementById('h-month').textContent=fmt(mu)
+  document.getElementById('h-month-pct').textContent=Math.round(mu/tb*100)+'% ของงบ'
+  const rel=document.getElementById('h-recent-exp')
+  if(!expenses.length){rel.innerHTML='<div class="empty">ยังไม่มีรายจ่าย</div>';return}
+  rel.innerHTML=expenses.slice(0,4).map(e=>{const v=CAT[e.cat]||CAT.other;return`<div class="exp-item"><div class="exp-cat" style="background:${v.c}20">${v.e}</div><div class="exp-info"><div class="exp-name">${e.note||v.n}</div><div class="exp-meta">${e.date.slice(5).replace('-','/')}</div></div><div class="exp-amt">${fmt(e.amount)}</div></div>`}).join('')
+}
+
+// ─── MORTGAGE SIM ──────────────────────────────────────────
+function simulate(debt,ra,min,extra,bj,bd){
+  let rem=debt,ti=0,m=0,sm=5;
+  while(rem>0&&m<300){const mo=(sm+m-1)%12+1,int=rem*ra/12;ti+=int;let pay=min+extra;if(mo===7)pay+=bj;if(mo===12)pay+=bd;if(pay>rem+int)pay=rem+int;rem-=(pay-int);m++}
+  return{months:m,interest:Math.round(ti)}
+}
+const BASE={debt:3218166,rate:.0169,min:20700}
+const baseR=simulate(BASE.debt,BASE.rate,BASE.min,0,0,0)
+
+function updateSim(){
+  const x=+document.getElementById('sl-extra').value
+  const bj=+document.getElementById('sl-jul').value
+  const bd=+document.getElementById('sl-dec').value
+  document.getElementById('sv-extra').textContent=fmtN(x)+' ฿'
+  document.getElementById('sv-jul').textContent=fmtN(bj)+' ฿'
+  document.getElementById('sv-dec').textContent=fmtN(bd)+' ฿'
+  const r=simulate(BASE.debt,BASE.rate,BASE.min,x,bj,bd)
+  const saved=baseR.interest-r.interest
+  document.getElementById('res-m').textContent=r.months+' เดือน'
+  document.getElementById('res-y').textContent=(r.months/12).toFixed(1)+' ปี'
+  document.getElementById('res-i').textContent=fmt(r.interest)
+  document.getElementById('res-s').textContent=fmt(saved)
+}
+
+function buildSimCompare(){
+  const sc=[[0,0,0,'จ่ายขั้นต่ำ 20,700'],[3000,0,0,'+ โปะ 3,000'],[5000,0,0,'+ โปะ 5,000'],[8000,150000,40000,'✅ โปะ 8,000 + โบนัส'],[11000,150000,40000,'+ โปะ 11,000 + โบนัส'],[15000,150000,40000,'+ โปะ 15,000 + โบนัส']]
+  document.getElementById('sim-compare').innerHTML=sc.map(([x,bj,bd,lbl])=>{const r=simulate(BASE.debt,BASE.rate,BASE.min,x,bj,bd),sv=baseR.interest-r.interest,rec=lbl.includes('✅');return`<div class="row-item" ${rec?'style="background:rgba(0,200,150,.06);margin:0 -15px;padding:9px 15px;border-radius:8px"':''} ><div class="rl">${lbl}${rec?'<small style="color:var(--acc)">← แนะนำ</small>':''}</div><div style="text-align:right"><div class="rv ${rec?'g':''}" style="font-size:12px">${Math.floor(r.months/12)}ปี ${r.months%12}ด.</div><div style="font-size:10px;color:var(--acc);font-family:var(--mono)">ประหยัด ${sv>0?fmtN(sv):'-'}</div></div></div>`}).join('')
+}
+
+// ─── SALARY TREND ──────────────────────────────────────────
+function buildSalaryTrend(){
+  const el=document.getElementById('salary-trend');if(!el)return
+  el.innerHTML=['2569','2570','2571','2572','2573'].map((y,i)=>{const sal=40503+i*2000,gross=sal+12000,net=gross-875-2500-gross*.05;return`<div class="row-item"><div class="rl">${y}${i===0?' <span class="badge bg" style="font-size:9px">ปัจจุบัน</span>':''}<small>${fmtN(sal)} + ตำแหน่ง 12,000</small></div><div class="rv b">Net ~${fmtN(net)}</div></div>`}).join('')
+}
+
+// ─── PREGNANCY ─────────────────────────────────────────────
+const defaultLMP=new Date('2026-03-22')
+const WEEKLY={6:{size:'เมล็ดถั่ว',info:'หัวใจเริ่มเต้น! ตาเล็กๆ เริ่มก่อตัว',todo:'⚠️ ยื่นเบิกฝากครรภ์ก่อนครบ 12 สัปดาห์'},7:{size:'บลูเบอรี่',info:'แขนขาเริ่มก่อตัว สมองพัฒนาเร็ว',todo:'นัดพบสูติแพทย์ครั้งแรก'},8:{size:'ราสเบอรี่',info:'นิ้วเริ่มแยก อวัยวะก่อตัว',todo:'เริ่มรับวิตามินบำรุงครรภ์'},9:{size:'เชอร์รี่',info:'รูปร่างคล้ายมนุษย์มากขึ้น',todo:'ตรวจเลือดพื้นฐาน'},10:{size:'สตรอเบอรี่',info:'พัฒนาการเร็วมาก เริ่มขยับ',todo:'ตรวจอัลตราซาวด์ครั้งแรก'},11:{size:'มะนาว',info:'ไตเริ่มทำงาน เล็บเริ่มงอก',todo:'ตรวจคัดกรองดาวน์ซินโดรม'},12:{size:'มะปราง',info:'ผ่านครึ่งทางไตรมาสแรก!',todo:'NT scan + เจาะเลือด'}}
+
+function getLMP(){const s=S.get('lmp');return s?new Date(s):defaultLMP}
+function getWeeks(lmp){return Math.floor((now-lmp)/(7*24*3600*1000))}
+function getDue(lmp){return new Date(lmp.getTime()+280*24*3600*1000)}
+function getTrim(w){return w<=13?{n:1,l:'ไตรมาส 1'}:w<=26?{n:2,l:'ไตรมาส 2'}:{n:3,l:'ไตรมาส 3'}}
+
+function renderPreg(){
+  const lmp=getLMP(),wk=getWeeks(lmp),due=getDue(lmp),tr=getTrim(wk),pct=Math.min(wk/40*100,100)
+  const info=WEEKLY[wk]||{size:'กำลังเติบโต',info:'ลูกน้อยพัฒนาทุกวัน',todo:'ดูแลสุขภาพ'}
+  document.getElementById('preg-wk').textContent=wk
+  document.getElementById('preg-trim-badge').innerHTML=`<span class="badge bp">${tr.l}</span>`
+  document.getElementById('preg-prog').style.width=pct+'%'
+  document.getElementById('preg-s').textContent=thDate(lmp)
+  document.getElementById('preg-due').textContent=thDate(due)
+  document.getElementById('lmp-inp').value=lmp.toISOString().slice(0,10)
+  document.getElementById('preg-weekly').innerHTML=`<div class="row-item"><div class="rl">ขนาดลูก</div><div class="rv b">~${info.size}</div></div><div class="row-item"><div class="rl">พัฒนาการ</div><div class="rv" style="font-size:12px;max-width:55%;text-align:right">${info.info}</div></div><div class="row-item"><div class="rl">ต้องทำ</div><div class="rv" style="color:var(--warn);font-size:12px;max-width:55%;text-align:right">${info.todo}</div></div><div class="row-item"><div class="rl">อีกกี่สัปดาห์</div><div class="rv g">${40-wk} สัปดาห์</div></div>`
+  document.getElementById('h-preg-wk').textContent=wk+' สัปดาห์'
+  document.getElementById('h-preg-tri').textContent=tr.l
+  document.getElementById('hdr-week').textContent='ท้อง '+wk+' สัปดาห์'
+  const ap=S.get('antenatal')||{}
+  const aItems=[{id:'a1',w:'≤12',lbl:'ฝากครรภ์ครั้ง 1',sub:'เบิก 500 บาท',urg:wk<12},{id:'a2',w:'13–20',lbl:'ฝากครรภ์ครั้ง 2',sub:'เบิก 300 บาท',urg:wk>=12&&wk<20},{id:'a3',w:'20–28',lbl:'ฝากครรภ์ครั้ง 3',sub:'เบิก 300 บาท',urg:wk>=20&&wk<28},{id:'a4',w:'28–32',lbl:'ฝากครรภ์ครั้ง 4',sub:'เบิก 200 บาท',urg:wk>=28&&wk<32},{id:'a5',w:'32–40',lbl:'ฝากครรภ์ครั้ง 5',sub:'เบิก 200 บาท',urg:wk>=32}]
+  document.getElementById('ante-list').innerHTML=aItems.map(a=>{const d=ap[a.id];return`<div class="check-item" onclick="toggleAnte('${a.id}')"><div class="check-box ${d?'ck':''}"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div><div class="check-text"><div class="check-name ${d?'done':''}">${a.lbl}${a.urg&&!d?' <span class="badge br" style="font-size:9px">ตอนนี้</span>':''}</div><div class="check-sub">สัปดาห์ ${a.w} · ${a.sub}</div></div></div>`}).join('')
+  renderUltrasound()
+  const apt=S.get('appt')||{}
+  if(apt.date)document.getElementById('appt-date').value=apt.date
+  if(apt.note)document.getElementById('appt-note').value=apt.note
+}
+
+function toggleAnte(id){const a=S.get('antenatal')||{};a[id]=!a[id];S.set('antenatal',a);renderPreg()}
+function updateLMP(){const v=document.getElementById('lmp-inp').value;if(v){S.set('lmp',v);renderPreg()}}
+function saveAppt(){S.set('appt',{date:document.getElementById('appt-date').value,note:document.getElementById('appt-note').value});showToast('บันทึกนัดแล้ว ✓')}
+
+// ─── PHOTOS ────────────────────────────────────────────────
+function addUltrasound(inp){const f=inp.files[0];if(!f)return;compress(f,900,d=>{const p=S.get('ultrasound')||[];p.push({id:Date.now(),data:d,date:now.toISOString().slice(0,10)});S.set('ultrasound',p);renderUltrasound();showToast('เพิ่มรูปแล้ว ✓')});inp.value=''}
+function renderUltrasound(){
+  const p=S.get('ultrasound')||[]
+  const g=document.getElementById('us-grid')
+  g.innerHTML=p.length?p.map(ph=>`<img src="${ph.data}" onclick="openFsById(${ph.id},'ultrasound')" style="width:100%;aspect-ratio:1;border-radius:8px;object-fit:cover;cursor:pointer">`).join(''):'<div style="color:var(--txt3);font-size:12px;grid-column:1/-1">ยังไม่มีรูป</div>'
+}
+
+function addPhotos(inp,cat){const files=[...inp.files];if(!files.length)return;let done=0;files.forEach(f=>compress(f,900,d=>{const g=S.get('gallery')||[];g.unshift({id:Date.now()+Math.random(),data:d,category:cat,date:now.toISOString().slice(0,10)});S.set('gallery',g);done++;if(done===files.length){renderAllPhotos();showToast('เพิ่ม '+done+' รูป ✓')}}));inp.value=''}
+
+let currentCat='all'
+function filterPhotos(cat,btn){
+  currentCat=cat
+  document.querySelectorAll('[onclick^="filterPhotos"]').forEach(b=>b.style.opacity='.5')
+  btn.style.opacity='1'
+  renderAllPhotos()
+}
+function renderAllPhotos(){
+  const all=[...(S.get('ultrasound')||[]).map(p=>({...p,category:'ultrasound'})),...(S.get('gallery')||[])].sort((a,b)=>b.id-a.id)
+  const f=currentCat==='all'?all:all.filter(p=>p.category===currentCat)
+  const g=document.getElementById('photo-grid-all')
+  g.innerHTML=f.length?f.map(p=>`<img src="${p.data}" onclick="openFsById(${p.id},'${p.category}')" style="width:100%;aspect-ratio:1;border-radius:8px;object-fit:cover;cursor:pointer">`).join(''):'<div style="color:var(--txt3);font-size:12px;grid-column:1/-1;text-align:center;padding:20px 0">ยังไม่มีรูป</div>'
+}
+
+function openFsById(id,cat){
+  const all=[...(S.get('ultrasound')||[]),...(S.get('gallery')||[]),...expenses.filter(e=>e.receipt).map(e=>({id:e.id,data:e.receipt}))]
+  const p=all.find(p=>p.id==id);if(p){document.getElementById('fs-src').src=p.data||p.receipt;document.getElementById('fs-img').classList.remove('hidden')}
+}
+function openFs(key){
+  if(key.startsWith('exp-')){const id=+key.slice(4),e=expenses.find(x=>x.id===id);if(e&&e.receipt){document.getElementById('fs-src').src=e.receipt;document.getElementById('fs-img').classList.remove('hidden')}}
+}
+
+// ─── CHECKLIST ─────────────────────────────────────────────
+function mkKey(){return`ck-${now.getFullYear()}-${now.getMonth()+1}`}
+function getItems(){
+  const wk=getWeeks(getLMP()),m=now.getMonth()
+  return[
+    {id:'c1',lbl:'จ่ายค่างวดบ้าน 20,700 บาท',sub:'ต้นเดือน 1–5',tag:'บ้าน',tc:'bg'},
+    {id:'c2',lbl:'โปะบ้านตามแผน',sub:m===6?'🎯 เดือนโบนัส! โปะ 150,000':'5,000–8,000 บาท',tag:'บ้าน',tc:'bg'},
+    {id:'c3',lbl:'บันทึกรายได้ทั้ง 2 คน',sub:'ตรวจ slip เงินเดือน',tag:'การเงิน',tc:'bb'},
+    {id:'c4',lbl:'เช็ค P&L Snack box นุ๊ก',sub:'รายรับ − ต้นทุน = กำไรสุทธิ',tag:'ธุรกิจ',tc:'ba'},
+    {id:'c5',lbl:'สรุปค่าใช้จ่ายครึ่งเดือน',sub:'เกินงบหมวดไหนบ้าง',tag:'สรุป',tc:'bb'},
+    {id:'c6',lbl:'สรุปเดือน แผน vs จริง',sub:'ปลายเดือน',tag:'สรุป',tc:'bp'},
+    {id:'c7',lbl:'โอนกองทุนฉุกเฉิน',sub:'เป้า 3,000–5,000 บาท',tag:'ออม',tc:'bg'},
+    ...(wk<12?[{id:'ca1',lbl:'⚠️ ยื่นเบิกฝากครรภ์ ครั้ง 1',sub:'ก่อนครบ 12 สัปดาห์ — ด่วนมาก!',tag:'ท้อง',tc:'br'}]:[]),
+    ...(wk>=12&&wk<20?[{id:'ca2',lbl:'ยื่นเบิกฝากครรภ์ ครั้ง 2',sub:'สัปดาห์ 13–20',tag:'ท้อง',tc:'bp'}]:[]),
+  ]
+}
+function renderChecklist(){
+  const key=mkKey(),done=S.get(key)||{},items=getItems()
+  const dc=items.filter(i=>done[i.id]).length
+  const MONTHS=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.']
+  document.getElementById('ck-title').textContent='Checklist '+MONTHS[now.getMonth()]+' '+(now.getFullYear()+543)
+  document.getElementById('ck-prog-badge').textContent=dc+'/'+items.length
+  document.getElementById('ck-prog').style.width=(dc/items.length*100)+'%'
+  document.getElementById('ck-items').innerHTML=items.map(i=>{const d=done[i.id];return`<div class="check-item" onclick="toggleCk('${i.id}')"><div class="check-box ${d?'ck':''}"><svg viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg></div><div class="check-text"><div class="check-name ${d?'done':''}">${i.lbl}</div><div class="check-sub">${i.sub}</div><span class="badge ${i.tc}" style="font-size:9px">${i.tag}</span></div></div>`}).join('')
+  const m=now.getMonth(),sp=[]
+  if(m===6)sp.push({ico:'🎯',t:'โบนัสใหญ่เดือนนี้!',s:'โปะบ้าน 150,000 บาททันที',c:'var(--warn)'})
+  if(m===10)sp.push({ico:'🚗',t:'รถนุ๊กหมดเดือนนี้',s:'ย้าย 11,000 → โปะบ้านทันที',c:'var(--acc)'})
+  if(m===11)sp.push({ico:'🍼',t:'เตรียมคลอด',s:'เบิกประกันสังคม 26,250 + โบนัส 40,000',c:'var(--pink)'})
+  if(!sp.length)sp.push({ico:'✅',t:'ไม่มี event พิเศษ',s:'ทำรายการปกติตามแผน',c:'var(--txt3)'})
+  document.getElementById('ck-special').innerHTML=sp.map(s=>`<div class="row-item"><div style="font-size:20px">${s.ico}</div><div style="flex:1;padding-left:10px"><div style="font-size:13px;color:${s.c};font-weight:500">${s.t}</div><div style="font-size:11px;color:var(--txt3);margin-top:1px">${s.s}</div></div></div>`).join('')
+}
+function toggleCk(id){const k=mkKey(),d=S.get(k)||{};d[id]=!d[id];S.set(k,d);renderChecklist()}
+
+// ─── TIMELINE ──────────────────────────────────────────────
+function buildTimeline(){
+  const TL=[
+    {m:'พ.ค. 2569',t:'⚠️ ยื่นฝากครรภ์ประกันสังคม ครั้ง 1',d:'ก่อนอายุครรภ์ครบ 12 สัปดาห์ รีบทำทันที!',a:'+500 บาท',s:'now',c:'var(--acc)'},
+    {m:'ก.ค. 2569',t:'🎯 โบนัสใหญ่ โปะบ้าน',d:'รับโบนัสกลางปี โปะก้อนทันที ตัดเงินต้นได้มาก',a:'150,000 บาท',s:'soon',c:'var(--warn)'},
+    {m:'พ.ย. 2569',t:'🚗 รถนุ๊กหมด!',d:'ย้าย 11,000 บาท โปะบ้านทันที ตั้ง auto-transfer',a:'+11,000/เดือน',s:'soon',c:'var(--acc)'},
+    {m:'ธ.ค. 2569',t:'🍼 คลอดลูก + โบนัส',d:'ค่าคลอด ~15,000 | โบนัส 40,000 | เบิกประกันสังคม 26,250',a:'สุทธิ +51,250',s:'soon',c:'var(--pink)'},
+    {m:'ม.ค. 2570',t:'👶 รับเงินสงเคราะห์บุตร',d:'ยื่นขอ 1,000 บาท/เดือน เริ่มทันทีหลังคลอด',a:'+1,000/เดือน',s:'future',c:'var(--txt3)'},
+    {m:'ก.ค. 2570',t:'🎯 โบนัสปีที่ 2',d:'โปะบ้านก้อนอีกครั้ง',a:'150,000 บาท',s:'future',c:'var(--txt3)'},
+    {m:'ก.ค. 2571',t:'🎯 โบนัสปีที่ 3',d:'ยอดหนี้ลดเร็วมาก',a:'150,000 บาท',s:'future',c:'var(--txt3)'},
+    {m:'~ปลาย 2573',t:'🎉 บ้านหมด!',d:'ตามแผนโปะ 8K/เดือน + โบนัสทุกปี ประหยัดดอก ~190,000 บาท',a:'ฟรี!',s:'future',c:'var(--acc)'},
+  ]
+  const el=document.getElementById('tl-list')
+  el.innerHTML=TL.map(t=>{
+    const colors={now:'var(--acc)',soon:'var(--warn)',future:'var(--txt3)'}
+    const c=colors[t.s]||'var(--txt3)'
+    const bg=t.s==='now'?'rgba(0,200,150,.15)':t.s==='soon'?'rgba(245,166,35,.1)':'transparent'
+    return`<div class="tl-item"><div class="tl-dot ${t.s}" style="border-color:${c};background:${bg}"></div><div class="tl-content"><div class="tl-month">${t.m}</div><div class="tl-title">${t.t}</div><div class="tl-detail">${t.d}</div><div class="tl-amount" style="color:${c}">${t.a}</div></div></div>`
+  }).join('')
+}
+
+// ─── CAR CHECK ──────────────────────────────────────────────
+const CAR_ITEMS=[
+  {id:'oil',icon:'🛢️',name:'เปลี่ยนน้ำมันเครื่อง',desc:'ทุก 5,000–10,000 กม. หรือ 3–6 เดือน ดูสีน้ำมัน: ดำ=เปลี่ยนได้',interval:'3–6 เดือน'},
+  {id:'oil_filter',icon:'🔍',name:'ไส้กรองน้ำมัน',desc:'เปลี่ยนพร้อมน้ำมันเครื่องทุกครั้ง ราคา 100–300 บาท',interval:'ทุกครั้งที่เปลี่ยนน้ำมัน'},
+  {id:'air_filter',icon:'💨',name:'ไส้กรองอากาศ',desc:'ตรวจทุก 15,000 กม. เปลี่ยนทุก 30,000 กม. หรือเมื่อดูสกปรก',interval:'30,000 กม.'},
+  {id:'tire',icon:'🚗',name:'ตรวจสภาพยาง',desc:'ดอกยางต้องลึก >1.6mm เปลี่ยนทุก 40,000–60,000 กม. หรืออายุ 5 ปี',interval:'ทุกเดือน'},
+  {id:'tire_psi',icon:'💨',name:'ลมยาง (PSI)',desc:'ตรวจทุกเดือน ค่ามาตรฐาน 32–35 PSI ตรวจตอนยางเย็น',interval:'ทุกเดือน'},
+  {id:'align',icon:'⚖️',name:'ศูนย์ถ่วงล้อ',desc:'ทำทุก 10,000 กม. หรือหลังเปลี่ยนยาง สัญญาณ: รถดึงซ้าย/ขวา',interval:'10,000 กม.'},
+  {id:'battery',icon:'🔋',name:'แบตเตอรี่',desc:'อายุ 2–3 ปีควรเช็ค สัญญาณเสีย: สตาร์ทช้า ไฟหรี่ แอร์อ่อน',interval:'2–3 ปี'},
+  {id:'spark',icon:'⚡',name:'หัวเทียน',desc:'เปลี่ยนทุก 30,000–50,000 กม. สัญญาณ: เครื่องสะดุด ประหยัดน้ำมันน้อยลง',interval:'30,000–50,000 กม.'},
+  {id:'brake_pad',icon:'🛑',name:'ผ้าเบรก',desc:'ตรวจทุก 10,000 กม. เปลี่ยนเมื่อเหลือน้อยกว่า 3mm สัญญาณ: เสียงดัง/เบรกลึก',interval:'10,000 กม.'},
+  {id:'brake_oil',icon:'🛑',name:'น้ำมันเบรก',desc:'เปลี่ยนทุก 2 ปี หรือ 40,000 กม. ตรวจสี: เหลืองใส=ดี น้ำตาลเข้ม=เปลี่ยน',interval:'2 ปี'},
+  {id:'coolant',icon:'💧',name:'น้ำหล่อเย็น',desc:'ตรวจระดับทุกเดือน ตรวจขณะเครื่องเย็น เปลี่ยนทุก 2 ปี',interval:'2 ปี'},
+  {id:'washer',icon:'💧',name:'น้ำกระจก',desc:'เติมน้ำยาฉีดกระจกเมื่อใกล้หมด ใช้น้ำยาสำเร็จรูปอย่าใช้น้ำเปล่า',interval:'ตามความจำเป็น'},
+  {id:'lights',icon:'🔦',name:'ไฟรถ (หน้า/หลัง/เลี้ยว)',desc:'ตรวจทุก 3 เดือน ว่าไฟทำงานครบทุกดวง รวมไฟเบรกด้านหลัง',interval:'3 เดือน'},
+  {id:'belt',icon:'🔧',name:'สายพาน',desc:'เปลี่ยนทุก 60,000–100,000 กม. ตามคู่มือ สัญญาณ: เสียงดังช่วงเช้า',interval:'60,000–100,000 กม.'},
+  {id:'service',icon:'📋',name:'ตรวจสภาพทั่วไป (ศูนย์)',desc:'เข้าศูนย์บริการทุก 6 เดือน หรือ 10,000 กม. ให้ช่างตรวจอย่างละเอียด',interval:'6 เดือน / 10,000 กม.'},
+]
+
+const STATUS_ICONS={ok:'✅',warn:'⚠️',late:'❌',none:'○'}
+const STATUS_COLORS={ok:'var(--acc)',warn:'var(--warn)',late:'var(--danger)',none:'var(--txt3)'}
+
+function renderCarList(who){
+  const data=S.get('car-'+who)||{}
+  const el=document.getElementById('car-'+who+'-list')
+  if(!el) return
+  el.innerHTML=CAR_ITEMS.map(item=>{
+    const d=data[item.id]||{status:'none',date:'',km:''}
+    const sc=STATUS_COLORS[d.status]
+    return`<div style="display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05)">
+      <div style="font-size:20px;flex-shrink:0;margin-top:2px">${item.icon}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:14px;font-weight:500">${item.name}</div>
+        <div style="font-size:11px;color:var(--txt3);margin-top:2px;line-height:1.4">${item.desc}</div>
+        <div style="font-size:10px;color:var(--acc2);margin-top:2px">กำหนด: ${item.interval}</div>
+        ${d.date?`<div style="font-size:11px;color:var(--acc);margin-top:2px">ล่าสุด: ${d.date}${d.km?' | '+parseInt(d.km).toLocaleString()+' กม.':''}</div>`:'<div style="font-size:10px;color:var(--txt3);margin-top:2px;font-style:italic">ยังไม่มีข้อมูล — กด แก้ไข</div>'}
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0">
+        <div style="font-size:22px;cursor:pointer;line-height:1" onclick="cycleStatus('${who}','${item.id}')" title="กดเพื่อเปลี่ยนสถานะ">${STATUS_ICONS[d.status]}</div>
+        <button onclick="editCarItem('${who}','${item.id}')" style="background:var(--s2);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:var(--txt2);font-size:10px;padding:3px 8px;cursor:pointer">แก้ไข</button>
+      </div>
+    </div>`
+  }).join('')
+}
+
+function cycleStatus(who,itemId){
+  const data=S.get('car-'+who)||{}
+  if(!data[itemId])data[itemId]={status:'none',date:'',km:''}
+  const order=['none','ok','warn','late']
+  const cur=data[itemId].status||'none'
+  data[itemId].status=order[(order.indexOf(cur)+1)%order.length]
+  if(data[itemId].status==='ok'&&!data[itemId].date)data[itemId].date=now.toISOString().slice(0,10)
+  S.set('car-'+who,data)
+  renderCarList(who)
+  showToast('อัปเดตสถานะแล้ว')
+}
+
+function editCarItem(who,itemId){
+  const data=S.get('car-'+who)||{}
+  const d=data[itemId]||{status:'ok',date:'',km:''}
+  const item=CAR_ITEMS.find(i=>i.id===itemId)
+  const dateVal=prompt('วันที่ตรวจ/เปลี่ยน "'+item.name+'" ล่าสุด\nรูปแบบ: YYYY-MM-DD เช่น 2026-05-01',d.date||now.toISOString().slice(0,10))
+  if(dateVal===null) return
+  const kmVal=prompt('เลขไมล์ขณะตรวจ (กม.) — กรอกตัวเลขเท่านั้น:',d.km||'')
+  if(kmVal===null) return
+  if(!data[itemId])data[itemId]={}
+  data[itemId].date=dateVal
+  data[itemId].km=kmVal
+  data[itemId].status='ok'
+  S.set('car-'+who,data)
+  renderCarList(who)
+  showToast('บันทึกแล้ว')
+}
+
+function saveMileage(who){
+  const km=document.getElementById(who+'-mileage').value
+  const date=document.getElementById(who+'-mileage-date').value
+  S.set('car-mileage-'+who,{km,date})
+  showToast('บันทึกเลขไมล์แล้ว')
+}
+
+function loadMileage(who){
+  const d=S.get('car-mileage-'+who)||{}
+  const kmEl=document.getElementById(who+'-mileage')
+  const dtEl=document.getElementById(who+'-mileage-date')
+  if(d.km&&kmEl) kmEl.value=d.km
+  if(d.date&&dtEl) dtEl.value=d.date
+}
+
+// Log การซ่อม
+let logImgData=null
+
+function openAddLog(){
+  document.getElementById('log-modal').classList.remove('hidden')
+  document.getElementById('log-date').value=now.toISOString().slice(0,10)
+  document.getElementById('log-item').value=''
+  document.getElementById('log-shop').value=''
+  document.getElementById('log-km').value=''
+  document.getElementById('log-cost').value=''
+  document.getElementById('log-note').value=''
+  logImgData=null
+  document.getElementById('log-img-prev').style.display='none'
+}
+
+function closeLogModal(){
+  document.getElementById('log-modal').classList.add('hidden')
+}
+
+function previewLogImg(inp){
+  const f=inp.files[0]
+  if(!f) return
+  compress(f,500,d=>{
+    logImgData=d
+    document.getElementById('log-img-src').src=d
+    document.getElementById('log-img-prev').style.display='block'
+  })
+}
+
+function saveLog(){
+  const item=document.getElementById('log-item').value.trim()
+  const cost=parseFloat(document.getElementById('log-cost').value)||0
+  if(!item){showToast('ใส่รายการซ่อมด้วยนะ');return}
+  const logs=S.get('car-logs')||[]
+  logs.unshift({
+    id:Date.now(),
+    car:document.getElementById('log-car').value,
+    date:document.getElementById('log-date').value,
+    item,
+    shop:document.getElementById('log-shop').value,
+    km:document.getElementById('log-km').value,
+    cost,
+    note:document.getElementById('log-note').value,
+    img:logImgData
+  })
+  S.set('car-logs',logs)
+  closeLogModal()
+  showToast('บันทึกแล้ว')
+  renderCarLog()
+}
+
+function renderCarLog(){
+  const logs=S.get('car-logs')||[]
+  const el=document.getElementById('car-log-list')
+  if(!el) return
+  if(!logs.length){el.innerHTML='<div class="empty">ยังไม่มีบันทึก<br><small>กด "+ บันทึก" เพื่อเพิ่ม</small></div>';return}
+  const totalCost=logs.reduce((s,l)=>s+l.cost,0)
+  el.innerHTML=`<div style="display:flex;justify-content:space-between;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08)">
+    <div style="font-size:12px;color:var(--txt3)">${logs.length} รายการทั้งหมด</div>
+    <div style="font-family:var(--mono);font-size:14px;color:var(--danger)">รวม ${fmt(totalCost)}</div>
+  </div>`+logs.map(l=>{
+    const carLabel=l.car==='ik'?'🚙 อิ๊ด':'🚗 นุ๊ก'
+    return`<div style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:500">${l.item}</div>
+          <div style="font-size:11px;color:var(--txt3);margin-top:2px">${carLabel} · ${l.date}${l.km?' · '+parseInt(l.km).toLocaleString()+' กม.':''}${l.shop?' · '+l.shop:''}</div>
+          ${l.note?`<div style="font-size:11px;color:var(--acc2);margin-top:2px">📝 ${l.note}</div>`:''}
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-family:var(--mono);font-size:14px;color:var(--danger)">${fmt(l.cost)}</div>
+          ${l.img?`<img src="${l.img}" onclick="viewLogImg(${l.id})" style="width:40px;height:40px;border-radius:6px;object-fit:cover;cursor:pointer;display:block;margin:4px 0 0 auto">`:''}
+          <button onclick="delLog(${l.id})" style="background:none;border:none;color:var(--txt3);font-size:10px;cursor:pointer;margin-top:3px">ลบ</button>
+        </div>
+      </div>
+    </div>`
+  }).join('')
+}
+
+function viewLogImg(id){
+  const logs=S.get('car-logs')||[]
+  const l=logs.find(x=>x.id==id)
+  if(l&&l.img){document.getElementById('fs-src').src=l.img;document.getElementById('fs-img').classList.remove('hidden')}
+}
+
+function delLog(id){
+  const logs=(S.get('car-logs')||[]).filter(l=>l.id!=id)
+  S.set('car-logs',logs)
+  renderCarLog()
+  showToast('ลบแล้ว')
+}
+
+function buildCarAlerts(){
+  const el=document.getElementById('car-alert-list')
+  if(!el) return
+  const alerts=[
+    {period:'ทุก 1 เดือน',items:'ตรวจลมยาง (32–35 PSI) · น้ำกระจก · ไฟรถ',color:'var(--danger)',bg:'rgba(255,94,94,.08)'},
+    {period:'ทุก 3 เดือน / 5,000 กม.',items:'เปลี่ยนน้ำมันเครื่อง + ไส้กรองน้ำมัน',color:'var(--warn)',bg:'rgba(245,166,35,.08)'},
+    {period:'ทุก 6 เดือน / 10,000 กม.',items:'ตรวจเบรก · ตรวจแบตเตอรี่ · เข้าศูนย์ตรวจสภาพ',color:'var(--warn)',bg:'rgba(245,166,35,.05)'},
+    {period:'ทุก 1 ปี / 20,000 กม.',items:'ศูนย์ถ่วงล้อ · น้ำหล่อเย็น · ไส้กรองอากาศ',color:'var(--acc2)',bg:'rgba(56,182,255,.06)'},
+    {period:'ทุก 2 ปี / 40,000 กม.',items:'เปลี่ยนยาง · เปลี่ยนแบตเตอรี่ · น้ำมันเบรก',color:'var(--acc)',bg:'rgba(0,200,150,.06)'},
+    {period:'ทุก 3–5 ปี / 60,000–100,000 กม.',items:'สายพานราวลิ้น · หัวเทียน · ช่วงล่าง',color:'var(--purple)',bg:'rgba(167,139,250,.06)'},
+  ]
+  el.innerHTML=alerts.map(a=>`
+    <div style="background:${a.bg};border-left:3px solid ${a.color};border-radius:0 10px 10px 0;padding:12px 14px;margin-bottom:8px">
+      <div style="font-size:13px;font-weight:600;color:${a.color};margin-bottom:4px">${a.period}</div>
+      <div style="font-size:12px;color:var(--txt2)">${a.items}</div>
+    </div>`).join('')
+}
+
+// ─── UPDATED goPage (single definition) ─────────────────────
+function goPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'))
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'))
+  document.getElementById('pg-'+id).classList.add('on')
+  btn.classList.add('on')
+  document.getElementById('scroll').scrollTop=0
+  if(id==='expense')renderExpenses()
+  if(id==='check')renderChecklist()
+  if(id==='photos')renderAllPhotos()
+  if(id==='preg')renderPreg()
+  if(id==='mortgage'){buildSimCompare();updateSim()}
+  if(id==='timeline')buildTimeline()
+  if(id==='car'){
+    renderCarList('ik')
+    renderCarList('nuk')
+    renderCarLog()
+    buildCarAlerts()
+    loadMileage('ik')
+    loadMileage('nuk')
+  }
+  if(id==='mort-tbl'){
+    mtRender()
+    if(window._mtInit) window._mtInit()
+  }
+}
+
+// ─── MORTGAGE TABLE (Supabase) ────────────────────────────────────────
+
+const SURL='https://gokjpbtyjzubyzzkyiye.supabase.co'
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdva2pwYnR5anp1Ynl6emt5aXllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2ODgzODgsImV4cCI6MjA5MzI2NDM4OH0.JtpI40fK8Uh5_CFX6AmjFKYGKj62_SU3-2w3t98pYK0'
+const MT_TABLE='mortgage'
+
+// BASE_DATA: [month,yr,no,debt,ik,ik_b,nuk,nuk_s,ins,rate,interest,principal,remain]
+// debt[n] = remain[n-1] (ยอดหนี้ต้นงวด = ยอดหนี้คงเหลือจากงวดที่แล้ว)
+const MT_BASE=[
+["มี.ค. 2566",1,1,4329000,15000,0,5000,9800,300,0.0214,6493.32,16906.68,4312093.32],
+  ["เม.ย. 2566",1,2,4312093.32,15000,0,5000,109700,300,0.0239,8588.25,116111.75,4195981.57],
+  ["พ.ค. 2566",1,3,4195981.57,15000,0,5000,0,300,0.0264,9231.16,5768.84,4190212.73],
+  ["มิ.ย. 2566",1,4,4190212.73,15000,0,5000,12100,300,0.0264,9218.47,17881.53,4172331.2],
+  ["ก.ค. 2566",1,5,4172331.2,25000,0,5000,0,300,0.0264,9179.13,15820.87,4156510.33],
+  ["ส.ค. 2566",1,6,4156510.33,15000,0,5000,0,300,0.0264,9144.32,5855.68,4150654.65],
+  ["ก.ย. 2566",1,7,4150654.65,15000,0,5000,1000,300,0.0264,9131.44,6868.56,4143786.09],
+  ["ต.ค. 2566",1,8,4143786.09,15000,0,5000,3000,300,0.0264,9116.33,8883.67,4134902.42],
+  ["พ.ย. 2566",1,9,4134902.42,15000,0,5000,1200,300,0.0264,9096.79,7103.21,4127799.21],
+  ["ธ.ค. 2566",1,10,4127799.21,25000,0,5000,0,300,0.0264,9081.16,15918.84,4070574.28],
+  ["ม.ค. 2567",1,11,4070574.28,15000,0,5000,0,300,0.0249,8718.0,10983.0,4049591.27],
+  ["ก.พ. 2567",1,12,4049591.27,15000,0,5000,3000,300,0.0249,8564.0,14135.9,4035455.37],
+  ["มี.ค. 2567",2,13,4035455.37,15000,0,5000,2000,300,0.0366,0.0,21700.0,4013755.37],
+  ["เม.ย. 2567",2,14,4013755.37,15000,0,5000,1000,300,0.03155,18100.0,2600.0,4011155.37],
+  ["พ.ค. 2567",2,15,4011155.37,15300,0,5000,4000,300,0.03155,14914.11,9085.89,4002069.48],
+  ["มิ.ย. 2567",2,16,4002069.48,20000,0,5000,2000,300,0.03155,7610.51,19089.49,3982979.99],
+  ["ก.ค. 2567",2,17,3982979.99,20000,0,5000,2130,300,0.03155,8951.33,17878.67,3965101.32],
+  ["ส.ค. 2567",2,18,3965101.32,20000,70000,5000,9720,300,0.03155,8911.16,95508.84,3869592.48],
+  ["ก.ย. 2567",2,19,3869592.48,20000,0,5000,8650,300,0.03155,11052.75,22297.25,3847295.23],
+  ["ต.ค. 2567",2,20,3847295.23,20000,0,5000,2160,300,0.03155,10974.0,15886.0,3831409.23],
+  ["พ.ย. 2567",2,21,3831409.23,20000,0,5000,5000,300,0.03155,10597.78,19102.22,3812307.01],
+  ["ธ.ค. 2567",2,22,3812307.01,20000,60000,5000,2000,300,0.03155,17760.58,68939.42,3743367.59],
+  ["ม.ค. 2568",2,23,3743367.59,15300,0,5000,2000,300,0.03155,0.0,22000.0,3721367.59],
+  ["ก.พ. 2568",2,24,3721367.59,20000,0,5000,2000,300,0.03155,11593.39,15106.61,3706260.98],
+  ["มี.ค. 2568",3,25,3706260.98,20300,0,5000,2000,300,0.03155,9291.1,17708.9,3688552.08],
+  ["เม.ย. 2568",3,26,3688552.08,20181,0,5000,2000,300,0.03155,9883.0,16998.0,3671554.08],
+  ["พ.ค. 2568",3,27,3671554.08,22080,0,5000,7000,300,0.03155,9520.0,24260.0,3647294.08],
+  ["มิ.ย. 2568",3,28,3647294.08,22080,0,5000,2000,300,0.03155,9683.32,19096.68,3628197.4],
+  ["ก.ค. 2568",3,29,3628197.4,22080,120000,5000,2000,300,0.03155,17547.94,131232.06,3496965.34],
+  ["ส.ค. 2568",3,30,3496965.34,51700,0,5000,2000,300,0.03155,9659.0,48741.0,3448224.34],
+  ["ก.ย. 2568",3,31,3448224.34,22000,0,5000,2000,300,0.0286,8091.52,20608.48,3427615.86],
+  ["ต.ค. 2568",3,32,3427615.86,22000,0,5000,2000,300,0.0286,8579.0,20121.0,3407494.86],
+  ["พ.ย. 2568",3,33,3407494.86,22000,0,5000,2000,300,0.0276,7730.0,20970.0,3386524.86],
+  ["ธ.ค. 2568",3,34,3386524.86,22000,35000,5000,2000,300,0.0276,7105.67,56594.33,3329930.53],
+  ["ม.ค. 2569",3,35,3329930.53,23000,0,5000,2000,300,0.0276,9048.29,20651.71,3309278.82],
+  ["ก.พ. 2569",3,36,3309278.82,23000,0,5000,2000,1200,0.0169,4660.18,24139.83,3284860.17],
+  ["มี.ค. 2569",4,37,3284860.17,24200,0,5000,2000,1200,0.0169,4626.18,25373.82,3259486.35],
+  ["เม.ย. 2569",4,38,3259486.35,24000,0,5000,2000,1200,0.0169,4532.25,25267.75,3192898.1],
+  ["พ.ค. 2569",4,39,3192898.1,24000,0,5000,2000,1200,0.0169,4496.66,25303.34,3167594.77],
+  ["มิ.ย. 2569",4,40,3167594.77,24000,0,5000,2000,1200,0.0169,4461.03,25338.97,3142255.79],
+  ["ก.ค. 2569",4,41,3142255.79,24000,150000,5000,2000,1200,0.0169,4425.34,175374.66,2966881.14],
+  ["ส.ค. 2569",4,42,2966881.14,24000,0,5000,2000,1200,0.0169,4178.36,25621.64,2941259.5],
+  ["ก.ย. 2569",4,43,2941259.5,24000,0,5000,2000,1200,0.0169,4142.27,25657.73,2915601.77],
+  ["ต.ค. 2569",4,44,2915601.77,24000,0,5000,2000,1200,0.0169,4106.14,25693.86,2889907.91],
+  ["พ.ย. 2569",4,45,2889907.91,24000,0,5000,2000,1200,0.0169,4069.95,25730.05,2864177.86],
+  ["ธ.ค. 2569",4,46,2864177.86,24000,40000,5000,2000,1200,0.0169,4033.72,65766.28,2798411.58],
+  ["ม.ค. 2570",4,47,2798411.58,24000,0,5000,2000,1200,0.0169,3941.1,25858.9,2772552.68],
+  ["ก.พ. 2570",4,48,2772552.68,24000,0,5000,2000,1200,0.0169,3904.68,25895.32,2746657.35],
+  ["มี.ค. 2570",5,49,2746657.35,24000,0,5000,2000,1200,0.0169,3868.21,25931.79,2720725.56],
+  ["เม.ย. 2570",5,50,2720725.56,26000,0,5000,2000,1200,0.0169,3831.69,27968.31,2692757.25],
+  ["พ.ค. 2570",5,51,2692757.25,26000,0,5000,2000,1200,0.0169,3792.3,28007.7,2664749.55],
+  ["มิ.ย. 2570",5,52,2664749.55,26000,0,5000,2000,1200,0.0169,3752.86,28047.14,2636702.41],
+  ["ก.ค. 2570",5,53,2636702.41,26000,150000,5000,2000,1200,0.0169,3713.36,178086.64,2458615.76],
+  ["ส.ค. 2570",5,54,2458615.76,26000,0,5000,2000,1200,0.0169,3462.55,28337.45,2430278.31],
+  ["ก.ย. 2570",5,55,2430278.31,26000,0,5000,2000,1200,0.0169,3422.64,28377.36,2401900.96],
+  ["ต.ค. 2570",5,56,2401900.96,26000,0,5000,2000,1200,0.0169,3382.68,28417.32,2373483.63],
+  ["พ.ย. 2570",5,57,2373483.63,26000,0,5000,2000,1200,0.0169,3342.66,28457.34,2345026.29],
+  ["ธ.ค. 2570",5,58,2345026.29,26000,40000,5000,2000,1200,0.0169,3302.58,68497.42,2276528.87],
+  ["ม.ค. 2571",5,59,2276528.87,26000,0,5000,2000,1200,0.0169,3206.11,28593.89,2247934.98],
+  ["ก.พ. 2571",5,60,2247934.98,26000,0,5000,2000,1200,0.0169,3165.84,28634.16,2219300.82],
+  ["มี.ค. 2571",6,61,2219300.82,26000,0,5000,2000,1200,0.0169,3125.52,28674.48,2190626.34],
+  ["เม.ย. 2571",6,62,2190626.34,28000,0,5000,2000,1200,0.0382,6973.49,26826.51,2163799.83],
+  ["พ.ค. 2571",6,63,2163799.83,28000,0,5000,2000,1200,0.0382,6888.1,26911.9,2136887.93],
+  ["มิ.ย. 2571",6,64,2136887.93,28000,0,5000,2000,1200,0.0382,6802.43,26997.57,2109890.35],
+  ["ก.ค. 2571",6,65,2109890.35,28000,150000,5000,2000,1200,0.0382,6716.48,177083.52,1932806.84],
+  ["ส.ค. 2571",6,66,1932806.84,28000,0,5000,2000,1200,0.0382,6152.77,27647.23,1905159.61],
+  ["ก.ย. 2571",6,67,1905159.61,28000,0,5000,2000,1200,0.0382,6064.76,27735.24,1877424.36],
+  ["ต.ค. 2571",6,68,1877424.36,28000,0,5000,2000,1200,0.0382,5976.47,27823.53,1849600.83],
+  ["พ.ย. 2571",6,69,1849600.83,28000,0,5000,2000,1200,0.0382,5887.9,27912.1,1821688.73],
+  ["ธ.ค. 2571",6,70,1821688.73,28000,40000,5000,2000,1200,0.0382,5799.04,68000.96,1753687.77],
+  ["ม.ค. 2572",6,71,1753687.77,28000,0,5000,2000,1200,0.0382,5582.57,28217.43,1725470.34],
+  ["ก.พ. 2572",6,72,1725470.34,28000,0,5000,2000,1200,0.0382,5492.75,28307.25,1697163.09],
+  ["มี.ค. 2572",7,73,1697163.09,28000,0,5000,2000,1200,0.0275,3889.33,29910.67,1667252.42],
+  ["เม.ย. 2572",7,74,1667252.42,30000,0,5000,2000,1200,0.0275,3820.79,31979.21,1635273.21],
+  ["พ.ค. 2572",7,75,1635273.21,30000,0,5000,2000,1200,0.0275,3747.5,32052.5,1603220.71],
+  ["มิ.ย. 2572",7,76,1603220.71,30000,0,5000,2000,1200,0.0275,3674.05,32125.95,1571094.76],
+  ["ก.ค. 2572",7,77,1571094.76,30000,150000,5000,2000,1200,0.0275,3600.43,182199.57,1388895.18],
+  ["ส.ค. 2572",7,78,1388895.18,30000,0,5000,2000,1200,0.0275,3182.88,32617.12,1356278.07],
+  ["ก.ย. 2572",7,79,1356278.07,30000,0,5000,2000,1200,0.0275,3108.14,32691.86,1323586.2],
+  ["ต.ค. 2572",7,80,1323586.2,30000,0,5000,2000,1200,0.0275,3033.22,32766.78,1290819.42],
+  ["พ.ย. 2572",7,81,1290819.42,30000,0,5000,2000,1200,0.0275,2958.13,32841.87,1257977.55],
+  ["ธ.ค. 2572",7,82,1257977.55,30000,40000,5000,2000,1200,0.0275,2882.87,72917.13,1185060.42],
+  ["ม.ค. 2573",7,83,1185060.42,30000,0,5000,2000,1200,0.0275,2715.76,33084.24,1151976.18],
+  ["ก.พ. 2573",7,84,1151976.18,30000,0,5000,2000,1200,0.0275,2639.95,33160.05,1118816.12],
+  ["มี.ค. 2573",8,85,1118816.12,30000,0,5000,2000,1200,0.0275,2563.95,33236.05,1085580.08],
+  ["เม.ย. 2573",8,86,1085580.08,32000,0,5000,2000,1200,0.0275,2487.79,35312.21,1050267.87],
+  ["พ.ค. 2573",8,87,1050267.87,32000,0,5000,2000,1200,0.0275,2406.86,35393.14,1014874.73],
+  ["มิ.ย. 2573",8,88,1014874.73,32000,0,5000,2000,1200,0.0275,2325.75,35474.25,979400.48],
+  ["ก.ค. 2573",8,89,979400.48,32000,150000,5000,2000,1200,0.0275,2244.46,185555.54,793844.94],
+  ["ส.ค. 2573",8,90,793844.94,32000,0,5000,2000,1200,0.0275,1819.23,35980.77,757864.17],
+  ["ก.ย. 2573",8,91,757864.17,32000,0,5000,2000,1200,0.0275,1736.77,36063.23,721800.94],
+  ["ต.ค. 2573",8,92,721800.94,32000,0,5000,2000,1200,0.0275,1654.13,36145.87,685655.07],
+  ["พ.ย. 2573",8,93,685655.07,32000,0,5000,2000,1200,0.0275,1571.29,36228.71,649426.36],
+  ["ธ.ค. 2573",8,94,649426.36,32000,40000,5000,2000,1200,0.0275,1488.27,76311.73,573114.63],
+  ["ม.ค. 2574",8,95,573114.63,32000,0,5000,2000,1200,0.0275,1313.39,36486.61,536628.02],
+  ["ก.พ. 2574",8,96,536628.02,32000,0,5000,2000,1200,0.0275,1229.77,36570.23,500057.79],
+  ["มี.ค. 2574",9,97,500057.79,32000,0,5000,2000,1200,0.0275,1145.97,36654.03,463403.76],
+  ["เม.ย. 2574",9,98,463403.76,34000,0,5000,2000,1200,0.0275,1061.97,38738.03,424665.73],
+  ["พ.ค. 2574",9,99,424665.73,34000,0,5000,2000,1201,0.0275,973.19,38825.81,385839.92],
+  ["มิ.ย. 2574",9,100,385839.92,34000,0,5000,2000,1202,0.0275,884.22,38913.78,346926.13],
+  ["ก.ค. 2574",9,101,346926.13,34000,0,5000,2000,1203,0.0275,795.04,39001.96,307924.17],
+  ["ส.ค. 2574",9,102,307924.17,34000,0,5000,2000,1204,0.0275,705.66,39090.34,268833.83],
+  ["ก.ย. 2574",9,103,268833.83,34000,0,5000,2000,1205,0.0275,616.08,39178.92,229654.91],
+  ["ต.ค. 2574",9,104,229654.91,34000,0,5000,2000,1206,0.0275,526.29,39267.71,190387.2],
+  ["พ.ย. 2574",9,105,190387.2,34000,0,5000,2000,1207,0.0275,436.3,39356.7,151030.51],
+  ["ธ.ค. 2574",9,106,151030.51,34000,0,5000,2000,1208,0.0275,346.11,39445.89,111584.62],
+  ["ม.ค. 2575",9,107,111584.62,34000,0,5000,2000,1209,0.0275,255.71,39535.29,72049.33],
+  ["ก.พ. 2575",9,108,72049.33,34000,0,5000,2000,1210,0.0275,165.11,39624.89,32424.45],
+  ["มี.ค. 2575",10,109,32424.45,34000,0,5000,2000,1211,0.0275,74.31,39714.69,-7290.25]
+]
+
+let MT=MT_BASE.map(r=>[...r])  // working copy — recalc chain after edit
+let mtOnline=false, mtIdx=-1, mtSortCol=2, mtSortDir=1, mtFilter_='all'
+
+// ── recalculate full chain from index idx onwards ─────────────────────
+function mtRecalcChain(startIdx){
+  for(let i=startIdx;i<MT.length;i++){
+    const r=MT[i]
+    // debt = remain ของงวดก่อน (ถ้าไม่ใช่งวดแรก)
+    if(i>0) r[3]=Math.round(MT[i-1][12]*100)/100
+    const ik=r[4],ikb=r[5],nuk=r[6],nuks=r[7],ins=r[8],rate=r[9],debt=r[3]
+    const interest=Math.round(debt*rate/12*100)/100
+    const principal=Math.round((ik+ikb+nuk+nuks-ins-interest)*100)/100
+    const remain=Math.round((debt-principal)*100)/100
+    r[10]=interest; r[11]=principal; r[12]=remain
+  }
+}
+
+const mtFmtN=n=>isNaN(n)||!isFinite(n)?'–':Math.round(n).toLocaleString('th-TH')
+const mtHdrs=()=>({'Content-Type':'application/json','apikey':SKEY,'Authorization':'Bearer '+SKEY})
+
+function mtSetSync(cls,txt){
+  const b=document.getElementById('mt-sync-badge')
+  if(b){
+    b.className='badge '+(cls==='ok'?'bg':cls==='err'?'br':'bb')
+    const dot=document.getElementById('mt-dot')
+    if(dot) dot.style.background=cls==='ok'?'var(--acc)':cls==='err'?'var(--danger)':'var(--warn)'
+    const t=document.getElementById('mt-sync-txt')
+    if(t) t.textContent=txt
+  }
+}
+function mtSetLastSync(){
+  const el=document.getElementById('mt-last-sync')
+  if(el) el.textContent='sync '+new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})
+}
+
+async function mtFetchEdits(){
+  mtSetSync('load','กำลังโหลด')
+  try{
+    const res=await fetch(SURL+'/rest/v1/'+MT_TABLE+'?select=*',{headers:mtHdrs()})
+    if(!res.ok) throw new Error(res.status)
+    const rows=await res.json()
+    rows.forEach(db=>{
+      const idx=MT.findIndex(r=>r[2]===db.no); if(idx<0) return
+      MT[idx][4]=db.ik??MT[idx][4]; MT[idx][5]=db.ik_bonus??MT[idx][5]
+      MT[idx][6]=db.nuk??MT[idx][6]; MT[idx][7]=db.nuk_snack??MT[idx][7]
+      MT[idx][8]=db.ins??MT[idx][8]; MT[idx][9]=db.rate??MT[idx][9]
+      mtRecalcChain(idx)  // recalc chain from this row
+    })
+    mtOnline=true; mtSetSync('ok','Online ☁️'); mtSetLastSync()
+    const sub=document.getElementById('mt-hdr-sub')
+    if(sub) sub.textContent=MT.length+' งวด · กดแถวเพื่อแก้ไข · Sync realtime'
+    mtRender(); mtStartRealtime()
+  }catch(e){
+    mtOnline=false; mtSetSync('err','Offline')
+    const sub=document.getElementById('mt-hdr-sub')
+    if(sub) sub.textContent=MT.length+' งวด · ข้อมูลจากไฟล์ (ไม่มีเน็ต)'
+    mtRender()
+  }
+}
+
+async function mtUpsert(no,ik,ikb,nuk,nuks,ins,rate){
+  const res=await fetch(SURL+'/rest/v1/'+MT_TABLE+'?on_conflict=no',
+    {method:'POST',headers:{...mtHdrs(),'Prefer':'resolution=merge-duplicates'},
+     body:JSON.stringify({no,ik,ik_bonus:ikb,nuk,nuk_snack:nuks,ins,rate,updated_at:new Date().toISOString()})})
+  if(!res.ok) throw new Error(await res.text())
+}
+
+let mtWs=null
+function mtStartRealtime(){
+  if(mtWs&&mtWs.readyState<2) return
+  const u=SURL.replace('https://','wss://')+'/realtime/v1/websocket?apikey='+SKEY+'&vsn=1.0.0'
+  mtWs=new WebSocket(u)
+  mtWs.onopen=()=>mtWs.send(JSON.stringify({topic:'realtime:public:'+MT_TABLE,event:'phx_join',payload:{},ref:'mt1'}))
+  mtWs.onmessage=e=>{
+    try{
+      const m=JSON.parse(e.data)
+      if(m.event==='postgres_changes'||(m.payload&&m.payload.data)) mtFetchEdits()
+      if(m.event==='heartbeat') mtWs.send(JSON.stringify({topic:'phoenix',event:'heartbeat',payload:{},ref:'hbmt'}))
+    }catch(err){}
+  }
+  mtWs.onclose=()=>setTimeout(mtStartRealtime,5000)
+  mtWs.onerror=()=>setTimeout(()=>{if(mtOnline)mtFetchEdits()},15000)
+}
+
+function mtGetCurrentNo(){
+  const now=new Date(),nm=now.getFullYear()*12+now.getMonth(),sm=2023*12+2
+  return Math.min(Math.max(1,nm-sm+1),MT.length)
+}
+
+function mtFilter(mode,btn){
+  mtFilter_=mode
+  document.querySelectorAll('#pg-mort-tbl .tab').forEach(b=>b.classList.remove('on'))
+  btn.classList.add('on'); mtRender()
+}
+
+function mtSort(col){
+  mtSortDir=(mtSortCol===col)?-mtSortDir:1; mtSortCol=col
+  document.querySelectorAll('#mt-tbl thead th').forEach((th,i)=>{
+    th.style.color=i===col?'var(--acc)':'var(--txt2)'
+  }); mtRender()
+}
+
+function mtRender(){
+  const CUR=mtGetCurrentNo()
+  const q=(document.getElementById('mt-search')||{}).value?.trim().toLowerCase()||''
+  let rows=MT.map((r,i)=>({r,i}))
+  rows=rows.filter(({r})=>{
+    const no=r[2]
+    if(mtFilter_==='bonus') return r[5]>0||r[7]>0
+    if(mtFilter_==='cur')   return no===CUR
+    if(mtFilter_==='future')return no>=CUR
+    if(mtFilter_==='yr1')   return r[1]===1
+    if(mtFilter_==='yr2')   return r[1]===2
+    if(mtFilter_==='yr3')   return r[1]===3
+    if(mtFilter_==='yr4')   return r[1]===4
+    if(mtFilter_==='yr5')   return r[1]>=5
+    return true
+  })
+  if(q) rows=rows.filter(({r})=>r[0].toLowerCase().includes(q)||String(r[2]).includes(q))
+  rows.sort((a,b)=>{const va=a.r[mtSortCol],vb=b.r[mtSortCol];return(va<vb?-1:va>vb?1:0)*mtSortDir})
+
+  const tbody=document.getElementById('mt-tbody')
+  if(!tbody) return
+  tbody.innerHTML=rows.map(({r,i})=>{
+    const no=r[2],remain=r[12],hasB=r[5]>0||r[7]>0
+    const isCur=no===CUR,isPast=no<CUR
+    const total=r[4]+r[5]+r[6]+r[7]
+    let bg=isCur?'rgba(0,200,150,.07)':hasB?'rgba(245,166,35,.05)':isPast?'rgba(255,255,255,.02)':''
+    let opacity=isPast&&!isCur?'opacity:.45;':''
+    const remCell=remain<=0
+      ?`<td style="text-align:right;font-weight:700;color:var(--acc)">หมดแล้ว! 🎉</td>`
+      :`<td style="text-align:right;font-weight:700;color:var(--warn)">${mtFmtN(remain)}</td>`
+    return`<tr onclick="mtOpenEdit(${i})" style="border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;background:${bg};${opacity}${isCur?'outline:2px solid rgba(0,200,150,.35);outline-offset:-2px;':''}" onmouseenter="this.style.filter='brightness(1.15)'" onmouseleave="this.style.filter=''">
+      <td style="padding:7px 5px;font-size:11px;white-space:nowrap;color:var(--txt2);font-weight:500">${r[0]}${isCur?' <span style="color:var(--acc);font-size:9px">◀</span>':''}</td>
+      <td style="padding:7px 5px;font-size:11px;text-align:center;color:var(--txt3)">${r[1]}</td>
+      <td style="padding:7px 5px;font-size:11px;text-align:center;font-weight:700;color:var(--acc2)">${no}</td>
+      <td style="padding:7px 5px;font-size:11px;text-align:right;color:var(--warn)">${mtFmtN(r[3])}</td>
+      <td style="padding:7px 5px;font-size:11px;text-align:right;color:var(--acc2)">${mtFmtN(r[4])}</td>
+      <td style="padding:7px 5px;font-size:11px;text-align:right;color:${r[5]>0?'var(--warn)':'var(--txt3)'};font-weight:${r[5]>0?700:400}">${r[5]>0?mtFmtN(r[5]):'-'}</td>
+      <td style="padding:7px 5px;font-size:11px;text-align:right;color:#4ade80">${mtFmtN(r[6])}</td>
+      <td style="padding:7px 5px;font-size:11px;text-align:right;color:${r[7]>0?'#86efac':'var(--txt3)'};font-weight:${r[7]>0?700:400}">${r[7]>0?mtFmtN(r[7]):'-'}</td>
+      <td style="padding:7px 5px;font-size:11px;text-align:right;font-weight:700">${mtFmtN(total)}</td>
+      <td style="padding:7px 5px;font-size:11px;text-align:right;color:var(--txt3);font-size:10px">${mtFmtN(r[8])}</td>
+      <td style="padding:7px 5px;font-size:11px;text-align:center;color:var(--txt3);font-size:10px">${(r[9]*100).toFixed(2)}%</td>
+      <td style="padding:7px 5px;font-size:11px;text-align:right;color:var(--danger)">${mtFmtN(r[10])}</td>
+      <td style="padding:7px 5px;font-size:11px;text-align:right;color:#4ade80">${mtFmtN(r[11])}</td>
+      ${remCell}
+    </tr>`
+  }).join('')
+
+  mtUpdateSummary(CUR)
+}
+
+function mtUpdateSummary(CUR){
+  const cur=MT.find(r=>r[2]===CUR)
+  if(cur){
+    const el=document.getElementById('mt-remain')
+    if(el) el.textContent=mtFmtN(cur[12])
+    const m=document.getElementById('mt-cur-month')
+    if(m) m.textContent=cur[0]+' (งวด '+cur[2]+')'
+  }
+  const curIdx=MT.findIndex(r=>r[2]===CUR)
+
+  // หา end: งวดแรกที่ remain <= 0
+  const endIdx=MT.findIndex(r=>r[12]<=0)
+
+  if(curIdx>=0){
+    const pct=Math.round(curIdx/MT.length*100)
+    const pf=document.getElementById('mt-prog')
+    if(pf) pf.style.width=pct+'%'
+    const pp=document.getElementById('mt-pct')
+    if(pp) pp.textContent='ผ่อนไปแล้ว '+pct+'% (งวด '+CUR+'/'+MT.length+')'
+  }
+
+  if(endIdx>=0&&curIdx>=0){
+    // ผ่อนอีกกี่งวด = endIdx - curIdx (งวดปัจจุบันถึงงวดที่หมด)
+    const monthsLeft=endIdx-curIdx
+    const yearsLeft=monthsLeft/12
+    const el=document.getElementById('mt-years')
+    if(el) el.textContent=monthsLeft<=0?'หมดแล้ว! 🎉':(yearsLeft).toFixed(1)+' ปี'
+    const ei=document.getElementById('mt-end-info')
+    if(ei) ei.textContent=monthsLeft<=0?'':('อีก '+monthsLeft+' งวด ('+MT[endIdx][0]+')')
+  } else if(endIdx<0){
+    // ยังไม่มีงวดที่ remain <= 0 ในตาราง
+    const el=document.getElementById('mt-years')
+    if(el) el.textContent='>10 ปี'
+  }
+
+  const ti=MT.reduce((s,r)=>s+(isNaN(r[10])?0:r[10]),0)
+  const si=document.getElementById('mt-interest')
+  if(si) si.textContent=mtFmtN(ti)
+}
+
+function mtOpenEdit(idx){
+  mtIdx=idx; const r=MT[idx]
+  const t=document.getElementById('mt-edit-title')
+  if(t) t.textContent=r[0]+' — งวดที่ '+r[2]
+  document.getElementById('mt-e-ik').value=r[4]
+  document.getElementById('mt-e-ikb').value=r[5]
+  document.getElementById('mt-e-nuk').value=r[6]
+  document.getElementById('mt-e-nuks').value=r[7]
+  document.getElementById('mt-e-ins').value=r[8]
+  document.getElementById('mt-e-rate').value=(r[9]*100).toFixed(3)
+  mtEpSync(mtOnline?'ok':'err',mtOnline?'พร้อม sync ☁️':'ออฟไลน์')
+  mtCalcEdit()
+  document.getElementById('mt-edit-modal').classList.remove('hidden')
+  setTimeout(()=>document.getElementById('mt-e-ik').focus(),300)
+}
+
+function mtEpSync(cls,txt){
+  const el=document.getElementById('mt-ep-sync')
+  if(el) el.className='badge '+(cls==='ok'?'bg':cls==='err'?'br':'ba')
+  const t=document.getElementById('mt-ep-sync-txt')
+  if(t) t.textContent=txt
+}
+
+function mtCalcEdit(){
+  if(mtIdx<0) return
+  const debt=MT[mtIdx][3]
+  const ik=parseFloat(document.getElementById('mt-e-ik').value)||0
+  const ikb=parseFloat(document.getElementById('mt-e-ikb').value)||0
+  const nuk=parseFloat(document.getElementById('mt-e-nuk').value)||0
+  const nuks=parseFloat(document.getElementById('mt-e-nuks').value)||0
+  const ins=parseFloat(document.getElementById('mt-e-ins').value)||0
+  const rate=(parseFloat(document.getElementById('mt-e-rate').value)||0)/100
+  const total=ik+ikb+nuk+nuks
+  const interest=Math.round(debt*rate/12*100)/100
+  const principal=Math.round((total-ins-interest)*100)/100
+  const remain=Math.round((debt-principal)*100)/100
+  document.getElementById('mt-e-total').value=mtFmtN(total)
+  document.getElementById('mt-e-int').value=mtFmtN(interest)
+  document.getElementById('mt-e-prin').value=mtFmtN(principal)
+  document.getElementById('mt-e-remain').value=mtFmtN(remain)
+}
+
+async function mtSaveEdit(){
+  if(mtIdx<0) return
+  const btn=document.getElementById('mt-save-btn')
+  const r=MT[mtIdx]
+  const ik=parseFloat(document.getElementById('mt-e-ik').value)||0
+  const ikb=parseFloat(document.getElementById('mt-e-ikb').value)||0
+  const nuk=parseFloat(document.getElementById('mt-e-nuk').value)||0
+  const nuks=parseFloat(document.getElementById('mt-e-nuks').value)||0
+  const ins=parseFloat(document.getElementById('mt-e-ins').value)||0
+  const rate=(parseFloat(document.getElementById('mt-e-rate').value)||0)/100
+  // อัปเดต row นี้
+  MT[mtIdx][4]=ik; MT[mtIdx][5]=ikb; MT[mtIdx][6]=nuk; MT[mtIdx][7]=nuks
+  MT[mtIdx][8]=ins; MT[mtIdx][9]=rate
+  // recalc chain จากงวดนี้เป็นต้นไป (debt ของงวดถัดไปจะอัปเดตอัตโนมัติ)
+  mtRecalcChain(mtIdx)
+  mtRender()
+  if(mtOnline){
+    btn.disabled=true; btn.textContent='กำลัง sync...'
+    mtEpSync('load','กำลังบันทึก...')
+    try{
+      await mtUpsert(r[2],ik,ikb,nuk,nuks,ins,rate)
+      mtEpSync('ok','Sync สำเร็จ ✓ นุ๊กเห็นแล้ว!')
+      mtSetLastSync()
+      showToast('บันทึกงวด '+r[2]+' แล้ว — นุ๊กเห็นทันที ✓')
+      setTimeout(()=>mtCloseEdit(),1200)
+    }catch(e){
+      mtEpSync('err','Sync ไม่สำเร็จ — ลองใหม่')
+      showToast('บันทึกในเครื่องแล้ว แต่ sync ล้มเหลว')
+    }finally{
+      btn.disabled=false; btn.textContent='💾 บันทึก + Sync'
+    }
+  }else{
+    mtCloseEdit(); showToast('บันทึกในเครื่องแล้ว (ออฟไลน์)')
+  }
+}
+
+function mtCloseEdit(){
+  const m=document.getElementById('mt-edit-modal')
+  if(m) m.classList.add('hidden'); mtIdx=-1
+}
+
+// Expose to goPage
+window._mtInit=function(){
+  mtFetchEdits()
+  setTimeout(()=>{
+    const cur=document.querySelector('#mt-tbody tr[style*="outline"]')
+    if(cur) cur.scrollIntoView({block:'center',behavior:'smooth'})
+  },600)
+}
+
+
+// ─── BOOT ───────────────────────────────────────────────────
+initHeader()
+updateHome()
+renderPreg()
+buildSalaryTrend()
+</script>
+</body>
+</html>
