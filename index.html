@@ -221,6 +221,16 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 .empty{text-align:center;padding:28px 20px;color:var(--txt3);font-size:13px;line-height:1.8}
 .divider{height:1px;background:rgba(255,255,255,.05);margin:4px 0 10px}
 
+/* MEETING INTERPRETER */
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.mi-block{background:var(--s1);border:1px solid rgba(255,255,255,.06);border-radius:var(--r);padding:14px;margin-bottom:10px}
+.mi-label{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.mi-content{font-size:13px;color:var(--txt);line-height:1.7;white-space:pre-wrap;word-break:break-word}
+.mi-tag{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;margin:2px 3px 2px 0}
+.mi-section{font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin:16px 0 8px;display:flex;align-items:center;gap:6px;border-top:1px solid rgba(255,255,255,.06);padding-top:12px}
+.mi-hist-item{background:var(--s2);border-radius:var(--rs);padding:12px;margin-bottom:8px;cursor:pointer;border:1px solid rgba(255,255,255,.05)}
+.mi-hist-item:active{opacity:.7}
+
 /* TABS */
 .tabs{display:flex;gap:6px;padding:0 14px 10px;overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
@@ -915,6 +925,71 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
   </div>
 </div>
 
+<!-- ══════════════════════════════════════════════════════
+     PAGE 12: AI Meeting Interpreter
+══════════════════════════════════════════════════════ -->
+<div id="pg-meeting" class="page">
+
+  <div style="padding:10px 14px 0">
+    <div class="tip tip-g" style="margin-bottom:10px">
+      <strong>🤖 AI Meeting Interpreter</strong> — วิเคราะห์ข้อความประชุมอัตโนมัติ ทั้งการประชุมทั่วไปและการประชุมโรงงาน
+    </div>
+
+    <!-- API Key Section -->
+    <div class="card" id="mi-apikey-card">
+      <div class="card-title">🔑 Claude API Key</div>
+      <div class="inp-group" style="margin-bottom:8px">
+        <input type="password" class="inp" id="mi-apikey" placeholder="sk-ant-..." style="font-family:var(--mono);font-size:12px">
+      </div>
+      <div style="display:flex;gap:7px">
+        <button class="btn btn-acc btn-sm" onclick="miSaveKey()">บันทึก Key</button>
+        <button class="btn btn-ghost btn-sm" onclick="miClearKey()">ลบ Key</button>
+        <span id="mi-key-status" style="font-size:11px;color:var(--txt3);align-self:center"></span>
+      </div>
+      <div style="font-size:10px;color:var(--txt3);margin-top:8px;line-height:1.5">
+        * Key เก็บเฉพาะในเครื่องนี้ ไม่ส่งไปที่ไหน ยกเว้น Anthropic API โดยตรง
+      </div>
+    </div>
+
+    <!-- Meeting Type -->
+    <div class="card" style="margin-bottom:10px">
+      <div class="card-title">ประเภทการประชุม</div>
+      <div style="display:flex;gap:7px">
+        <button class="tab on" id="mi-type-general" onclick="miSetType('general',this)">💼 ทั่วไป</button>
+        <button class="tab" id="mi-type-factory" onclick="miSetType('factory',this)">🏭 โรงงาน (4M1E)</button>
+      </div>
+    </div>
+
+    <!-- Input -->
+    <div class="card" style="margin-bottom:10px">
+      <div class="card-title">📝 ข้อความจากการประชุม</div>
+      <div class="inp-group" style="margin-bottom:8px">
+        <textarea class="inp" id="mi-input" rows="5" placeholder="วางข้อความที่ถอดเสียงได้จากการประชุม หรือพิมพ์ข้อความที่ผู้พูดพูดไว้ที่นี่..." style="resize:vertical;min-height:100px;line-height:1.6"></textarea>
+      </div>
+      <div style="display:flex;gap:7px">
+        <button class="btn btn-acc" id="mi-analyze-btn" onclick="miAnalyze()">🔍 วิเคราะห์</button>
+        <button class="btn btn-ghost btn-sm" onclick="miClear()">ล้าง</button>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div id="mi-loading" style="display:none;text-align:center;padding:24px">
+      <div style="font-size:28px;animation:spin 1s linear infinite;display:inline-block">⚙️</div>
+      <div style="font-size:13px;color:var(--acc);margin-top:8px">กำลังวิเคราะห์...</div>
+      <div style="font-size:11px;color:var(--txt3);margin-top:4px">Claude กำลังอ่านและตีความ</div>
+    </div>
+
+    <!-- Result -->
+    <div id="mi-result" style="display:none"></div>
+
+    <!-- History -->
+    <div id="mi-history-section" style="display:none">
+      <div class="section" style="padding-left:0">📋 ประวัติการวิเคราะห์ (<span id="mi-hist-count">0</span>)</div>
+      <div id="mi-history-list"></div>
+    </div>
+  </div>
+</div>
+
 </div><!-- end scroll -->
 
 <!-- NAV BAR -->
@@ -951,6 +1026,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
   </button>
   <button class="nb" onclick="goPage('mort-tbl',this)" id="nb-mort-tbl">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>ตารางผ่อน
+  </button>
+  <button class="nb" onclick="goPage('meeting',this)" id="nb-meeting">
+    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>ประชุม AI
   </button>
 </nav>
 
@@ -1469,6 +1547,7 @@ function goPage(id,btn){
     mtRender()
     if(window._mtInit) window._mtInit()
   }
+  if(id==='meeting') miInitPage()
 }
 
 // ─── MORTGAGE TABLE (Supabase) ────────────────────────────────────────
@@ -1876,6 +1955,271 @@ window._mtInit=function(){
   },600)
 }
 
+
+// ─── MEETING INTERPRETER ────────────────────────────────────
+let miType = 'general'
+
+function miSetType(type, btn) {
+  miType = type
+  document.querySelectorAll('#pg-meeting .tab').forEach(b => b.classList.remove('on'))
+  btn.classList.add('on')
+}
+
+function miSaveKey() {
+  const key = document.getElementById('mi-apikey').value.trim()
+  if (!key.startsWith('sk-ant-')) { showToast('API Key ต้องขึ้นต้นด้วย sk-ant-'); return }
+  S.set('mi-apikey', key)
+  document.getElementById('mi-apikey').value = ''
+  document.getElementById('mi-key-status').textContent = '✓ บันทึกแล้ว'
+  document.getElementById('mi-key-status').style.color = 'var(--acc)'
+  showToast('บันทึก API Key แล้ว')
+}
+
+function miClearKey() {
+  S.set('mi-apikey', null)
+  document.getElementById('mi-apikey').value = ''
+  document.getElementById('mi-key-status').textContent = 'ลบแล้ว'
+  document.getElementById('mi-key-status').style.color = 'var(--danger)'
+  showToast('ลบ API Key แล้ว')
+}
+
+function miClear() {
+  document.getElementById('mi-input').value = ''
+  document.getElementById('mi-result').style.display = 'none'
+  document.getElementById('mi-result').innerHTML = ''
+}
+
+function miInitPage() {
+  const key = S.get('mi-apikey')
+  const statusEl = document.getElementById('mi-key-status')
+  if (key) {
+    statusEl.textContent = '✓ มี Key อยู่แล้ว'
+    statusEl.style.color = 'var(--acc)'
+  } else {
+    statusEl.textContent = 'ยังไม่มี Key'
+    statusEl.style.color = 'var(--txt3)'
+  }
+  miRenderHistory()
+}
+
+function miGetSystemPrompt() {
+  const base = `คุณคือ AI Meeting Interpreter
+
+หน้าที่ของคุณไม่ใช่แค่ถอดเสียง แต่ต้องอธิบายสิ่งที่ผู้พูดกำลังสื่อให้เข้าใจง่ายที่สุด
+
+สำหรับทุกข้อความที่ได้ยิน ให้ตอบในรูปแบบนี้
+
+ผู้พูด:
+[ข้อความที่ถอดเสียงได้]
+
+แปลไทย:
+[แปลเป็นภาษาไทย หากต้นฉบับเป็นภาษาอังกฤษ — หากเป็นภาษาไทยอยู่แล้วให้ระบุว่า "(ภาษาไทยแล้ว)"]
+
+ความหมาย:
+[อธิบายเป็นภาษาง่าย ๆ เหมือนอธิบายให้พนักงานใหม่เข้าใจ]
+
+สิ่งที่ต้องการ:
+[ผู้พูดต้องการอะไรจริง ๆ]
+
+ผลกระทบ:
+[ถ้าไม่ทำจะเกิดอะไรขึ้น]
+
+สิ่งที่ควรทำต่อ:
+[Action ที่ควรดำเนินการ]`
+
+  const factory = `
+
+เนื่องจากนี่คือการประชุมโรงงาน ให้วิเคราะห์เพิ่มเติมดังนี้
+
+หมวดหมู่ (4M1E):
+[เลือกที่เกี่ยวข้อง: Man / Machine / Method / Material / Measurement / Environment พร้อมอธิบายสั้น ๆ]
+
+ผลกระทบต่อ:
+[เลือกที่เกี่ยวข้อง: OEE / Downtime / Quality / Safety / Cost พร้อมระบุว่าเพิ่มหรือลดและเพราะอะไร]
+
+Root Cause ที่เป็นไปได้:
+[วิเคราะห์จากข้อมูลที่ได้รับ ถามว่าทำไม 5 ครั้ง (5 Why) ถ้าเป็นไปได้]
+
+Action Item:
+[รายการงานที่ต้องทำ — ระบุเป็น bullet ชัดเจน]
+
+Owner:
+[ผู้รับผิดชอบ หากระบุในข้อความ — ถ้าไม่มีให้เขียน "ยังไม่ระบุ"]
+
+Due Date:
+[กำหนดส่ง หากระบุในข้อความ — ถ้าไม่มีให้เขียน "ยังไม่ระบุ"]`
+
+  const rules = `
+
+กฎสำคัญ:
+1. ห้ามสรุปสั้นเกินไป
+2. ใช้ภาษาไทยง่าย ๆ
+3. อย่าใช้ศัพท์เทคนิคโดยไม่อธิบาย
+4. ถ้าผู้พูดพูดอ้อม ให้ตีความเจตนาที่แท้จริง
+5. ถ้ามี Action Item ให้ระบุชัดเจน
+6. ถ้าข้อมูลไม่ชัด ให้ระบุว่า "ยังไม่สามารถสรุปได้"
+7. อธิบายเหมือนมีผู้ช่วยนั่งฟังประชุมแล้วสรุปให้ผู้จัดการเข้าใจทันที
+8. ตอบเป็นภาษาไทยทั้งหมด`
+
+  return miType === 'factory' ? base + factory + rules : base + rules
+}
+
+function miParseResult(text) {
+  const sections = [
+    { key: 'ผู้พูด', icon: '🗣️', color: 'var(--acc2)' },
+    { key: 'แปลไทย', icon: '🔤', color: 'var(--txt2)' },
+    { key: 'ความหมาย', icon: '💡', color: 'var(--warn)' },
+    { key: 'สิ่งที่ต้องการ', icon: '🎯', color: 'var(--acc)' },
+    { key: 'ผลกระทบ', icon: '⚡', color: 'var(--danger)' },
+    { key: 'สิ่งที่ควรทำต่อ', icon: '✅', color: '#4ade80' },
+    { key: 'หมวดหมู่ (4M1E)', icon: '🏷️', color: 'var(--purple)' },
+    { key: 'ผลกระทบต่อ', icon: '📊', color: 'var(--danger)' },
+    { key: 'Root Cause ที่เป็นไปได้', icon: '🔍', color: 'var(--warn)' },
+    { key: 'Action Item', icon: '📋', color: 'var(--acc)' },
+    { key: 'Owner', icon: '👤', color: 'var(--acc2)' },
+    { key: 'Due Date', icon: '📅', color: 'var(--pink)' },
+  ]
+
+  const factoryKeys = ['หมวดหมู่ (4M1E)', 'ผลกระทบต่อ', 'Root Cause ที่เป็นไปได้', 'Action Item', 'Owner', 'Due Date']
+  let html = ''
+  let isFirstFactory = true
+
+  sections.forEach(s => {
+    const regex = new RegExp(s.key.replace(/[()]/g, '\\$&') + '\\s*:\\s*([\\s\\S]*?)(?=\\n(?:' + sections.map(x => x.key.replace(/[()]/g, '\\$&')).join('|') + ')\\s*:|$)', 'i')
+    const m = text.match(regex)
+    if (!m) return
+    const content = m[1].trim()
+
+    if (factoryKeys.includes(s.key) && isFirstFactory) {
+      html += `<div class="mi-section">🏭 การวิเคราะห์โรงงาน (4M1E)</div>`
+      isFirstFactory = false
+    }
+
+    html += `<div class="mi-block">
+      <div class="mi-label" style="color:${s.color}">${s.icon} ${s.key}</div>
+      <div class="mi-content">${content.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+    </div>`
+  })
+
+  return html || `<div class="mi-block"><div class="mi-content">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div></div>`
+}
+
+async function miAnalyze() {
+  const text = document.getElementById('mi-input').value.trim()
+  if (!text) { showToast('กรุณาใส่ข้อความจากการประชุม'); return }
+
+  const key = S.get('mi-apikey')
+  if (!key) { showToast('กรุณาใส่ Claude API Key ก่อน'); return }
+
+  const btn = document.getElementById('mi-analyze-btn')
+  btn.disabled = true; btn.textContent = '⏳ กำลังวิเคราะห์...'
+  document.getElementById('mi-loading').style.display = 'block'
+  document.getElementById('mi-result').style.display = 'none'
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-calls': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 2048,
+        system: miGetSystemPrompt(),
+        messages: [{ role: 'user', content: text }]
+      })
+    })
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}))
+      throw new Error(err.error?.message || 'API Error: ' + res.status)
+    }
+
+    const data = await res.json()
+    const result = data.content?.[0]?.text || ''
+
+    document.getElementById('mi-loading').style.display = 'none'
+    const resultEl = document.getElementById('mi-result')
+    resultEl.style.display = 'block'
+    resultEl.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div style="font-size:11px;color:var(--acc)">✅ วิเคราะห์เสร็จแล้ว · ${miType === 'factory' ? '🏭 โรงงาน' : '💼 ทั่วไป'}</div>
+        <button onclick="miCopyResult()" class="btn btn-ghost btn-sm">📋 คัดลอก</button>
+      </div>
+      ${miParseResult(result)}`
+    resultEl.dataset.raw = result
+
+    miSaveHistory(text, result)
+    showToast('วิเคราะห์เสร็จแล้ว ✓')
+  } catch (e) {
+    document.getElementById('mi-loading').style.display = 'none'
+    document.getElementById('mi-result').style.display = 'block'
+    document.getElementById('mi-result').innerHTML = `
+      <div class="tip" style="border-left-color:var(--danger);background:rgba(255,94,94,.07)">
+        <strong style="color:var(--danger)">❌ เกิดข้อผิดพลาด</strong><br>${e.message}
+        <div style="font-size:11px;margin-top:6px;color:var(--txt3)">ตรวจสอบ API Key และการเชื่อมต่ออินเทอร์เน็ต</div>
+      </div>`
+  } finally {
+    btn.disabled = false; btn.textContent = '🔍 วิเคราะห์'
+  }
+}
+
+function miCopyResult() {
+  const raw = document.getElementById('mi-result').dataset.raw || ''
+  if (!raw) return
+  navigator.clipboard.writeText(raw).then(() => showToast('คัดลอกแล้ว ✓')).catch(() => showToast('คัดลอกไม่สำเร็จ'))
+}
+
+function miSaveHistory(input, result) {
+  const hist = S.get('mi-history') || []
+  hist.unshift({ id: Date.now(), input: input.slice(0, 120), result, type: miType, date: new Date().toLocaleDateString('th-TH') })
+  if (hist.length > 20) hist.pop()
+  S.set('mi-history', hist)
+  miRenderHistory()
+}
+
+function miRenderHistory() {
+  const hist = S.get('mi-history') || []
+  const secEl = document.getElementById('mi-history-section')
+  const listEl = document.getElementById('mi-history-list')
+  const countEl = document.getElementById('mi-hist-count')
+  if (!hist.length) { if (secEl) secEl.style.display = 'none'; return }
+  if (secEl) secEl.style.display = 'block'
+  if (countEl) countEl.textContent = hist.length
+  if (!listEl) return
+  listEl.innerHTML = hist.map(h => `
+    <div class="mi-hist-item" onclick="miLoadHistory(${h.id})">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <span class="badge ${h.type === 'factory' ? 'ba' : 'bb'}" style="font-size:9px">${h.type === 'factory' ? '🏭 โรงงาน' : '💼 ทั่วไป'}</span>
+        <span style="font-size:10px;color:var(--txt3)">${h.date}</span>
+      </div>
+      <div style="font-size:12px;color:var(--txt2);line-height:1.4">${h.input.replace(/</g,'&lt;')}${h.input.length >= 120 ? '...' : ''}</div>
+    </div>`).join('')
+}
+
+function miLoadHistory(id) {
+  const hist = S.get('mi-history') || []
+  const h = hist.find(x => x.id === id)
+  if (!h) return
+  document.getElementById('mi-input').value = h.input
+  miType = h.type
+  document.querySelectorAll('#pg-meeting .tab').forEach(b => b.classList.remove('on'))
+  const typeBtn = document.getElementById('mi-type-' + h.type)
+  if (typeBtn) typeBtn.classList.add('on')
+  const resultEl = document.getElementById('mi-result')
+  resultEl.style.display = 'block'
+  resultEl.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div style="font-size:11px;color:var(--txt3)">📂 โหลดจากประวัติ · ${h.type === 'factory' ? '🏭 โรงงาน' : '💼 ทั่วไป'}</div>
+      <button onclick="miCopyResult()" class="btn btn-ghost btn-sm">📋 คัดลอก</button>
+    </div>
+    ${miParseResult(h.result)}`
+  resultEl.dataset.raw = h.result
+  document.getElementById('scroll').scrollTop = 0
+}
 
 // ─── BOOT ───────────────────────────────────────────────────
 initHeader()
