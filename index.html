@@ -4,12 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <meta name="theme-color" content="#0d1117">
-<title>Shopee Affiliate Dashboard — NANTASIT</title>
+<title>Shopee Affiliate AI Dashboard — NANTASIT</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#0d1117;--s1:#161b22;--s2:#21262d;--s3:#30363d;
-  --acc:#ee4d2d;--acc2:#ff7337;--green:#3fb950;--blue:#58a6ff;--yellow:#e3b341;--purple:#a371f7;--pink:#f778ba;
+  --acc:#ee4d2d;--acc2:#ff7337;--green:#3fb950;--blue:#58a6ff;
+  --yellow:#e3b341;--purple:#a371f7;--pink:#f778ba;--cyan:#39d0d8;
   --txt:#e6edf3;--txt2:#8b949e;--txt3:#484f58;
   --r:12px;--rs:8px;--font:'Noto Sans Thai',sans-serif;--mono:'IBM Plex Mono',monospace;
   --tier-high:#ff6b6b;--tier-mid:#ffa94d;--tier-low:#74c0fc;
@@ -17,537 +18,677 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--txt);font-family:var(--font);min-height:100vh;line-height:1.6}
-
-/* SCROLLBAR */
 ::-webkit-scrollbar{width:6px;height:6px}
 ::-webkit-scrollbar-track{background:var(--s1)}
 ::-webkit-scrollbar-thumb{background:var(--s3);border-radius:3px}
 
-/* HEADER */
-.header{
-  background:linear-gradient(135deg,#1a0a08 0%,#0d1117 50%,#0a0f1a 100%);
-  border-bottom:1px solid var(--s3);
-  padding:20px 24px 16px;
-  position:sticky;top:0;z-index:100;
-  backdrop-filter:blur(12px);
-}
-.header-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.brand{display:flex;align-items:center;gap:12px}
-.brand-logo{
-  width:40px;height:40px;border-radius:10px;
-  background:linear-gradient(135deg,var(--acc),var(--acc2));
-  display:flex;align-items:center;justify-content:center;
-  font-size:20px;flex-shrink:0;
-}
-.brand-text{line-height:1.2}
-.brand-title{font-size:16px;font-weight:700;color:var(--txt)}
+/* NAV TABS */
+.header{background:linear-gradient(135deg,#1a0a08,#0d1117 50%,#0a0f1a);border-bottom:1px solid var(--s3);padding:16px 24px 0;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-logo{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--acc),var(--acc2));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.brand-title{font-size:15px;font-weight:700}
 .brand-sub{font-size:11px;color:var(--txt2)}
-.header-badge{
-  background:linear-gradient(135deg,var(--acc),var(--acc2));
-  color:#fff;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;
-}
+.header-badge{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600}
+.nav-tabs{display:flex;gap:0}
+.nav-tab{padding:8px 18px;font-size:13px;font-weight:600;color:var(--txt2);cursor:pointer;border-bottom:2px solid transparent;transition:.2s;font-family:var(--font)}
+.nav-tab:hover{color:var(--txt)}
+.nav-tab.active{color:var(--txt);border-bottom-color:var(--acc)}
+.nav-tab .tab-icon{margin-right:5px}
 
-/* STATS BAR */
-.stats-bar{
-  display:flex;gap:12px;padding:16px 24px;
-  overflow-x:auto;border-bottom:1px solid var(--s2);
-  background:var(--s1);
-}
-.stat-card{
-  flex-shrink:0;background:var(--s2);border:1px solid var(--s3);
-  border-radius:var(--rs);padding:10px 16px;min-width:120px;text-align:center;
-}
-.stat-num{font-size:22px;font-weight:800;font-family:var(--mono)}
-.stat-label{font-size:10px;color:var(--txt2);margin-top:2px}
-.stat-high .stat-num{color:var(--tier-high)}
-.stat-mid .stat-num{color:var(--tier-mid)}
-.stat-low .stat-num{color:var(--tier-low)}
-.stat-total .stat-num{color:var(--acc2)}
+/* STATS */
+.stats-bar{display:flex;gap:10px;padding:12px 24px;overflow-x:auto;background:var(--s1);border-bottom:1px solid var(--s2)}
+.stat-card{flex-shrink:0;background:var(--s2);border:1px solid var(--s3);border-radius:var(--rs);padding:8px 14px;min-width:110px;text-align:center}
+.stat-num{font-size:20px;font-weight:800;font-family:var(--mono)}
+.stat-label{font-size:10px;color:var(--txt2);margin-top:1px}
 
-/* FILTER BAR */
-.filter-bar{
-  display:flex;gap:10px;padding:14px 24px;
-  flex-wrap:wrap;align-items:center;
-  background:var(--s1);border-bottom:1px solid var(--s2);
-  position:sticky;top:77px;z-index:90;
-}
+/* FILTER */
+.filter-bar{display:flex;gap:10px;padding:12px 24px;flex-wrap:wrap;align-items:center;background:var(--s1);border-bottom:1px solid var(--s2);position:sticky;top:73px;z-index:90}
 .filter-label{font-size:11px;color:var(--txt2);font-weight:600;text-transform:uppercase;letter-spacing:.5px;flex-shrink:0}
-.search-box{
-  background:var(--s2);border:1px solid var(--s3);border-radius:var(--rs);
-  padding:7px 12px;color:var(--txt);font-family:var(--font);font-size:13px;
-  flex:1;min-width:160px;max-width:240px;outline:none;transition:.2s;
-}
+.search-box{background:var(--s2);border:1px solid var(--s3);border-radius:var(--rs);padding:7px 12px;color:var(--txt);font-family:var(--font);font-size:13px;flex:1;min-width:150px;max-width:220px;outline:none;transition:.2s}
 .search-box:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(238,77,45,.15)}
 .search-box::placeholder{color:var(--txt3)}
 .filter-chips{display:flex;gap:6px;flex-wrap:wrap}
-.chip{
-  padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;
-  cursor:pointer;border:1px solid var(--s3);background:var(--s2);color:var(--txt2);
-  transition:.2s;user-select:none;
-}
+.chip{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--s3);background:var(--s2);color:var(--txt2);transition:.2s;user-select:none}
 .chip:hover{border-color:var(--txt2);color:var(--txt)}
 .chip.active{background:var(--acc);border-color:var(--acc);color:#fff}
 .chip.high.active{background:var(--tier-high);border-color:var(--tier-high)}
 .chip.mid.active{background:var(--tier-mid);border-color:var(--tier-mid);color:#000}
 .chip.low.active{background:var(--tier-low);border-color:var(--tier-low);color:#000}
 .view-toggle{display:flex;gap:4px;margin-left:auto}
-.view-btn{
-  padding:6px 10px;border-radius:6px;border:1px solid var(--s3);
-  background:var(--s2);color:var(--txt2);cursor:pointer;font-size:14px;transition:.2s;
-}
+.view-btn{padding:6px 10px;border-radius:6px;border:1px solid var(--s3);background:var(--s2);color:var(--txt2);cursor:pointer;font-size:13px;transition:.2s}
 .view-btn.active{background:var(--acc);border-color:var(--acc);color:#fff}
 
 /* MAIN */
-.main{padding:20px 24px;max-width:1400px;margin:0 auto;width:100%}
-
-/* RESULT COUNT */
-.result-info{font-size:12px;color:var(--txt2);margin-bottom:14px}
+.main{padding:18px 24px;max-width:1400px;margin:0 auto;width:100%}
+.tab-panel{display:none}.tab-panel.active{display:block}
+.result-info{font-size:12px;color:var(--txt2);margin-bottom:12px}
 .result-info strong{color:var(--txt)}
 
-/* GRID */
-.products-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
-  gap:16px;
-}
+/* PRODUCT GRID */
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
 .products-list{display:flex;flex-direction:column;gap:12px}
 
 /* PRODUCT CARD */
-.product-card{
-  background:var(--s1);border:1px solid var(--s2);border-radius:var(--r);
-  overflow:hidden;transition:.2s;
-}
+.product-card{background:var(--s1);border:1px solid var(--s2);border-radius:var(--r);overflow:hidden;transition:.2s}
 .product-card:hover{border-color:var(--s3);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.4)}
-.card-header{
-  padding:14px 16px 10px;
-  border-bottom:1px solid var(--s2);
-  display:flex;flex-direction:column;gap:8px;
-  position:relative;
-}
-.rank-badge{
-  position:absolute;top:14px;right:14px;
-  width:28px;height:28px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:800;font-family:var(--mono);
-  background:var(--s3);color:var(--txt2);
-}
+.card-header{padding:14px 16px 10px;border-bottom:1px solid var(--s2);position:relative}
+.rank-badge{position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;font-family:var(--mono);background:var(--s3);color:var(--txt2)}
 .rank-1{background:linear-gradient(135deg,#ffd700,#ffb300);color:#000}
 .rank-2{background:linear-gradient(135deg,#c0c0c0,#a0a0a0);color:#000}
-.rank-3{background:linear-gradient(135deg,#cd7f32,#a0522d);color:#fff}
-.card-badges{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding-right:40px}
-.badge{
-  padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;
-  text-transform:uppercase;letter-spacing:.4px;
-}
-.badge-cat{background:rgba(88,166,255,.15);color:var(--blue);border:1px solid rgba(88,166,255,.25)}
-.badge-tier-high{background:rgba(255,107,107,.15);color:var(--tier-high);border:1px solid rgba(255,107,107,.3)}
-.badge-tier-mid{background:rgba(255,169,77,.15);color:var(--tier-mid);border:1px solid rgba(255,169,77,.3)}
-.badge-tier-low{background:rgba(116,192,252,.15);color:var(--tier-low);border:1px solid rgba(116,192,252,.3)}
-.product-name{font-size:15px;font-weight:700;color:var(--txt);line-height:1.3}
-.product-meta{display:flex;gap:10px;align-items:center}
-.price-tag{
-  background:linear-gradient(135deg,var(--acc),var(--acc2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  font-size:13px;font-weight:800;font-family:var(--mono);
-}
-.trigger-tag{
-  font-size:11px;color:var(--yellow);
-  background:rgba(227,179,65,.1);border:1px solid rgba(227,179,65,.2);
-  padding:2px 8px;border-radius:4px;
-}
+.rank-3{background:linear-gradient(135deg,#cd7f32,#a05020);color:#fff}
+.card-badges{display:flex;gap:6px;flex-wrap:wrap;padding-right:36px;margin-bottom:6px}
+.badge{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+.badge-cat{background:rgba(88,166,255,.15);color:var(--blue);border:1px solid rgba(88,166,255,.2)}
+.badge-tier-high{background:rgba(255,107,107,.15);color:var(--tier-high);border:1px solid rgba(255,107,107,.25)}
+.badge-tier-mid{background:rgba(255,169,77,.15);color:var(--tier-mid);border:1px solid rgba(255,169,77,.25)}
+.badge-tier-low{background:rgba(116,192,252,.15);color:var(--tier-low);border:1px solid rgba(116,192,252,.25)}
+.product-name{font-size:14px;font-weight:700;color:var(--txt);line-height:1.3;margin-bottom:6px}
+.product-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.price-tag{background:linear-gradient(135deg,var(--acc),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:13px;font-weight:800;font-family:var(--mono)}
+.trigger-tag{font-size:11px;color:var(--yellow);background:rgba(227,179,65,.1);border:1px solid rgba(227,179,65,.2);padding:2px 8px;border-radius:4px}
 
-/* CARD BODY */
+/* CARD TABS */
+.card-nav{display:flex;border-bottom:1px solid var(--s2);background:var(--s2)}
+.card-tab{flex:1;padding:7px 4px;font-size:11px;font-weight:700;color:var(--txt3);cursor:pointer;text-align:center;border-bottom:2px solid transparent;transition:.15s;font-family:var(--font)}
+.card-tab:hover{color:var(--txt2)}
+.card-tab.active{color:var(--txt);border-bottom-color:var(--acc)}
+.card-tab.ai-tab.active{border-bottom-color:var(--purple)}
 .card-body{padding:12px 16px}
-.section-title{
-  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;
-  color:var(--txt3);margin-bottom:6px;margin-top:12px;display:flex;align-items:center;gap:6px;
-}
+.card-panel{display:none}.card-panel.active{display:block}
+
+/* SECTION TITLES */
+.section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--txt3);margin-bottom:6px;margin-top:10px;display:flex;align-items:center;gap:5px}
 .section-title:first-child{margin-top:0}
 .section-title::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--acc);display:inline-block}
+.ai-panel .section-title::before{background:var(--purple)}
 
 /* HOOKS */
-.hooks{display:flex;flex-direction:column;gap:8px}
-.hook-item{
-  background:var(--s2);border:1px solid var(--s3);border-radius:var(--rs);
-  padding:8px 10px;position:relative;
-}
-.hook-num{
-  font-size:9px;font-weight:700;color:var(--acc);font-family:var(--mono);
-  text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;
-}
-.hook-text{font-size:12px;color:var(--txt);line-height:1.5;padding-right:32px}
-.copy-btn{
-  position:absolute;top:8px;right:8px;
-  background:var(--s3);border:none;border-radius:6px;
-  padding:4px 7px;cursor:pointer;font-size:11px;color:var(--txt2);
-  transition:.2s;line-height:1;
-}
+.hooks{display:flex;flex-direction:column;gap:7px}
+.hook-item{background:var(--s2);border:1px solid var(--s3);border-radius:var(--rs);padding:8px 10px;position:relative}
+.hook-num{font-size:9px;font-weight:700;color:var(--acc);font-family:var(--mono);text-transform:uppercase;margin-bottom:3px}
+.hook-text{font-size:12px;color:var(--txt);line-height:1.5;padding-right:30px}
+.copy-btn{position:absolute;top:8px;right:8px;background:var(--s3);border:none;border-radius:6px;padding:3px 7px;cursor:pointer;font-size:11px;color:var(--txt2);transition:.2s;line-height:1}
 .copy-btn:hover{background:var(--acc);color:#fff}
 .copy-btn.copied{background:var(--green);color:#fff}
-
-/* CONTENT IDEA */
-.content-idea{
-  background:rgba(163,113,247,.1);border:1px solid rgba(163,113,247,.2);
-  border-radius:var(--rs);padding:8px 10px;
-  font-size:12px;color:var(--txt);line-height:1.5;
-}
-
-/* KEYWORDS */
+.content-idea{background:rgba(163,113,247,.08);border:1px solid rgba(163,113,247,.2);border-radius:var(--rs);padding:8px 10px;font-size:12px;color:var(--txt);line-height:1.5}
 .keywords{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.keyword-tag{
-  background:var(--s2);border:1px solid var(--s3);
-  border-radius:4px;padding:3px 8px;font-size:11px;color:var(--txt2);
-  font-family:var(--mono);cursor:pointer;transition:.2s;user-select:none;
-}
+.keyword-tag{background:var(--s2);border:1px solid var(--s3);border-radius:4px;padding:3px 8px;font-size:11px;color:var(--txt2);font-family:var(--mono);cursor:pointer;transition:.2s;user-select:none}
 .keyword-tag:hover{border-color:var(--blue);color:var(--blue)}
 .keyword-tag.copied{border-color:var(--green);color:var(--green)}
-.copy-all-btn{
-  margin-left:auto;background:var(--s2);border:1px solid var(--s3);
-  border-radius:4px;padding:3px 8px;font-size:10px;color:var(--txt2);
-  cursor:pointer;font-family:var(--font);transition:.2s;flex-shrink:0;
-}
+.copy-all-btn{margin-left:auto;background:var(--s2);border:1px solid var(--s3);border-radius:4px;padding:3px 8px;font-size:10px;color:var(--txt2);cursor:pointer;font-family:var(--font);transition:.2s;flex-shrink:0}
 .copy-all-btn:hover{border-color:var(--acc);color:var(--acc)}
 .copy-all-btn.copied{border-color:var(--green);color:var(--green)}
-
-/* CHECKLIST */
-.checklist{display:flex;flex-direction:column;gap:4px}
-.check-item{
-  display:flex;align-items:center;gap:8px;
-  padding:5px 8px;border-radius:6px;cursor:pointer;
-  font-size:12px;color:var(--txt2);transition:.15s;
-  user-select:none;
-}
+.checklist{display:flex;flex-direction:column;gap:3px}
+.check-item{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:6px;cursor:pointer;font-size:12px;color:var(--txt2);transition:.15s;user-select:none}
 .check-item:hover{background:var(--s2);color:var(--txt)}
-.check-box{
-  width:16px;height:16px;border-radius:4px;flex-shrink:0;
-  border:1.5px solid var(--s3);background:transparent;transition:.15s;
-  display:flex;align-items:center;justify-content:center;font-size:10px;
-}
+.check-box{width:16px;height:16px;border-radius:4px;flex-shrink:0;border:1.5px solid var(--s3);background:transparent;transition:.15s;display:flex;align-items:center;justify-content:center;font-size:10px}
 .check-item.done .check-box{background:var(--green);border-color:var(--green);color:#fff}
 .check-item.done .check-label{text-decoration:line-through;color:var(--txt3)}
 .progress-bar{margin-top:8px;height:3px;background:var(--s3);border-radius:2px;overflow:hidden}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--blue));border-radius:2px;transition:.3s}
 
-/* CARD LIST LAYOUT */
-.products-list .product-card{display:flex;flex-direction:row}
-.products-list .card-header{flex:0 0 280px;border-bottom:none;border-right:1px solid var(--s2)}
-.products-list .card-body{flex:1;overflow:hidden}
+/* AI PROMPTS */
+.ai-panel{}
+.ai-tool-label{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px}
+.grok-label{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.15)}
+.kling-label{background:rgba(57,208,216,.1);color:var(--cyan);border:1px solid rgba(57,208,216,.2)}
+.ai-prompt-box{background:var(--s2);border:1px solid var(--s3);border-radius:var(--rs);padding:9px 10px;position:relative;margin-bottom:8px}
+.ai-prompt-type{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.prompt-before .ai-prompt-type{color:#ff8888}
+.prompt-after .ai-prompt-type{color:var(--green)}
+.prompt-video .ai-prompt-type{color:var(--cyan)}
+.ai-prompt-text{font-size:11px;color:var(--txt2);line-height:1.6;padding-right:30px;font-family:var(--mono)}
+.ai-prompt-box .copy-btn{top:7px}
 
-/* EMPTY STATE */
-.empty-state{
-  text-align:center;padding:60px 20px;color:var(--txt2);
-  grid-column:1/-1;
-}
-.empty-state .icon{font-size:40px;margin-bottom:12px}
+/* WORKFLOW STEPS */
+.workflow-steps{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.wf-step{display:flex;align-items:flex-start;gap:10px;padding:7px 10px;background:var(--s2);border-radius:var(--rs);border:1px solid var(--s3)}
+.wf-num{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+.wf-content{flex:1}
+.wf-tool{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+.wf-grok{color:#fff}.wf-kling{color:var(--cyan)}.wf-capcut{color:var(--yellow)}.wf-post{color:var(--green)}.wf-prep{color:var(--txt2)}
+.wf-desc{font-size:11px;color:var(--txt2);line-height:1.4}
+
+/* AI GUIDE PAGE */
+.ai-guide{max-width:900px;margin:0 auto}
+.guide-hero{background:linear-gradient(135deg,rgba(163,113,247,.15),rgba(57,208,216,.1));border:1px solid rgba(163,113,247,.3);border-radius:var(--r);padding:24px;margin-bottom:20px;text-align:center}
+.guide-hero h1{font-size:22px;font-weight:800;margin-bottom:8px}
+.guide-hero p{color:var(--txt2);font-size:13px}
+.guide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:20px}
+.guide-card{background:var(--s1);border:1px solid var(--s2);border-radius:var(--r);padding:16px}
+.guide-card h3{font-size:14px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.guide-card p{font-size:12px;color:var(--txt2);line-height:1.6;margin-bottom:10px}
+.guide-card a{font-size:12px;color:var(--blue);text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+.guide-card a:hover{text-decoration:underline}
+.flow-diagram{background:var(--s1);border:1px solid var(--s2);border-radius:var(--r);padding:20px;margin-bottom:20px}
+.flow-diagram h2{font-size:16px;font-weight:700;margin-bottom:16px;text-align:center}
+.flow-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:10px}
+.flow-box{background:var(--s2);border:1px solid var(--s3);border-radius:var(--rs);padding:10px 16px;text-align:center;min-width:140px;flex-shrink:0}
+.flow-box .fb-icon{font-size:24px;margin-bottom:4px}
+.flow-box .fb-title{font-size:12px;font-weight:700}
+.flow-box .fb-sub{font-size:10px;color:var(--txt2)}
+.flow-box.grok-box{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.05)}
+.flow-box.kling-box{border-color:rgba(57,208,216,.3);background:rgba(57,208,216,.07)}
+.flow-box.capcut-box{border-color:rgba(227,179,65,.3);background:rgba(227,179,65,.07)}
+.flow-box.post-box{border-color:rgba(63,185,80,.3);background:rgba(63,185,80,.07)}
+.flow-arrow{color:var(--txt3);font-size:18px;flex-shrink:0}
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.tip-card{background:var(--s1);border:1px solid var(--s2);border-radius:var(--rs);padding:14px}
+.tip-card .tip-icon{font-size:24px;margin-bottom:6px}
+.tip-card h4{font-size:12px;font-weight:700;margin-bottom:4px}
+.tip-card p{font-size:11px;color:var(--txt2);line-height:1.5}
 
 /* TOAST */
-.toast{
-  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
-  background:var(--green);color:#fff;padding:10px 20px;border-radius:20px;
-  font-size:13px;font-weight:600;z-index:9999;transition:.3s;opacity:0;
-  pointer-events:none;
-}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:9999;transition:.3s;opacity:0;pointer-events:none;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
-/* MOBILE RESPONSIVE */
+/* EMPTY */
+.empty-state{text-align:center;padding:60px 20px;color:var(--txt2);grid-column:1/-1}
+.empty-state .icon{font-size:40px;margin-bottom:12px}
+
 @media(max-width:768px){
   .header,.stats-bar,.filter-bar,.main{padding-left:14px;padding-right:14px}
   .products-grid{grid-template-columns:1fr}
-  .filter-bar{top:68px}
-  .products-list .product-card{flex-direction:column}
-  .products-list .card-header{flex:none;border-right:none;border-bottom:1px solid var(--s2)}
+  .filter-bar{top:69px}
   .view-toggle{display:none}
-}
-@media(max-width:480px){
-  .stats-bar{gap:8px}
-  .stat-card{min-width:90px;padding:8px 10px}
-  .stat-num{font-size:18px}
+  .flow-row{flex-direction:column}
+  .flow-arrow{transform:rotate(90deg)}
 }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-top">
     <div class="brand">
       <div class="brand-logo">🛍️</div>
-      <div class="brand-text">
-        <div class="brand-title">Shopee Affiliate Dashboard</div>
-        <div class="brand-sub">โดย NANTASIT • อัพเดต: <span id="lastUpdated">2 มิถุนายน 2026</span></div>
+      <div>
+        <div class="brand-title">Shopee Affiliate AI Dashboard</div>
+        <div class="brand-sub">NANTASIT • อัพเดต: 2 มิถุนายน 2026</div>
       </div>
     </div>
-    <div class="header-badge">🔥 15 สินค้า Viral-Ready</div>
+    <div class="header-badge">🤖 Grok + Kling AI Ready</div>
+  </div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="switchMainTab('products')"><span class="tab-icon">🛒</span>สินค้า 15 รายการ</div>
+    <div class="nav-tab" onclick="switchMainTab('aiguide')"><span class="tab-icon">🤖</span>AI Workflow Guide</div>
   </div>
 </div>
 
-<!-- STATS BAR -->
+<!-- STATS -->
 <div class="stats-bar">
-  <div class="stat-card stat-total">
-    <div class="stat-num" id="totalCount">15</div>
-    <div class="stat-label">สินค้าทั้งหมด</div>
-  </div>
-  <div class="stat-card stat-high">
-    <div class="stat-num">5</div>
-    <div class="stat-label">🔴 สูงมาก</div>
-  </div>
-  <div class="stat-card stat-mid">
-    <div class="stat-num">5</div>
-    <div class="stat-label">🟠 สูง</div>
-  </div>
-  <div class="stat-card stat-low">
-    <div class="stat-num">5</div>
-    <div class="stat-label">🟡 กลาง</div>
-  </div>
-  <div class="stat-card" style="min-width:140px">
-    <div class="stat-num" style="color:var(--yellow);font-size:14px">฿60–300</div>
-    <div class="stat-label">ช่วงราคา (บาท)</div>
-  </div>
-  <div class="stat-card" style="min-width:140px">
-    <div class="stat-num" style="color:var(--purple);font-size:14px">5–10 วิ</div>
-    <div class="stat-label">Demo ได้ในวิดีโอ</div>
-  </div>
+  <div class="stat-card"><div class="stat-num" id="totalCount" style="color:var(--acc2)">15</div><div class="stat-label">สินค้าทั้งหมด</div></div>
+  <div class="stat-card"><div class="stat-num" style="color:var(--tier-high)">5</div><div class="stat-label">🔴 สูงมาก</div></div>
+  <div class="stat-card"><div class="stat-num" style="color:var(--tier-mid)">5</div><div class="stat-label">🟠 สูง</div></div>
+  <div class="stat-card"><div class="stat-num" style="color:var(--tier-low)">5</div><div class="stat-label">🟡 กลาง</div></div>
+  <div class="stat-card"><div class="stat-num" style="color:var(--yellow);font-size:14px">฿60–300</div><div class="stat-label">ช่วงราคา</div></div>
+  <div class="stat-card"><div class="stat-num" style="color:var(--purple);font-size:13px">Grok+Kling</div><div class="stat-label">AI Tools</div></div>
 </div>
 
-<!-- FILTER BAR -->
-<div class="filter-bar">
+<!-- FILTER (only show on products tab) -->
+<div class="filter-bar" id="filterBar">
   <span class="filter-label">ค้นหา</span>
   <input class="search-box" id="searchInput" placeholder="พิมพ์ชื่อสินค้า, keyword..." oninput="applyFilters()">
-
-  <span class="filter-label">โอกาสขาย</span>
+  <span class="filter-label">โอกาส</span>
   <div class="filter-chips" id="tierChips">
     <div class="chip active" data-tier="all" onclick="setChip('tier',this)">ทั้งหมด</div>
     <div class="chip high" data-tier="สูงมาก" onclick="setChip('tier',this)">🔴 สูงมาก</div>
     <div class="chip mid" data-tier="สูง" onclick="setChip('tier',this)">🟠 สูง</div>
     <div class="chip low" data-tier="กลาง" onclick="setChip('tier',this)">🟡 กลาง</div>
   </div>
-
   <span class="filter-label">หมวด</span>
   <div class="filter-chips" id="catChips">
     <div class="chip active" data-cat="all" onclick="setChip('cat',this)">ทั้งหมด</div>
-    <div class="chip" data-cat="ทำความสะอาด" onclick="setChip('cat',this)">🧹 ทำความสะอาด</div>
+    <div class="chip" data-cat="ทำความสะอาด" onclick="setChip('cat',this)">🧹 สะอาด</div>
     <div class="chip" data-cat="จัดระเบียบ" onclick="setChip('cat',this)">📦 จัดระเบียบ</div>
-    <div class="chip" data-cat="ของใช้ครัว" onclick="setChip('cat',this)">🍳 ของใช้ครัว</div>
-    <div class="chip" data-cat="ของใช้บ้าน" onclick="setChip('cat',this)">🏠 ของใช้บ้าน</div>
+    <div class="chip" data-cat="ของใช้ครัว" onclick="setChip('cat',this)">🍳 ครัว</div>
+    <div class="chip" data-cat="ของใช้บ้าน" onclick="setChip('cat',this)">🏠 บ้าน</div>
     <div class="chip" data-cat="สัตว์เลี้ยง" onclick="setChip('cat',this)">🐾 สัตว์เลี้ยง</div>
   </div>
-
   <div class="view-toggle">
-    <button class="view-btn active" id="gridBtn" onclick="setView('grid')" title="Grid">⊞</button>
-    <button class="view-btn" id="listBtn" onclick="setView('list')" title="List">☰</button>
+    <button class="view-btn active" id="gridBtn" onclick="setView('grid')">⊞</button>
+    <button class="view-btn" id="listBtn" onclick="setView('list')">☰</button>
   </div>
 </div>
 
-<!-- MAIN -->
 <div class="main">
+
+<!-- PRODUCTS TAB -->
+<div class="tab-panel active" id="tab-products">
   <div class="result-info" id="resultInfo">แสดง <strong>15</strong> สินค้า</div>
   <div class="products-grid" id="productsContainer"></div>
 </div>
 
-<!-- TOAST -->
+<!-- AI GUIDE TAB -->
+<div class="tab-panel" id="tab-aiguide">
+<div class="ai-guide">
+  <div class="guide-hero">
+    <h1>🤖 AI Video Workflow สำหรับ Shopee Affiliate</h1>
+    <p>ใช้ <strong>Grok (Aurora)</strong> สร้างภาพ Before/After → <strong>Kling AI</strong> ทำเป็นวิดีโอ → <strong>CapCut</strong> ตัดต่อ → โพสต์ขาย</p>
+  </div>
+
+  <div class="flow-diagram">
+    <h2>🔄 Flow การทำงานทั้งหมด</h2>
+    <div class="flow-row">
+      <div class="flow-box grok-box"><div class="fb-icon">⚡</div><div class="fb-title">Grok Aurora</div><div class="fb-sub">สร้างภาพ Before+After</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box kling-box"><div class="fb-icon">🎬</div><div class="fb-title">Kling AI</div><div class="fb-sub">Image → Video 5-10 วิ</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box capcut-box"><div class="fb-icon">✂️</div><div class="fb-title">CapCut</div><div class="fb-sub">ต่อคลิป + Hook Text + เพลง</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box post-box"><div class="fb-icon">📱</div><div class="fb-title">โพสต์</div><div class="fb-sub">TikTok / Reels + Shopee Link</div></div>
+    </div>
+  </div>
+
+  <div class="guide-grid">
+    <div class="guide-card">
+      <h3>⚡ Grok Aurora</h3>
+      <p>ใช้สร้างภาพ <strong>Before</strong> (สกปรก/รก/มีปัญหา) และ <strong>After</strong> (สะอาด/จัดเรียบ/แก้แล้ว) ที่สมจริงมาก Prompt ภาษาอังกฤษได้ผลดีที่สุด</p>
+      <a href="https://x.com/i/grok" target="_blank">🔗 เปิด Grok</a>
+    </div>
+    <div class="guide-card">
+      <h3>🎬 Kling AI</h3>
+      <p>นำภาพจาก Grok → อัพโหลดใน Kling → เลือก <strong>Image to Video</strong> → ใส่ prompt ว่าอยากให้อะไรเคลื่อนไหว → ได้วิดีโอ 5-10 วินาที</p>
+      <a href="https://klingai.com" target="_blank">🔗 เปิด Kling AI</a>
+    </div>
+    <div class="guide-card">
+      <h3>✂️ CapCut AI</h3>
+      <p>นำ 2 คลิป (Before+After) มาต่อกัน → ใส่ Hook Text ใน 3 วินาทีแรก → เพิ่มเพลง Trending → Export 9:16 สำหรับ Reels/TikTok</p>
+      <a href="https://www.capcut.com" target="_blank">🔗 เปิด CapCut</a>
+    </div>
+    <div class="guide-card">
+      <h3>🛒 Shopee Affiliate Link</h3>
+      <p>ใส่ลิงก์ใน <strong>Bio</strong> หรือ <strong>Caption</strong> ไม่ต้องมีสต็อก ไม่ต้องจัดส่ง รับ commission 2.5–12% ทุกยอดขาย</p>
+      <a href="https://affiliate.shopee.co.th" target="_blank">🔗 สมัคร Shopee Affiliate</a>
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <h2>💡 Tips การใช้ Grok ให้ได้ภาพสมจริง</h2>
+    <div class="tips-grid">
+      <div class="tip-card"><div class="tip-icon">📸</div><h4>เพิ่ม "photorealistic"</h4><p>ทุก prompt ต้องมีคำว่า <code>photorealistic, ultra detailed</code> เพื่อให้ภาพดูเหมือนถ่ายจริง</p></div>
+      <div class="tip-card"><div class="tip-icon">🏠</div><h4>ระบุ "Thai home"</h4><p>ใส่ <code>Thai home, Thai bathroom, Thai kitchen</code> เพื่อให้ฉากดูคุ้นเคยกับคนไทย</p></div>
+      <div class="tip-card"><div class="tip-icon">🔍</div><h4>Close-up Macro</h4><p>สินค้าแก้ปัญหา ต้องถ่าย close-up ใส่ <code>macro photography, extreme close-up</code></p></div>
+      <div class="tip-card"><div class="tip-icon">☀️</div><h4>แสง Natural</h4><p>ใส่ <code>natural window lighting, soft daylight</code> ภาพดูจริงกว่า studio flash</p></div>
+      <div class="tip-card"><div class="tip-icon">🎬</div><h4>Kling: เน้น Motion</h4><p>Kling prompt ให้บอกว่า "อะไรเคลื่อนไหว" เช่น <code>brush spinning, dirt disappearing</code></p></div>
+      <div class="tip-card"><div class="tip-icon">⏱️</div><h4>5-6 วินาที พอ</h4><p>Kling ตั้ง duration 5-6 วิ เพราะ Reel/TikTok ต้องการคลิปสั้น ดู loop ได้</p></div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div><!-- /main -->
 <div class="toast" id="toast">คัดลอกแล้ว ✓</div>
 
 <script>
 const PRODUCTS = [
   {
-    rank:1,name:"แปรงขัดไฟฟ้าอเนกประสงค์",
-    cat:"ทำความสะอาด",tier:"สูงมาก",
-    price:"200–280",
-    trigger:"รำคาญสีดำที่กระเบื้องขัดไม่ออก",
+    rank:1, name:"แปรงขัดไฟฟ้าอเนกประสงค์", cat:"ทำความสะอาด", tier:"สูงมาก",
+    price:"200–280", trigger:"รำคาญสีดำที่กระเบื้องขัดไม่ออก",
     hooks:[
-      {label:"Hook 1",text:"ขัดห้องน้ำ 3 ปีมาแล้ว...ทำไมยังดำอยู่? 😤"},
-      {label:"Hook 2",text:"ไม่ต้องนั่งขัดเองอีกต่อไป — กดปุ่มเดียวจบ"}
+      {label:"Hook 1", text:"ขัดห้องน้ำ 3 ปีมาแล้ว...ทำไมยังดำอยู่? 😤"},
+      {label:"Hook 2", text:"ไม่ต้องนั่งขัดเองอีกต่อไป — กดปุ่มเดียวจบ"}
     ],
-    content:"Before: กระเบื้องอ่างน้ำสีดำ → กดสวิตช์ → ขาวจั๊วะใน 8 วินาที ห้ามพูดอะไร ให้ภาพพูดแทน",
-    keywords:["แปรงขัดไฟฟ้า","electric scrubber","แปรงขัดห้องน้ำ","spin scrubber ไทย"],
-    checks:["เตรียมพื้นที่ขัดที่สกปรกมาก","ถ่าย Before แบบชัด ไม่แต่งภาพ","เปิดเสียง ASMR ขณะขัด","Cut ตรง 5 วิ แรก Hook ทันที","ใส่ลิงก์ Shopee ใน Bio"]
+    content:"Before: กระเบื้องดำ → กดสวิตช์ → ขาวจั๊วะใน 8 วิ ห้ามพูด ให้ภาพพูดแทน",
+    keywords:["แปรงขัดไฟฟ้า","electric scrubber","แปรงขัดห้องน้ำ","spin scrubber"],
+    checks:["เตรียมพื้นที่กระเบื้องสกปรกจริง","ถ่าย Before แบบชัด ไม่แต่งภาพ","เปิดเสียง ASMR ขณะขัด","Cut ตรง 5 วิแรก Hook ทันที","ใส่ลิงก์ Shopee ใน Bio"],
+    ai:{
+      grokBefore:"Photorealistic close-up of dirty bathroom floor tiles with heavy black mold, dark grime and soap scum in grout lines. Thai home bathroom. Harsh fluorescent lighting. Ultra detailed macro photography. No people.",
+      grokAfter:"Photorealistic close-up of sparkling clean white bathroom floor tiles, perfectly white grout, gleaming surface reflecting light. Thai home bathroom. Natural soft lighting. Ultra detailed macro photography.",
+      kling:"Electric rotating brush scrubber spinning rapidly on dirty bathroom tiles in circular motion, black grime and mold disappearing revealing clean white tiles beneath, satisfying dirt removal, close-up macro shot, 6 seconds, realistic, ASMR style",
+      workflow:[
+        {tool:"GROK",cls:"wf-grok",desc:"Copy prompt 'Before' → วาง Grok Aurora → Generate ภาพกระเบื้องดำ"},
+        {tool:"GROK",cls:"wf-grok",desc:"Copy prompt 'After' → Generate ภาพกระเบื้องขาว"},
+        {tool:"KLING AI",cls:"wf-kling",desc:"Upload ภาพ After → Image to Video → Copy Kling prompt → Duration 6 วิ"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"ต่อ: ภาพ Before (2 วิ) → คลิป Kling (6 วิ) → ใส่ Hook text + เพลง"},
+        {tool:"โพสต์",cls:"wf-post",desc:"TikTok / Facebook Reel + Caption + Shopee link ใน Bio"}
+      ]
+    }
   },
   {
-    rank:2,name:"เจลทำความสะอาดซอกซอน (Cleaning Gel)",
-    cat:"ทำความสะอาด",tier:"สูงมาก",
-    price:"60–120",
-    trigger:"ของสกปรกในซอกที่เข้าไม่ถึง",
+    rank:2, name:"เจลทำความสะอาดซอกซอน (Cleaning Gel)", cat:"ทำความสะอาด", tier:"สูงมาก",
+    price:"60–120", trigger:"ของสกปรกในซอกที่เข้าไม่ถึง",
     hooks:[
-      {label:"Hook 1",text:"คีย์บอร์ดคุณสกปรกแค่ไหน? มาดูกัน 👀"},
-      {label:"Hook 2",text:"ช่องแอร์รถ...อย่าดูนะ 💀 (สปอยล์: สกปรกมาก)"}
+      {label:"Hook 1", text:"คีย์บอร์ดคุณสกปรกแค่ไหน? มาดูกัน 👀"},
+      {label:"Hook 2", text:"ช่องแอร์รถ...อย่าดูนะ 💀"}
     ],
-    content:"กดเจลลงคีย์บอร์ด → ยกขึ้น → ฝุ่นดูดออกมาเป็นก้อน ASMR ไม่ต้องพูดเลยก็ viral แค่เสียง",
+    content:"กดเจลลงคีย์บอร์ด → ยกขึ้น → ฝุ่นออกมาเป็นก้อน ASMR ไม่ต้องพูดก็ viral",
     keywords:["เจลทำความสะอาดคีย์บอร์ด","cyber clean","เจลดูดฝุ่น","cleaning gel รถ"],
-    checks:["คีย์บอร์ดหรือช่องแอร์ที่สกปรกจริง","ถ่าย Close-up ฝุ่นที่ดูดออก","ใช้เสียง ASMR ไม่ต้อง voiceover","Loop 3 ครั้ง ในคลิปเดียว","Caption: 'ใครมีแบบนี้บ้าง?' กระตุ้น Comment"]
+    checks:["ใช้คีย์บอร์ดที่สกปรกจริง","ถ่าย Close-up ฝุ่นที่ดูดออก","ใช้เสียง ASMR","Loop 3 ครั้งในคลิปเดียว","Caption: 'ใครมีแบบนี้บ้าง?' กระตุ้น Comment"],
+    ai:{
+      grokBefore:"Photorealistic extreme close-up of laptop keyboard with heavy dust, crumbs, hair, and debris trapped between keys. Home office desk. Natural window light. Macro photography. Ultra detailed. Gross dirty keyboard.",
+      grokAfter:"Photorealistic extreme close-up of perfectly clean laptop keyboard, all keys spotless, no dust or debris between keys. Home office desk. Natural window light. Macro photography. Ultra clean.",
+      kling:"Hand pressing translucent blue slime cleaning gel onto dirty laptop keyboard, gel conforming between keys, hand slowly lifting gel revealing dust and hair particles stuck inside gel, ASMR satisfying, extreme close-up macro, 5 seconds, realistic",
+      workflow:[
+        {tool:"GROK",cls:"wf-grok",desc:"Generate ภาพ Before (คีย์บอร์ดฝุ่นเกาะ) และ After (สะอาด)"},
+        {tool:"KLING AI",cls:"wf-kling",desc:"Upload ภาพ Before → ใส่ Kling prompt → Generate วิดีโอ 5 วิ"},
+        {tool:"GROK",cls:"wf-grok",desc:"(Option) Generate ภาพเจลอีกมุม เช่น ช่องแอร์รถ"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"ต่อคลิปหลายซีน + ASMR sound effect + text overlay"},
+        {tool:"โพสต์",cls:"wf-post",desc:"#ASMR #ทำความสะอาด caption ถามว่า 'สกปรกขนาดนี้มีไหม?'"}
+      ]
+    }
   },
   {
-    rank:3,name:"ที่ดักขนสัตว์เลี้ยง (Pet Hair Remover Roller)",
-    cat:"สัตว์เลี้ยง",tier:"สูงมาก",
-    price:"150–250",
-    trigger:"ขนหมา-แมวติดเสื้อและโซฟาทั้งบ้าน",
+    rank:3, name:"ที่ดักขนสัตว์เลี้ยง (Pet Hair Remover Roller)", cat:"สัตว์เลี้ยง", tier:"สูงมาก",
+    price:"150–250", trigger:"ขนหมา-แมวติดเสื้อและโซฟาทั้งบ้าน",
     hooks:[
-      {label:"Hook 1",text:"โซฟาหน้าตาแบบนี้...ยังนั่งได้อยู่เหรอ? 😅"},
-      {label:"Hook 2",text:"คนเลี้ยงหมาเข้าใจ 😭 เสื้อดำ = เสื้อขาว"}
+      {label:"Hook 1", text:"โซฟาหน้าตาแบบนี้...ยังนั่งได้อยู่เหรอ? 😅"},
+      {label:"Hook 2", text:"คนเลี้ยงหมาเข้าใจ 😭 เสื้อดำ = เสื้อขาว"}
     ],
-    content:"ม้วน Roller บนโซฟา/เสื้อดำ → ขนสัตว์ออกมาเต็มม้วน Before-After ชัด ไม่ต้องอธิบาย",
+    content:"ม้วน Roller บนโซฟา/เสื้อดำ → ขนสัตว์ออกมาเต็มม้วน Before-After ไม่ต้องอธิบาย",
     keywords:["ที่ดักขนสัตว์","pet hair roller","ลูกกลิ้งดักขน","ที่เก็บขนแมว"],
-    checks:["ใช้เสื้อดำหรือผ้ากำมะหยี่ (ขนเห็นชัด)","ถ่าย Before ขนเยอะๆ","ม้วนช้าๆ ให้เห็นขนออก","ใส่ Caption 'เจ้าของสัตว์เลี้ยง ❤️'","Tag #หมา #แมว #สัตว์เลี้ยงไทย"]
+    checks:["ใช้เสื้อดำ/ผ้ากำมะหยี่ (ขนเห็นชัด)","ถ่าย Before ขนเยอะมาก","ม้วนช้าๆ ให้เห็นขนออก","Caption 'เจ้าของสัตว์เลี้ยง ❤️'","Tag #หมา #แมว #สัตว์เลี้ยงไทย"],
+    ai:{
+      grokBefore:"Photorealistic close-up of dark navy blue sofa fabric completely covered in thick layer of white and orange cat and dog fur, dense pet hair covering entire surface texture. Natural home lighting. Ultra detailed.",
+      grokAfter:"Photorealistic close-up of clean dark navy blue sofa fabric, completely free of pet hair, fabric texture clearly visible and pristine. Natural home lighting. Ultra detailed.",
+      kling:"Lint roller being slowly rolled across dark fabric sofa covered in pet fur, white and orange cat hair collecting onto sticky roller sheet in satisfying clumps, close-up, 5 seconds, realistic",
+      workflow:[
+        {tool:"GROK",cls:"wf-grok",desc:"Generate ภาพ Before (โซฟาเต็มขนแมว) + After (สะอาด)"},
+        {tool:"KLING AI",cls:"wf-kling",desc:"Upload ภาพ After → Animate ให้เห็นขนถูกดูดออก → 5 วิ"},
+        {tool:"GROK",cls:"wf-grok",desc:"(Option) Generate ภาพ เสื้อดำเต็มขน สำหรับซีนที่ 2"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"ต่อ 2 ซีน: โซฟา + เสื้อ → เพลง sad → transform → เพลง happy"},
+        {tool:"โพสต์",cls:"wf-post",desc:"#สัตว์เลี้ยง #แมว #หมา เน้น Reel เช้า 6-9 โมง"}
+      ]
+    }
   },
   {
-    rank:4,name:"ถุงสูญญากาศพับผ้า + ที่ดูดอากาศ",
-    cat:"จัดระเบียบ",tier:"สูงมาก",
-    price:"80–200",
-    trigger:"ตู้ผ้าล้น ที่อยู่น้อย คอนโดแคบ",
+    rank:4, name:"ถุงสูญญากาศพับผ้า + ที่ดูดอากาศ", cat:"จัดระเบียบ", tier:"สูงมาก",
+    price:"80–200", trigger:"ตู้ผ้าล้น ที่อยู่น้อย คอนโดแคบ",
     hooks:[
-      {label:"Hook 1",text:"ตู้ผ้าล้นขนาดนี้...ยุบลงได้ใน 10 วินาที ✈️"},
-      {label:"Hook 2",text:"เที่ยวบิน carry-on ใบเดียว ไปเดือนนึงได้เลย"}
+      {label:"Hook 1", text:"ตู้ผ้าล้นขนาดนี้...ยุบลงได้ใน 10 วินาที ✈️"},
+      {label:"Hook 2", text:"เที่ยวบิน carry-on ใบเดียว ไปเดือนนึงได้เลย"}
     ],
-    content:"Time-lapse ดูดอากาศออก — ผ้า 10 ตัวยุบลงเป็นแผ่นเดียว Satisfying ดูรอบเดียวไม่พอ",
+    content:"Time-lapse ดูดอากาศออก — ผ้า 10 ตัวยุบเป็นแผ่นเดียว Satisfying ดูรอบเดียวไม่พอ",
     keywords:["ถุงสูญญากาศ","vacuum bag เสื้อผ้า","ถุงอัดอากาศ","ถุงเก็บผ้า"],
-    checks:["เตรียมเสื้อผ้าสีสวยน่าดู","ถ่าย Time-lapse ตอนดูดอากาศ","แสดงขนาดก่อน vs หลัง ชัดเจน","พูดถึงคอนโด/ฝากโฮสเทล","ลิงก์ในคอมเมนต์"]
+    checks:["เตรียมเสื้อผ้าสีสวยน่าดู","ถ่าย Time-lapse ตอนดูดอากาศ","แสดงขนาดก่อน vs หลัง","พูดถึงคอนโด/ฝากโฮสเทล","ลิงก์ในคอมเมนต์"],
+    ai:{
+      grokBefore:"Photorealistic photo of small Thai apartment closet overflowing with clothes, shirts and pants falling out, no space left, clothes crammed and messy. Interior photography, natural lighting.",
+      grokAfter:"Photorealistic photo of organized small Thai apartment closet with vacuum storage bags neatly compressed flat, spacious and tidy, half the original volume. Interior photography, natural lighting.",
+      kling:"Vacuum storage bag filled with fluffy colorful clothes being compressed as air is sucked out, clothes dramatically shrinking down from thick pile to thin flat square, visible air escaping, time-lapse, 6 seconds, satisfying",
+      workflow:[
+        {tool:"GROK",cls:"wf-grok",desc:"Generate ภาพตู้เสื้อผ้าล้น (Before) และตู้จัดเรียบ (After)"},
+        {tool:"KLING AI",cls:"wf-kling",desc:"Animate ภาพ Before → ผ้ายุบลง → Duration 6 วิ"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"ใส่ sound effect เสียงดูดอากาศ + text 'ประหยัด 70% พื้นที่'"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"Speed up ตอนดูดอากาศ 2x + Slow-mo ตอนแสดง After"},
+        {tool:"โพสต์",cls:"wf-post",desc:"#จัดบ้าน #คอนโด #ประหยัดพื้นที่"}
+      ]
+    }
   },
   {
-    rank:5,name:"หินขัดโถส้วม (Pumice Toilet Stone)",
-    cat:"ทำความสะอาด",tier:"สูงมาก",
-    price:"60–120",
-    trigger:"คราบเหลืองในโถส้วมที่ขัดไม่ออกมา 10 ปี",
+    rank:5, name:"หินขัดโถส้วม (Pumice Toilet Stone)", cat:"ทำความสะอาด", tier:"สูงมาก",
+    price:"60–120", trigger:"คราบเหลืองในโถส้วมที่ขัดไม่ออกมา 10 ปี",
     hooks:[
-      {label:"Hook 1",text:"ขัดโถส้วม 10 ปียังเหลืองอยู่...จนเจออันนี้ 🚽"},
-      {label:"Hook 2",text:"ไม่เชื่อว่าจะออก...แต่มันออกจริง (Reaction)"}
+      {label:"Hook 1", text:"ขัดโถส้วม 10 ปียังเหลืองอยู่...จนเจออันนี้ 🚽"},
+      {label:"Hook 2", text:"ไม่เชื่อว่าจะออก...แต่มันออกจริง (Reaction)"}
     ],
-    content:"Before-After ชัดสุดในทุกสินค้า — คราบเหลืองมาก → ขาวใน 5 วินาที ไม่ต้องพูดอะไร ภาพพูดแทนหมด",
+    content:"Before-After ชัดสุด — คราบเหลืองมาก → ขาวใน 5 วิ ไม่ต้องพูดอะไร ภาพพูดแทน",
     keywords:["หินขัดโถส้วม","pumice stone","ขัดคราบโถส้วม","ก้อนหินขัดส้วม"],
-    checks:["หาโถส้วมที่มีคราบเหลืองจริง","ถ่าย Close-up คราบก่อนขัด","ขัดช้าๆ ให้เห็น Transition","Reaction moment หลังเห็นผล","Caption 'ใครมีปัญหานี้?' "]
+    checks:["หาโถส้วมที่มีคราบจริง","ถ่าย Close-up คราบก่อน","ขัดช้าๆ ให้เห็น Transition","Reaction หลังเห็นผล","Caption 'ใครมีปัญหานี้?'"],
+    ai:{
+      grokBefore:"Photorealistic close-up inside toilet bowl with heavy yellow-brown calcium and rust stains around waterline, thick mineral deposits, unsightly buildup. Thai bathroom. Harsh overhead lighting. Ultra detailed macro photography.",
+      grokAfter:"Photorealistic close-up inside toilet bowl, perfectly white porcelain, no stains, sparkling clean surface, gleaming white. Thai bathroom. Natural lighting. Macro photography.",
+      kling:"Grey pumice stone being rubbed firmly along yellow-brown toilet bowl stains at waterline, stains dissolving and disappearing with each stroke revealing bright white porcelain, close-up, 6 seconds, satisfying",
+      workflow:[
+        {tool:"GROK",cls:"wf-grok",desc:"Generate ภาพ Before โถส้วมมีคราบ + After ขาวสะอาด"},
+        {tool:"KLING AI",cls:"wf-kling",desc:"Upload ภาพ Before → Animate หินขัดเคลื่อนที่ คราบหาย → 6 วิ"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"เพิ่ม Transition แบบ Wipe ตรงกลาง Before/After + เสียง 'wow'"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"ใส่ text Hook ใน 3 วิแรก + ราคาตอนท้าย"},
+        {tool:"โพสต์",cls:"wf-post",desc:"#ทำความสะอาดบ้าน #ของมีประโยชน์ #ชีวิตดีขึ้น"}
+      ]
+    }
   },
   {
-    rank:6,name:"Angry Mama Microwave Cleaner",
-    cat:"ของใช้ครัว",tier:"สูง",
-    price:"120–180",
-    trigger:"ไมโครเวฟเลอะแล้วขูดไม่ออก",
+    rank:6, name:"Angry Mama Microwave Cleaner", cat:"ของใช้ครัว", tier:"สูง",
+    price:"120–180", trigger:"ไมโครเวฟเลอะแล้วขูดไม่ออก",
     hooks:[
-      {label:"Hook 1",text:"ไมโครเวฟที่บ้านหน้าตาแบบนี้มั้ย? 😅 (โชว์เลอะ)"},
-      {label:"Hook 2",text:"แม่บ้านรู้แล้วร้องไห้ — ล้างง่ายแบบนี้ทำไมไม่บอก?"}
+      {label:"Hook 1", text:"ไมโครเวฟที่บ้านหน้าตาแบบนี้มั้ย? 😅"},
+      {label:"Hook 2", text:"แม่บ้านรู้แล้วร้องไห้ — ง่ายขนาดนี้ทำไมไม่บอก?"}
     ],
-    content:"ใส่น้ำ + น้ำส้มสายชู → ใส่ไมโครเวฟ 5 นาที → เปิดประตู → เช็ดออกง่ายมาก เห็น Steam ออกจากตุ๊กตา",
+    content:"ใส่น้ำ+น้ำส้มสายชู → ไมโครเวฟ 5 นาที → เปิด → เช็ดออกง่ายมาก เห็น Steam จากตุ๊กตา",
     keywords:["angry mama","ที่ทำความสะอาดไมโครเวฟ","ตุ๊กตาล้างไมโครเวฟ","microwave cleaner"],
-    checks:["ถ่ายไมโครเวฟเลอะเยอะๆ ก่อน","ถ่าย Steam ออกจากตุ๊กตา (น่ารักมาก)","ถ่าย Close-up เช็ดออกง่าย","ใส่ Caption 'มีแบบนี้ในบ้านไหม?'","ราคาถูก บอกราคาในวิดีโอ"]
+    checks:["ถ่ายไมโครเวฟเลอะเยอะก่อน","ถ่าย Steam ออกจากตุ๊กตา","ถ่าย Close-up เช็ดออกง่าย","Caption 'มีแบบนี้ในบ้านไหม?'","บอกราคาในวิดีโอ"],
+    ai:{
+      grokBefore:"Photorealistic close-up inside dirty microwave oven with splattered tomato sauce, grease spots, and brown food residue on interior walls and ceiling. Thai kitchen. Harsh lighting. Ultra detailed.",
+      grokAfter:"Photorealistic close-up inside spotlessly clean microwave oven, all interior walls gleaming white, no food stains or residue. Thai kitchen. Natural lighting.",
+      kling:"Cute red angry mama figure standing inside microwave, steam puffing dramatically from top of head, steam filling microwave interior, food stains on walls softening, 6 seconds, cartoon-meets-realistic style",
+      workflow:[
+        {tool:"GROK",cls:"wf-grok",desc:"Generate ภาพ Before ไมโครเวฟเลอะ + After สะอาด"},
+        {tool:"KLING AI",cls:"wf-kling",desc:"Animate ตุ๊กตาพ่นไอน้ำ → Steam เต็มไมโครเวฟ → 6 วิ"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"ต่อ: ไมโครเวฟเลอะ → ใส่ตุ๊กตา → Steam → เช็ดสะอาด"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"เพลง funny + text 'ไม่ต้องถูเองอีกต่อไป'"},
+        {tool:"โพสต์",cls:"wf-post",desc:"#แม่บ้าน #ของมีประโยชน์ #ไอเดียบ้าน"}
+      ]
+    }
   },
   {
-    rank:7,name:"Nano Tape / เทปนาโนกาวสองหน้า",
-    cat:"ของใช้บ้าน",tier:"สูง",
-    price:"80–150",
-    trigger:"ไม่อยากเจาะรูผนัง แต่ต้องการแขวนของ",
+    rank:7, name:"Nano Tape / เทปนาโนกาวสองหน้า", cat:"ของใช้บ้าน", tier:"สูง",
+    price:"80–150", trigger:"ไม่อยากเจาะรูผนัง แต่ต้องการแขวนของ",
     hooks:[
-      {label:"Hook 1",text:"ติดของบนผนัง...โดยไม่เจาะรูเลย 😱"},
-      {label:"Hook 2",text:"เพิ่งรู้ว่ามีของแบบนี้! (ทดสอบแขวนของหนัก)"}
+      {label:"Hook 1", text:"ติดของบนผนัง...โดยไม่เจาะรูเลย 😱"},
+      {label:"Hook 2", text:"เพิ่งรู้ว่ามีของแบบนี้! (ทดสอบแขวนของหนัก)"}
     ],
     content:"Challenge: แปะ 1 เส้น → แขวนของหนักขึ้นเรื่อยๆ → สุดท้ายยังอยู่ Format นี้ viral ทั่วโลก",
     keywords:["nano tape","เทปกาวสองหน้า","เทปติดผนัง","กาวสองหน้าใส"],
-    checks:["เตรียมของหลายชิ้นที่หนักขึ้นเรื่อยๆ","ถ่าย Close-up ตอนแปะเทป","แขวนแล้วดึง — ทดสอบให้เห็น","Reaction ตอนไม่หลุด","บอก: เลาะออกได้ ไม่เป็นรอย"]
+    checks:["เตรียมของหลายชิ้นหนักขึ้นเรื่อยๆ","ถ่าย Close-up ตอนแปะเทป","แขวนแล้วดึง — ทดสอบให้เห็น","Reaction ตอนไม่หลุด","บอก: เลาะออกได้ ไม่เป็นรอย"],
+    ai:{
+      grokBefore:"Photorealistic photo of blank clean white apartment wall, empty with no decorations or holes. Thai apartment interior. Natural window lighting. Minimal.",
+      grokAfter:"Photorealistic photo of white apartment wall decorated with several picture frames and small floating shelves, no visible nails or holes, items appear to float on wall. Thai apartment. Natural lighting.",
+      kling:"Close-up of transparent nano tape being applied to back of picture frame, frame pressed firmly against white wall, hand pushing and holding, then pulling to test strength, frame stays attached, 6 seconds, satisfying strength test",
+      workflow:[
+        {tool:"GROK",cls:"wf-grok",desc:"Generate ภาพผนังว่าง (Before) + ผนังตกแต่งแล้ว (After)"},
+        {tool:"KLING AI",cls:"wf-kling",desc:"Animate มือกดกรอบรูปบนผนัง → ดึงทดสอบ → ไม่หลุด"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"ต่อซีน: แปะ → ดึงไม่หลุด → แสดงผนังสวยงาม"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"Text: 'แขวนกี่กิโล?' + reveal ตัวเลขน้ำหนัก"},
+        {tool:"โพสต์",cls:"wf-post",desc:"#แต่งบ้าน #คอนโด #DIYบ้าน"}
+      ]
+    }
   },
   {
-    rank:8,name:"ที่กดสบู่อัตโนมัติ Touchless Soap Dispenser",
-    cat:"ของใช้บ้าน",tier:"สูง",
-    price:"150–280",
-    trigger:"ต้องการความสะอาด ไม่อยากกดสบู่มือสกปรก",
+    rank:8, name:"ที่กดสบู่อัตโนมัติ Touchless Soap Dispenser", cat:"ของใช้บ้าน", tier:"สูง",
+    price:"150–280", trigger:"ต้องการความสะอาด ไม่อยากกดสบู่มือสกปรก",
     hooks:[
-      {label:"Hook 1",text:"ไม่ต้องกดอีกต่อไป — มือสะอาดตลอด ✋"},
-      {label:"Hook 2",text:"บ้านดูไฮเทคขึ้นในราคาร้อยกว่าบาท 😎"}
+      {label:"Hook 1", text:"ไม่ต้องกดอีกต่อไป — มือสะอาดตลอด ✋"},
+      {label:"Hook 2", text:"บ้านดูไฮเทคขึ้นในราคาร้อยกว่าบาท 😎"}
     ],
-    content:"เอื้อมมือ → สบู่ออกมาเอง Aesthetic ห้องน้ำขาว/มินิมอล แสดงให้เห็น Setup + ฟังก์ชัน",
-    keywords:["ที่กดสบู่อัตโนมัติ","touchless soap dispenser","dispenser สบู่ล้างมือ","กดสบู่เซนเซอร์"],
-    checks:["จัด Setup ห้องน้ำให้สวย Aesthetic","ถ่าย Sensor ทำงาน Close-up","Demo ล้างมือ + สบู่ออกอัตโนมัติ","เน้น: ไม่เปลือง ไม่เลอะ","ใช้เพลง Chill Background"]
+    content:"เอื้อมมือ → สบู่ออกเอง Aesthetic ห้องน้ำมินิมอล แสดง Setup + ฟังก์ชัน",
+    keywords:["ที่กดสบู่อัตโนมัติ","touchless soap dispenser","dispenser สบู่","กดสบู่เซนเซอร์"],
+    checks:["จัด Setup ห้องน้ำให้สวย","ถ่าย Sensor ทำงาน Close-up","Demo ล้างมือ + สบู่ออกอัตโนมัติ","เน้น: ไม่เปลือง ไม่เลอะ","ใช้เพลง Chill Background"],
+    ai:{
+      grokBefore:"Photorealistic photo of cluttered bathroom sink counter with regular soap dispenser with soap drips and residue, messy soap stains around base. Thai bathroom. Natural lighting.",
+      grokAfter:"Photorealistic photo of clean minimal bathroom sink counter with sleek modern silver touchless soap dispenser, hand approaching sensor, foam dispensing automatically. Thai bathroom. Natural daylight. Aesthetic minimal.",
+      kling:"Hand slowly approaching touchless soap dispenser sensor from below, sensor detecting hand, white foam soap automatically dispensing in perfect measured amount without touching, close-up, 5 seconds, clean and satisfying",
+      workflow:[
+        {tool:"GROK",cls:"wf-grok",desc:"Generate ห้องน้ำ Aesthetic พร้อม Dispenser สวยๆ"},
+        {tool:"KLING AI",cls:"wf-kling",desc:"Animate มือเข้าใกล้ → สบู่ออกมาเอง → 5 วิ"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"เพลง Lo-fi/Chill + text 'ไฮจีนิค ไม่ต้องสัมผัส'"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"ใส่ราคาตอนท้าย + CTA 'Link ใน Bio'"},
+        {tool:"โพสต์",cls:"wf-post",desc:"#ห้องน้ำสวย #Aesthetic #ของในบ้าน"}
+      ]
+    }
   },
   {
-    rank:9,name:"ที่สับผักแบบกด / Pull Chopper",
-    cat:"ของใช้ครัว",tier:"สูง",
-    price:"150–250",
-    trigger:"ขี้เกียจหั่นผัก เสียเวลา เจ็บนิ้ว",
+    rank:9, name:"ที่สับผักแบบกด / Pull Chopper", cat:"ของใช้ครัว", tier:"สูง",
+    price:"150–250", trigger:"ขี้เกียจหั่นผัก เสียเวลา เจ็บนิ้ว",
     hooks:[
-      {label:"Hook 1",text:"หั่นผักทั้งสลัด...ใน 3 วินาทีเดียว 🥗"},
-      {label:"Hook 2",text:"ทำกินเองก็ง่ายขนาดนี้เหรอ? (vs มีดธรรมดา)"}
+      {label:"Hook 1", text:"หั่นผักทั้งสลัด...ใน 3 วินาทีเดียว 🥗"},
+      {label:"Hook 2", text:"ทำกินเองก็ง่ายขนาดนี้เหรอ? (vs มีดธรรมดา)"}
     ],
-    content:"Speed challenge: สับผักด้วยมีด 30 วิ vs ที่สับ 3 วิ — เวลาต่างกัน 10 เท่า ใครไม่อยากได้ล่ะ",
+    content:"Speed challenge: สับผักด้วยมีด 30 วิ vs ที่สับ 3 วิ — ต่างกัน 10 เท่า ใครไม่อยากได้",
     keywords:["ที่สับผัก","vegetable chopper","สับผัก pull chopper","ที่หั่นผักครัว"],
-    checks:["เตรียมผักสีสวย (แครอท หอม)","ถ่าย Side-by-side มีด vs chopper","นับ 1-2-3 กดปุ๊บ ผักสับเสร็จ","Reaction ดีใจ + กินอาหาร","แสดงล้างทำความสะอาดง่าย"]
+    checks:["เตรียมผักสีสวย แครอท หอม","ถ่าย Side-by-side มีด vs chopper","นับ 1-2-3 กดปุ๊บ เสร็จ","Reaction ดีใจ + กินอาหาร","แสดงล้างง่าย"],
+    ai:{
+      grokBefore:"Photorealistic photo of person slowly and tediously chopping onions and carrots with knife on wooden cutting board, Thai kitchen, natural lighting, slow laborious process, tears from onion.",
+      grokAfter:"Photorealistic photo of perfectly uniformly diced colorful vegetables in clear bowl, onions, carrots, herbs all diced, Thai kitchen, natural lighting, professional food photography.",
+      kling:"Pull-string manual vegetable chopper being pulled 3 times rapidly, onion and carrot pieces flying into clear container below, uniformly diced vegetables accumulating, professional food video style, 5 seconds, satisfying",
+      workflow:[
+        {tool:"GROK",cls:"wf-grok",desc:"Generate ภาพ Side-by-side: มีดหั่นผัก vs ผักสับเสร็จแล้ว"},
+        {tool:"KLING AI",cls:"wf-kling",desc:"Animate ดึงเส้น → ผักสับเร็วๆ → ผักออกมาในชาม → 5 วิ"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"Split screen: มีด (ช้า) vs Chopper (เร็ว) พร้อม timer"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"Sound effect เสียงสับเร็วๆ + เพลงสนุก"},
+        {tool:"โพสต์",cls:"wf-post",desc:"#ทำอาหาร #ครัว #ไอเดียครัว #ของมีประโยชน์"}
+      ]
+    }
   },
   {
-    rank:10,name:"ฝาปิดซิลิโคน Stretch Lid (แพ็ค 6 ชิ้น)",
-    cat:"ของใช้ครัว",tier:"สูง",
-    price:"80–150",
-    trigger:"ไม่มีฝาปิดพอดี ต้องใช้ Plastic Wrap รก",
+    rank:10, name:"ฝาปิดซิลิโคน Stretch Lid (แพ็ค 6)", cat:"ของใช้ครัว", tier:"สูง",
+    price:"80–150", trigger:"ไม่มีฝาปิดพอดี ต้องใช้ Plastic Wrap รก",
     hooks:[
-      {label:"Hook 1",text:"กระทะไม่มีฝา...แก้ได้แบบนี้! (ยืดครอบทุกขนาด)"},
-      {label:"Hook 2",text:"ทิ้ง Plastic Wrap ได้เลย 🌱 มีอันนี้แล้ว"}
+      {label:"Hook 1", text:"กระทะไม่มีฝา...แก้ได้แบบนี้! (ยืดครอบทุกขนาด)"},
+      {label:"Hook 2", text:"ทิ้ง Plastic Wrap ได้เลย 🌱 มีอันนี้แล้ว"}
     ],
-    content:"Demo ครอบกระทะ ชาม กล่อง หลายขนาด — ยืดหยุ่น น่าดู + เน้น Eco-friendly ด้วย",
+    content:"Demo ครอบกระทะ ชาม กล่อง หลายขนาด — ยืดหยุ่น น่าดู + เน้น Eco-friendly",
     keywords:["ฝาซิลิโคน","stretch lid","ฝาปิดหม้อซิลิโคน","ฝาครอบอาหาร"],
-    checks:["เตรียม ชาม/กระทะ หลายขนาด","ถ่าย Slow-mo ตอนดึงฝาขยาย","Demo ปิด 6 ขนาดต่างกัน","พูดถึง Eco / ลดขยะ","ราคา 80 บาท 6 ชิ้น = ถูกมาก"]
+    checks:["เตรียม ชาม/กระทะ หลายขนาด","ถ่าย Slow-mo ตอนดึงฝาขยาย","Demo ปิด 6 ขนาด","พูดถึง Eco / ลดขยะ","ราคา 80 บาท 6 ชิ้น = ถูก"],
+    ai:{
+      grokBefore:"Photorealistic photo of messy kitchen counter with various pots, bowls and containers covered awkwardly with plastic cling wrap, uneven and messy coverage. Thai kitchen. Natural lighting.",
+      grokAfter:"Photorealistic photo of neat kitchen counter with colorful silicone stretch lids (red, blue, green) perfectly fitted over various sized bowls and pots, organized and eco-friendly. Thai kitchen. Natural lighting.",
+      kling:"Colorful teal silicone stretch lid being pulled and stretched over large mixing bowl, lid expanding to fit perfectly creating airtight seal, slow motion macro close-up, silicone stretching dramatically, 5 seconds",
+      workflow:[
+        {tool:"GROK",cls:"wf-grok",desc:"Generate ภาพ Plastic wrap รก (Before) vs ฝาซิลิโคนสวย (After)"},
+        {tool:"KLING AI",cls:"wf-kling",desc:"Animate ฝาซิลิโคนยืดครอบชาม slow-motion → 5 วิ"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"ต่อซีน: ครอบ 6 ขนาด + text ราคาแต่ละชิ้น"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"เพิ่ม Eco-friendly graphic + 'ลดขยะพลาสติก'"},
+        {tool:"โพสต์",cls:"wf-post",desc:"#ครัวสะอาด #ลดขยะ #ของใช้บ้าน"}
+      ]
+    }
   },
   {
-    rank:11,name:"หัวก๊อกน้ำ 360 องศา (Faucet Aerator)",
-    cat:"ของใช้บ้าน",tier:"กลาง",
-    price:"60–150",
-    trigger:"น้ำไม่ถึงทุกซอก ค่าน้ำแพง",
+    rank:11, name:"หัวก๊อกน้ำ 360 องศา (Faucet Aerator)", cat:"ของใช้บ้าน", tier:"กลาง",
+    price:"60–150", trigger:"น้ำไม่ถึงทุกซอก ค่าน้ำแพง",
     hooks:[
-      {label:"Hook 1",text:"ก๊อกน้ำบ้านคุณฉีดน้ำแบบนี้มั้ย? (หมุน 360°)"},
-      {label:"Hook 2",text:"ลดบิลน้ำประปาด้วยของ 60 บาท 💧"}
+      {label:"Hook 1", text:"ก๊อกน้ำบ้านคุณฉีดน้ำแบบนี้มั้ย? (หมุน 360°)"},
+      {label:"Hook 2", text:"ลดบิลน้ำด้วยของ 60 บาท 💧"}
     ],
-    content:"Install ง่าย 10 วินาที + Demo น้ำหมุนรอบทิศ เน้น Before-After การประหยัดน้ำ",
+    content:"Install ง่าย 10 วิ + Demo น้ำหมุนรอบทิศ เน้น Before-After การประหยัดน้ำ",
     keywords:["หัวก๊อกน้ำ 360","faucet aerator","หัวก๊อกประหยัดน้ำ","ก๊อกน้ำพ่น"],
-    checks:["ถ่าย Installation แบบ Fast-motion","Demo น้ำออก 360° ชัดเจน","เปรียบเทียบก่อน-หลัง","พูดถึงประหยัดน้ำ 30-50%","ราคาถูก บอกว่าซื้อที่ Shopee"]
+    checks:["ถ่าย Install Fast-motion","Demo น้ำออก 360° ชัดเจน","เปรียบก่อน-หลัง","พูดถึงประหยัดน้ำ 30-50%","บอกซื้อที่ Shopee"],
+    ai:{
+      grokBefore:"Photorealistic close-up of kitchen faucet with water spraying in single direction, splashing outside sink basin, wasting water. Thai kitchen. Natural lighting.",
+      grokAfter:"Photorealistic close-up of 360-degree rotating faucet aerator with beautiful uniform water mist spraying in adjustable direction, efficient water flow. Thai kitchen. Natural lighting. Water droplets visible.",
+      kling:"Faucet head slowly rotating 360 degrees while water flows in beautiful uniform spray pattern, water changing direction smoothly, close-up macro shot, 5 seconds, satisfying water flow",
+      workflow:[
+        {tool:"GROK",cls:"wf-grok",desc:"Generate ภาพก๊อกน้ำเดิม vs หัวใหม่พร้อมน้ำฉีดสวย"},
+        {tool:"KLING AI",cls:"wf-kling",desc:"Animate หัวก๊อกหมุน + น้ำฉีดเปลี่ยนทิศ → 5 วิ"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"ใส่ตัวเลข 'ประหยัดน้ำ 50%' + sound น้ำไหล"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"Compare: น้ำกระจาย (เก่า) vs น้ำประหยัด (ใหม่)"},
+        {tool:"โพสต์",cls:"wf-post",desc:"#ประหยัดน้ำ #ของใช้บ้าน #DIY"}
+      ]
+    }
   },
   {
-    rank:12,name:"กล่องจัดระเบียบลิ้นชัก (Drawer Organizer)",
-    cat:"จัดระเบียบ",tier:"กลาง",
-    price:"100–250",
-    trigger:"ลิ้นชักรก หาของไม่เจอ",
+    rank:12, name:"กล่องจัดระเบียบลิ้นชัก (Drawer Organizer)", cat:"จัดระเบียบ", tier:"กลาง",
+    price:"100–250", trigger:"ลิ้นชักรก หาของไม่เจอ",
     hooks:[
-      {label:"Hook 1",text:"ลิ้นชักบ้านคุณดูแบบนี้รึเปล่า? 😬 (โชว์รกมาก)"},
-      {label:"Hook 2",text:"จัดลิ้นชักทั้งบ้าน...งบ 200 บาท ✨"}
+      {label:"Hook 1", text:"ลิ้นชักบ้านคุณดูแบบนี้รึเปล่า? 😬"},
+      {label:"Hook 2", text:"จัดลิ้นชักทั้งบ้าน...งบ 200 บาท ✨"}
     ],
-    content:"Time-lapse จัดลิ้นชัก Before รก → After เรียบ Aesthetic สะใจ ใส่เพลง Satisfying",
+    content:"Time-lapse จัดลิ้นชัก Before รก → After เรียบ Aesthetic สะใจ เพลง Satisfying",
     keywords:["กล่องจัดระเบียบ","drawer organizer","ถาดจัดลิ้นชัก","กล่องจัดลิ้นชัก"],
-    checks:["ถ่าย Before ลิ้นชักรกมากๆ","Time-lapse จัดของ","ถ่าย After แบบ Aesthetic","เผย 'ราคาทั้งหมดเท่าไหร่?'","#จัดบ้าน #OrganizationTok"]
+    checks:["ถ่าย Before ลิ้นชักรกมาก","Time-lapse จัดของ","ถ่าย After Aesthetic","เผย 'ราคาทั้งหมดเท่าไหร่?'","#จัดบ้าน #OrganizationTok"],
+    ai:{
+      grokBefore:"Photorealistic overhead photo of extremely cluttered kitchen drawer with tangled cables, random items, batteries, papers, and miscellaneous junk crammed together chaotically. Thai home. Natural overhead lighting.",
+      grokAfter:"Photorealistic overhead photo of perfectly organized kitchen drawer with white compartment organizer trays, everything sorted by category, neat and minimal. Thai home. Natural overhead lighting. Aesthetic.",
+      kling:"Time-lapse overhead view of cluttered drawer being organized, items being sorted one by one into white organizer compartments, transforming from chaos to perfect order, 6 seconds, overhead bird's eye view, satisfying",
+      workflow:[
+        {tool:"GROK",cls:"wf-grok",desc:"Generate Overhead View: ลิ้นชักรก vs ลิ้นชักจัดระเบียบ"},
+        {tool:"KLING AI",cls:"wf-kling",desc:"Animate Overhead Time-lapse: ของถูกจัดลงกล่องทีละชิ้น"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"เพลง Satisfying + Speed 2x ตอนจัดของ + Slow-mo ตอน After"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"Text: 'ก่อน vs หลัง' + ราคารวม 200 บาท"},
+        {tool:"โพสต์",cls:"wf-post",desc:"#จัดบ้าน #Aesthetic #OrganizationTok"}
+      ]
+    }
   },
   {
-    rank:13,name:"ไฟ Solar Motion Sensor ติดผนัง",
-    cat:"ของใช้บ้าน",tier:"กลาง",
-    price:"150–280",
-    trigger:"ทางเข้าบ้านมืด กลัวสะดุด ไม่มีไฟเดินสาย",
+    rank:13, name:"ไฟ Solar Motion Sensor ติดผนัง", cat:"ของใช้บ้าน", tier:"กลาง",
+    price:"150–280", trigger:"ทางเข้าบ้านมืด กลัวสะดุด ไม่มีไฟเดินสาย",
     hooks:[
-      {label:"Hook 1",text:"ทางเข้าบ้านมืด...แก้ได้ 30 วิ ไม่เดินสายไฟ"},
-      {label:"Hook 2",text:"ไฟอัตโนมัติ เดินมาเองก็ติด 🌙 (Demo กลางคืน)"}
+      {label:"Hook 1", text:"ทางเข้าบ้านมืด...แก้ได้ 30 วิ ไม่เดินสายไฟ"},
+      {label:"Hook 2", text:"ไฟอัตโนมัติ เดินมาเองก็ติด 🌙"}
     ],
-    content:"Install ง่ายแค่แปะ + ทดสอบ Motion Sensor กลางคืน เห็นแสงชัดเจน ความรู้สึก 'ว้าว ง่ายจัง'",
+    content:"Install ง่ายแค่แปะ + ทดสอบ Motion Sensor กลางคืน เห็นแสงชัด ความรู้สึก 'ว้าวง่ายจัง'",
     keywords:["ไฟ solar","solar light motion sensor","ไฟพลังงานแสงอาทิตย์","ไฟเซนเซอร์กลางคืน"],
-    checks:["ถ่าย Installation ไม่เจาะ แค่แปะ","ถ่าย Demo กลางคืนจริง","เดินผ่าน → ไฟติดเอง","พูดถึง: ไม่เสียค่าไฟ","เวลาถ่าย: กลางคืน/ตอนเย็น"]
+    checks:["ถ่าย Install ไม่เจาะ แค่แปะ","ถ่าย Demo กลางคืน","เดินผ่าน → ไฟติดเอง","พูดถึง: ไม่เสียค่าไฟ","เวลาถ่าย: กลางคืน/เย็น"],
+    ai:{
+      grokBefore:"Photorealistic photo of dark house entrance path at night, barely visible, deep shadows, unsafe and dim. Thai house exterior. Night photography. No artificial lighting.",
+      grokAfter:"Photorealistic photo of house entrance path at night beautifully lit by warm solar motion sensor light mounted on wall, pathway clearly illuminated, welcoming glow. Thai house exterior. Night photography.",
+      kling:"Person walking toward Thai house entrance at night, motion sensor light suddenly activating with warm yellow glow that spreads across entire pathway, cinematic night shot, 6 seconds, realistic",
+      workflow:[
+        {tool:"GROK",cls:"wf-grok",desc:"Generate ภาพทางเข้าบ้านมืด (Before) + มีไฟสว่าง (After)"},
+        {tool:"KLING AI",cls:"wf-kling",desc:"Animate คนเดินมา → ไฟติดสว่าง → แสงกระจาย → 6 วิ"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"ใส่ effect 'ไฟเปิด' dramatic + sound effect 'click'"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"Text: 'ไม่ต้องเสียค่าไฟ พลังงานแสงอาทิตย์ 100%'"},
+        {tool:"โพสต์",cls:"wf-post",desc:"#บ้านสวย #ไฟบ้าน #พลังงานแสงอาทิตย์"}
+      ]
+    }
   },
   {
-    rank:14,name:"Magic Eraser Sponge / ฟองน้ำลบคราบ",
-    cat:"ทำความสะอาด",tier:"กลาง",
-    price:"60–100",
-    trigger:"คราบฝังแน่นที่ขัดไม่ออก",
+    rank:14, name:"Magic Eraser Sponge / ฟองน้ำลบคราบ", cat:"ทำความสะอาด", tier:"กลาง",
+    price:"60–100", trigger:"คราบฝังแน่นที่ขัดไม่ออก",
     hooks:[
-      {label:"Hook 1",text:"รองเท้าขาวใส่มา 2 ปี...ลบได้ใน 5 วินาที 👟"},
-      {label:"Hook 2",text:"ลูกขีดผนัง...แก้ได้ไม่ต้องทาสีใหม่ 🖍️"}
+      {label:"Hook 1", text:"รองเท้าขาวใส่มา 2 ปี...ลบได้ใน 5 วิ 👟"},
+      {label:"Hook 2", text:"ลูกขีดผนัง...แก้ได้ไม่ต้องทาสีใหม่ 🖍️"}
     ],
-    content:"Before-After หลายซีน: ผนัง / รองเท้าขาว / เตา / โต๊ะ — แต่ละซีน 3 วิ รวม 12 วิ viral",
+    content:"Before-After หลายซีน: ผนัง / รองเท้าขาว / เตา / โต๊ะ — แต่ละซีน 3 วิ รวม 15 วิ viral",
     keywords:["magic eraser","ฟองน้ำลบคราบ","ฟองน้ำลบดำ","magic sponge"],
-    checks:["เตรียมหลายพื้นผิว (รองเท้า ผนัง เตา)","ถ่าย Before คราบชัดๆ","ลบช้าๆ ให้เห็น Transition","Compile 4-5 ซีน ใน 30 วิ","ราคาถูก 1 แพ็ค หลายก้อน"]
+    checks:["เตรียมหลายพื้นผิว (รองเท้า ผนัง เตา)","ถ่าย Before คราบชัด","ลบช้าๆ ให้เห็น Transition","Compile 4-5 ซีน ใน 30 วิ","ราคาถูก บอกว่าแพ็คมีหลายก้อน"],
+    ai:{
+      grokBefore:"Photorealistic close-up of white Nike sneaker rubber sole with heavy grey scuff marks, dirt stains, and yellowing. Natural lighting. Macro photography.",
+      grokAfter:"Photorealistic close-up of pristine white Nike sneaker rubber sole, completely clean and bright white, no scuffs or stains. Natural lighting. Macro photography.",
+      kling:"White magic eraser sponge being rubbed firmly on dirty white shoe sole, grey scuff marks and dirt disappearing with each stroke, revealing clean white rubber underneath, close-up macro, 5 seconds, satisfying",
+      workflow:[
+        {tool:"GROK",cls:"wf-grok",desc:"Generate 3 ภาพ Before: รองเท้า / ผนัง / เตาเลอะ"},
+        {tool:"GROK",cls:"wf-grok",desc:"Generate 3 ภาพ After: สะอาดทุกอัน"},
+        {tool:"KLING AI",cls:"wf-kling",desc:"Animate รองเท้า: ฟองน้ำถูคราบออก → 5 วิ (ซีนหลัก)"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"Compile 3 Before-After ต่อกัน → แต่ละซีน 4 วิ"},
+        {tool:"โพสต์",cls:"wf-post",desc:"#ทำความสะอาด #รองเท้าขาว #ของมีประโยชน์"}
+      ]
+    }
   },
   {
-    rank:15,name:"ที่แยกไข่ขาว-ไข่แดง (Egg Separator)",
-    cat:"ของใช้ครัว",tier:"กลาง",
-    price:"60–100",
-    trigger:"ขี้เกียจแยกไข่ ทำขนมบ่อย เลอะมือ",
+    rank:15, name:"ที่แยกไข่ขาว-ไข่แดง (Egg Separator)", cat:"ของใช้ครัว", tier:"กลาง",
+    price:"60–100", trigger:"ขี้เกียจแยกไข่ ทำขนมบ่อย เลอะมือ",
     hooks:[
-      {label:"Hook 1",text:"ไม่รู้จักของชิ้นนี้ถือว่าพลาดมาก! 🥚 (น่ารักมาก)"},
-      {label:"Hook 2",text:"ทำเค้กง่ายขึ้น 10 เท่า — แยกไข่ 6 ฟองใน 10 วิ"}
+      {label:"Hook 1", text:"ไม่รู้จักของชิ้นนี้ถือว่าพลาดมาก! 🥚"},
+      {label:"Hook 2", text:"ทำเค้กง่ายขึ้น 10 เท่า — แยกไข่ 6 ฟองใน 10 วิ"}
     ],
-    content:"Cute unboxing + demo แยกไข่หลายฟอง ดีไซน์รูปไก่น่ารัก + ใช้เพลงสนุกๆ = viral ง่าย",
+    content:"Cute unboxing + demo แยกไข่หลายฟอง ดีไซน์รูปไก่น่ารัก + เพลงสนุก = viral",
     keywords:["ที่แยกไข่","egg yolk separator","ที่แยกไข่ขาว","egg separator น่ารัก"],
-    checks:["ถ่าย Unboxing สั้น น่ารัก","Demo แยกไข่ 3-4 ฟองติดกัน","ถ่าย Close-up ไข่แดงถูกดูด","Caption 'คนชอบทำขนมต้องมี'","#เบเกอรี่ #ทำขนม #ครัวไทย"]
+    checks:["ถ่าย Unboxing สั้นน่ารัก","Demo แยกไข่ 3-4 ฟอง","ถ่าย Close-up ไข่แดงถูกดูด","Caption 'คนชอบทำขนมต้องมี'","#เบเกอรี่ #ทำขนม"],
+    ai:{
+      grokBefore:"Photorealistic photo of egg cracked into bowl with yolk and white messily mixed together, shell fragments visible, failed separation attempt. Thai kitchen. Natural lighting.",
+      grokAfter:"Photorealistic photo of cute white chicken-shaped egg separator gadget with bright orange egg yolk cleanly separated and visible in spout, clear egg white in bowl below. Thai kitchen. Natural warm lighting.",
+      kling:"Cute yellow chicken egg separator being pressed over bowl, egg cracked above it, bright orange yolk slowly sucked up into chicken figure's body through suction, egg white falls cleanly into bowl, close-up, 5 seconds, satisfying cute",
+      workflow:[
+        {tool:"GROK",cls:"wf-grok",desc:"Generate ภาพตุ๊กตาไก่น่ารัก + ไข่แดงถูกแยก"},
+        {tool:"KLING AI",cls:"wf-kling",desc:"Animate ไข่แดงถูกดูดเข้าไก่ slow-motion น่ารัก → 5 วิ"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"เพลงน่ารักๆ + text 'สำหรับคนชอบทำเบเกอรี่'"},
+        {tool:"CAPCUT",cls:"wf-capcut",desc:"แสดง 3 ฟอง ต่อกัน + reveal ราคาถูก 60 บาท"},
+        {tool:"โพสต์",cls:"wf-post",desc:"#เบเกอรี่ไทย #ทำขนม #ของน่ารัก"}
+      ]
+    }
   }
 ];
 
 let activeFilters = {tier:'all', cat:'all'};
 let currentView = 'grid';
 
+// --- Main Tab ---
+function switchMainTab(tab){
+  document.querySelectorAll('.nav-tab').forEach((t,i)=>t.classList.toggle('active', ['products','aiguide'][i]===tab));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.getElementById('filterBar').style.display = tab==='products' ? 'flex' : 'none';
+}
+
+// --- Card Tab ---
+function switchCardTab(cardRank, tab){
+  const card = document.querySelector(`[data-rank="${cardRank}"]`);
+  card.querySelectorAll('.card-tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===tab));
+  card.querySelectorAll('.card-panel').forEach(p=>p.classList.toggle('active', p.dataset.panel===tab));
+}
+
+// --- Render ---
 function renderProducts(){
   const q = document.getElementById('searchInput').value.toLowerCase().trim();
   const container = document.getElementById('productsContainer');
@@ -555,39 +696,35 @@ function renderProducts(){
     if(activeFilters.tier !== 'all' && p.tier !== activeFilters.tier) return false;
     if(activeFilters.cat !== 'all' && p.cat !== activeFilters.cat) return false;
     if(q){
-      const haystack = (p.name + p.cat + p.trigger + p.keywords.join(' ') + p.content).toLowerCase();
-      if(!haystack.includes(q)) return false;
+      const h = (p.name+p.cat+p.trigger+p.keywords.join(' ')+p.content).toLowerCase();
+      if(!h.includes(q)) return false;
     }
     return true;
   });
-
   document.getElementById('resultInfo').innerHTML = `แสดง <strong>${filtered.length}</strong> สินค้า จาก ${PRODUCTS.length} รายการ`;
   document.getElementById('totalCount').textContent = filtered.length;
-
-  if(filtered.length === 0){
-    container.innerHTML = `<div class="empty-state"><div class="icon">🔍</div><div>ไม่พบสินค้าที่ตรงเงื่อนไข</div></div>`;
+  if(!filtered.length){
+    container.innerHTML='<div class="empty-state"><div class="icon">🔍</div><div>ไม่พบสินค้าที่ตรงเงื่อนไข</div></div>';
     return;
   }
-
-  container.innerHTML = filtered.map(p => buildCard(p)).join('');
-
-  // Restore checklists
-  filtered.forEach(p => {
-    const saved = JSON.parse(localStorage.getItem('checks_' + p.rank) || '[]');
-    saved.forEach(i => {
+  container.innerHTML = filtered.map(p=>buildCard(p)).join('');
+  filtered.forEach(p=>{
+    const saved = JSON.parse(localStorage.getItem('checks_'+p.rank)||'[]');
+    saved.forEach(i=>{
       const el = document.querySelector(`[data-check="${p.rank}-${i}"]`);
       if(el) el.classList.add('done');
     });
     updateProgress(p.rank);
+    // default tab = hooks
   });
 }
 
 function buildCard(p){
-  const tierClass = p.tier === 'สูงมาก' ? 'badge-tier-high' : p.tier === 'สูง' ? 'badge-tier-mid' : 'badge-tier-low';
-  const tierEmoji = p.tier === 'สูงมาก' ? '🔴' : p.tier === 'สูง' ? '🟠' : '🟡';
-  const rankClass = p.rank <= 3 ? `rank-${p.rank}` : '';
+  const tc = p.tier==='สูงมาก'?'badge-tier-high':p.tier==='สูง'?'badge-tier-mid':'badge-tier-low';
+  const te = p.tier==='สูงมาก'?'🔴':p.tier==='สูง'?'🟠':'🟡';
+  const rc = p.rank<=3?`rank-${p.rank}`:'';
 
-  const hooksHTML = p.hooks.map((h,i) => `
+  const hooksHTML = p.hooks.map(h=>`
     <div class="hook-item">
       <div class="hook-num">${h.label}</div>
       <div class="hook-text">${h.text}</div>
@@ -595,22 +732,54 @@ function buildCard(p){
     </div>`).join('');
 
   const kwHTML = `<div class="keywords">
-    ${p.keywords.map(k => `<span class="keyword-tag" onclick="copyTag(this,'${escQ(k)}')">${k}</span>`).join('')}
+    ${p.keywords.map(k=>`<span class="keyword-tag" onclick="copyTag(this,'${escQ(k)}')">${k}</span>`).join('')}
     <button class="copy-all-btn" onclick="copyAllKw(this,'${escQ(p.keywords.join(', '))}')">Copy ทั้งหมด</button>
   </div>`;
 
-  const checkHTML = p.checks.map((c,i) => `
+  const checkHTML = p.checks.map((c,i)=>`
     <div class="check-item" data-check="${p.rank}-${i}" onclick="toggleCheck(this,${p.rank},${i})">
-      <div class="check-box">✓</div>
-      <span class="check-label">${c}</span>
+      <div class="check-box">✓</div><span class="check-label">${c}</span>
     </div>`).join('');
+
+  const wfHTML = p.ai.workflow.map((w,i)=>`
+    <div class="wf-step">
+      <div class="wf-num">${i+1}</div>
+      <div class="wf-content">
+        <div class="wf-tool ${w.cls}">${w.tool}</div>
+        <div class="wf-desc">${w.desc}</div>
+      </div>
+    </div>`).join('');
+
+  const aiHTML = `
+    <div class="card-panel ai-panel" data-panel="ai">
+      <div class="section-title">Grok Aurora — ภาพ Before</div>
+      <div class="ai-prompt-box prompt-before">
+        <div class="ai-prompt-type">📸 Before (สภาพปัญหา)</div>
+        <div class="ai-prompt-text">${p.ai.grokBefore}</div>
+        <button class="copy-btn" onclick="copyText(this,'${escQ(p.ai.grokBefore)}')">📋</button>
+      </div>
+      <div class="section-title">Grok Aurora — ภาพ After</div>
+      <div class="ai-prompt-box prompt-after">
+        <div class="ai-prompt-type">✅ After (แก้ปัญหาแล้ว)</div>
+        <div class="ai-prompt-text">${p.ai.grokAfter}</div>
+        <button class="copy-btn" onclick="copyText(this,'${escQ(p.ai.grokAfter)}')">📋</button>
+      </div>
+      <div class="section-title">Kling AI — Video Prompt</div>
+      <div class="ai-prompt-box prompt-video">
+        <div class="ai-prompt-type">🎬 Image → Video (5-6 วิ)</div>
+        <div class="ai-prompt-text">${p.ai.kling}</div>
+        <button class="copy-btn" onclick="copyText(this,'${escQ(p.ai.kling)}')">📋</button>
+      </div>
+      <div class="section-title">Workflow ทั้งหมด</div>
+      <div class="workflow-steps">${wfHTML}</div>
+    </div>`;
 
   return `<div class="product-card" data-rank="${p.rank}">
     <div class="card-header">
-      <div class="rank-badge ${rankClass}">${p.rank}</div>
+      <div class="rank-badge ${rc}">${p.rank}</div>
       <div class="card-badges">
         <span class="badge badge-cat">${p.cat}</span>
-        <span class="badge ${tierClass}">${tierEmoji} ${p.tier}</span>
+        <span class="badge ${tc}">${te} ${p.tier}</span>
       </div>
       <div class="product-name">${p.name}</div>
       <div class="product-meta">
@@ -618,107 +787,91 @@ function buildCard(p){
         <span class="trigger-tag">⚡ ${p.trigger}</span>
       </div>
     </div>
+    <div class="card-nav">
+      <div class="card-tab active" data-tab="hooks" onclick="switchCardTab(${p.rank},'hooks')">🎯 Hook & ไอเดีย</div>
+      <div class="card-tab ai-tab" data-tab="ai" onclick="switchCardTab(${p.rank},'ai')">🤖 AI Prompts</div>
+      <div class="card-tab" data-tab="checklist" onclick="switchCardTab(${p.rank},'checklist')">✅ Checklist</div>
+    </div>
     <div class="card-body">
-      <div class="section-title">Hook ไอเดีย</div>
-      <div class="hooks">${hooksHTML}</div>
-      <div class="section-title">ไอเดียคอนเทนต์</div>
-      <div class="content-idea">${p.content}</div>
-      <div class="section-title">Keyword Shopee</div>
-      ${kwHTML}
-      <div class="section-title">Video Checklist</div>
-      <div class="checklist" id="cl-${p.rank}">${checkHTML}</div>
-      <div class="progress-bar"><div class="progress-fill" id="pf-${p.rank}" style="width:0%"></div></div>
+      <div class="card-panel active" data-panel="hooks">
+        <div class="section-title">Hook ไอเดีย</div>
+        <div class="hooks">${hooksHTML}</div>
+        <div class="section-title">ไอเดียคอนเทนต์</div>
+        <div class="content-idea">${p.content}</div>
+        <div class="section-title">Keyword Shopee</div>
+        ${kwHTML}
+      </div>
+      ${aiHTML}
+      <div class="card-panel" data-panel="checklist">
+        <div class="section-title">Video Checklist</div>
+        <div class="checklist" id="cl-${p.rank}">${checkHTML}</div>
+        <div class="progress-bar"><div class="progress-fill" id="pf-${p.rank}" style="width:0%"></div></div>
+      </div>
     </div>
   </div>`;
 }
 
-function escQ(s){ return s.replace(/'/g,"\\'").replace(/"/g,'&quot;') }
+function escQ(s){return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;')}
 
-// Clipboard fallback — works on file://, http://, https://
 function copyToClipboard(text){
   if(navigator.clipboard && window.isSecureContext){
     return navigator.clipboard.writeText(text);
   }
   const el = document.createElement('textarea');
-  el.value = text;
-  el.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0';
-  document.body.appendChild(el);
-  el.focus(); el.select(); el.setSelectionRange(0, 99999);
-  const ok = document.execCommand('copy');
-  document.body.removeChild(el);
-  return ok ? Promise.resolve() : Promise.reject(new Error('copy failed'));
+  el.value = text; el.style.cssText='position:fixed;left:-9999px;top:-9999px;opacity:0';
+  document.body.appendChild(el); el.focus(); el.select(); el.setSelectionRange(0,99999);
+  const ok = document.execCommand('copy'); document.body.removeChild(el);
+  return ok ? Promise.resolve() : Promise.reject();
 }
-
 function copyText(btn, text){
   copyToClipboard(text).then(()=>{
-    btn.classList.add('copied');
-    btn.textContent = '✓';
+    btn.classList.add('copied'); btn.textContent='✓';
     setTimeout(()=>{btn.classList.remove('copied');btn.textContent='📋'},1500);
-    showToast('คัดลอก Hook แล้ว! 🎉');
-  }).catch(()=>showToast('กรุณากด Ctrl+C หลังเลือกข้อความ'));
+    showToast('คัดลอกแล้ว! 🎉');
+  }).catch(()=>showToast('กด Ctrl+C หลังเลือกข้อความ'));
 }
 function copyTag(el, text){
   copyToClipboard(text).then(()=>{
     el.classList.add('copied');
     setTimeout(()=>el.classList.remove('copied'),1500);
-    showToast('"' + text + '" คัดลอกแล้ว ✓');
+    showToast('"'+text+'" คัดลอกแล้ว ✓');
   });
 }
 function copyAllKw(btn, text){
   copyToClipboard(text).then(()=>{
-    btn.classList.add('copied');btn.textContent='✓ Copied!';
+    btn.classList.add('copied'); btn.textContent='✓ Copied!';
     setTimeout(()=>{btn.classList.remove('copied');btn.textContent='Copy ทั้งหมด'},1500);
-    showToast('คัดลอก Keywords ทั้งหมดแล้ว! 🔑');
+    showToast('Keywords ทั้งหมดคัดลอกแล้ว! 🔑');
   });
 }
-
-function toggleCheck(el, rank, idx){
+function toggleCheck(el,rank,idx){
   el.classList.toggle('done');
   const all = document.querySelectorAll(`[data-check^="${rank}-"]`);
-  const done = document.querySelectorAll(`[data-check^="${rank}-"].done`);
-  const saved = [];
-  all.forEach((c,i)=>{ if(c.classList.contains('done')) saved.push(i); });
-  localStorage.setItem('checks_' + rank, JSON.stringify(saved));
+  const saved=[]; all.forEach((c,i)=>{if(c.classList.contains('done'))saved.push(i);});
+  localStorage.setItem('checks_'+rank,JSON.stringify(saved));
   updateProgress(rank);
 }
-
 function updateProgress(rank){
-  const all = document.querySelectorAll(`[data-check^="${rank}-"]`);
-  const done = document.querySelectorAll(`[data-check^="${rank}-"].done`);
-  const pf = document.getElementById('pf-' + rank);
-  if(pf && all.length) pf.style.width = (done.length/all.length*100) + '%';
+  const all=document.querySelectorAll(`[data-check^="${rank}-"]`);
+  const done=document.querySelectorAll(`[data-check^="${rank}-"].done`);
+  const pf=document.getElementById('pf-'+rank);
+  if(pf&&all.length)pf.style.width=(done.length/all.length*100)+'%';
 }
-
 function showToast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(window._toastTimer);
-  window._toastTimer = setTimeout(()=>t.classList.remove('show'), 2000);
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(window._tt); window._tt=setTimeout(()=>t.classList.remove('show'),2000);
 }
-
 function setChip(type, el){
-  const parent = document.getElementById(type === 'tier' ? 'tierChips' : 'catChips');
-  parent.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  activeFilters[type] = el.dataset[type];
-  renderProducts();
+  document.getElementById(type==='tier'?'tierChips':'catChips').querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active'); activeFilters[type]=el.dataset[type]; renderProducts();
 }
-
-function applyFilters(){ renderProducts() }
-
+function applyFilters(){renderProducts()}
 function setView(v){
-  currentView = v;
-  const c = document.getElementById('productsContainer');
-  if(v === 'grid'){
-    c.className = 'products-grid';
-    document.getElementById('gridBtn').classList.add('active');
-    document.getElementById('listBtn').classList.remove('active');
-  } else {
-    c.className = 'products-list';
-    document.getElementById('listBtn').classList.add('active');
-    document.getElementById('gridBtn').classList.remove('active');
-  }
+  currentView=v;
+  const c=document.getElementById('productsContainer');
+  c.className=v==='grid'?'products-grid':'products-list';
+  document.getElementById('gridBtn').classList.toggle('active',v==='grid');
+  document.getElementById('listBtn').classList.toggle('active',v==='list');
   renderProducts();
 }
 
