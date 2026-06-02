@@ -273,7 +273,7 @@ body{background:var(--bg);color:var(--txt);font-family:var(--font);min-height:10
       <div class="brand-logo">🛍️</div>
       <div class="brand-text">
         <div class="brand-title">Shopee Affiliate Dashboard</div>
-        <div class="brand-sub">โดย NANTASIT • อัพเดต มิถุนายน 2026</div>
+        <div class="brand-sub">โดย NANTASIT • อัพเดต: <span id="lastUpdated">2 มิถุนายน 2026</span></div>
       </div>
     </div>
     <div class="header-badge">🔥 15 สินค้า Viral-Ready</div>
@@ -634,23 +634,38 @@ function buildCard(p){
 
 function escQ(s){ return s.replace(/'/g,"\\'").replace(/"/g,'&quot;') }
 
+// Clipboard fallback — works on file://, http://, https://
+function copyToClipboard(text){
+  if(navigator.clipboard && window.isSecureContext){
+    return navigator.clipboard.writeText(text);
+  }
+  const el = document.createElement('textarea');
+  el.value = text;
+  el.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0';
+  document.body.appendChild(el);
+  el.focus(); el.select(); el.setSelectionRange(0, 99999);
+  const ok = document.execCommand('copy');
+  document.body.removeChild(el);
+  return ok ? Promise.resolve() : Promise.reject(new Error('copy failed'));
+}
+
 function copyText(btn, text){
-  navigator.clipboard.writeText(text).then(()=>{
+  copyToClipboard(text).then(()=>{
     btn.classList.add('copied');
     btn.textContent = '✓';
     setTimeout(()=>{btn.classList.remove('copied');btn.textContent='📋'},1500);
     showToast('คัดลอก Hook แล้ว! 🎉');
-  });
+  }).catch(()=>showToast('กรุณากด Ctrl+C หลังเลือกข้อความ'));
 }
 function copyTag(el, text){
-  navigator.clipboard.writeText(text).then(()=>{
+  copyToClipboard(text).then(()=>{
     el.classList.add('copied');
     setTimeout(()=>el.classList.remove('copied'),1500);
     showToast('"' + text + '" คัดลอกแล้ว ✓');
   });
 }
 function copyAllKw(btn, text){
-  navigator.clipboard.writeText(text).then(()=>{
+  copyToClipboard(text).then(()=>{
     btn.classList.add('copied');btn.textContent='✓ Copied!';
     setTimeout(()=>{btn.classList.remove('copied');btn.textContent='Copy ทั้งหมด'},1500);
     showToast('คัดลอก Keywords ทั้งหมดแล้ว! 🔑');
